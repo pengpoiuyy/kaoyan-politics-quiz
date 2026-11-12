@@ -222,6 +222,17 @@
   .page-meta strong { color: var(--ink); font-weight: 600; }
   .page-meta .dot { margin: 0 8px; opacity: .5; }
 
+  .retry-note {
+    margin: 0 0 14px;
+    padding: 10px 14px;
+    border: 1px dashed rgba(49, 93, 122, .5);
+    border-radius: 12px;
+    background: var(--blue-soft);
+    color: #2b536d;
+    font-size: 12px;
+    line-height: 1.7;
+  }
+
   /* ---------- cards ---------- */
   .quiz { display: flex; flex-direction: column; gap: 14px; }
 
@@ -672,6 +683,10 @@
     <div id="page-progress">本页已答 0 / 10</div>
   </div>
 
+  <div id="retry-note" class="retry-note" hidden>
+    错题重练：之前的答案已隐藏，重新选择后才会显示答案。答对后退出重练即可移出错题本。
+  </div>
+
   <section id="quiz" class="quiz"></section>
 
   <section id="empty" class="empty" hidden>
@@ -732,6 +747,7 @@ const state = {
   mode: "all"
 };
 let wrongIds = [];
+let retryActive = new Set();
 const pending = new Map();
 let toastTimer = null;
 
@@ -806,8 +822,13 @@ function stats() {
   return { answered, correct, wrong: answered - correct, accuracy: answered ? Math.round(correct / answered * 100) : 0 };
 }
 
+function recordFor(q) {
+  if (state.mode === "wrong" && retryActive.has(q.id)) return null;
+  return state.answers[q.id];
+}
+
 function selectedFor(q) {
-  const rec = state.answers[q.id];
+  const rec = recordFor(q);
   if (rec) return new Set(rec.picks);
   return pending.get(q.id) || new Set();
 }
@@ -845,7 +866,7 @@ function answerStrip(q, rec) {
 }
 
 function cardHTML(q, index) {
-  const rec = state.answers[q.id];
+  const rec = recordFor(q);
   const selected = selectedFor(q);
   const isMultiple = q.type === "multiple";
   const statusText = rec ? (rec.correct ? "✓" : "×") : "";
@@ -932,11 +953,12 @@ function renderChrome() {
   const page = state.page;
   const list = getView();
   const items = pageQuestions();
-  const answeredOnPage = items.filter(q => state.answers[q.id]).length;
+  const answeredOnPage = items.filter(q => recordFor(q)).length;
 
   $("#page-title").textContent = `第 ${page} 页`;
   $("#page-sub").textContent = `共 ${total} 页 · ${list.length} 题`;
   $("#page-progress").textContent = `本页已答 ${answeredOnPage} / ${items.length}`;
+  $("#retry-note").hidden = state.mode !== "wrong";
   $("#pager-label").innerHTML = `<b>${page}</b> / ${total}`;
   $("#prev").disabled = page <= 1;
   $("#next").disabled = page >= total;
@@ -959,6 +981,7 @@ function goPage(page) {
   const total = totalPages();
   const target = Math.min(Math.max(1, page), total);
   if (target === state.page) return;
+  hideToast();
   state.page = target;
   save();
   refresh(true);
@@ -969,11 +992,13 @@ function goPage(page) {
 
 function commit(qid, picks) {
   const q = byId.get(qid);
-  if (!q || state.answers[qid]) return;
+  const isRetry = retryActive.has(qid);
+  if (!q || (state.answers[qid] && !isRetry)) return;
   const clean = [...new Set(picks.filter(p => q.options[p]))].sort();
   if (!clean.length) return;
   const correct = clean.join("") === q.answer;
   state.answers[qid] = { picks: clean, correct };
+  retryActive.delete(qid);
   pending.delete(qid);
   save();
   refresh();
@@ -985,7 +1010,7 @@ function commit(qid, picks) {
 
 function togglePending(qid, letter) {
   const q = byId.get(qid);
-  if (!q || state.answers[qid]) return;
+  if (!q || (state.answers[qid] && !retryActive.has(qid))) return;
   const set = pending.get(qid) || new Set();
   if (set.has(letter)) set.delete(letter);
   else set.add(letter);
@@ -1003,13 +1028,20 @@ function toast(message, type = "") {
   toastTimer = setTimeout(() => el.classList.remove("show"), 2400);
 }
 
+function hideToast() {
+  clearTimeout(toastTimer);
+  const el = $("#toast");
+  el.classList.remove("show");
+}
+
 function openDirectory() {
+  hideToast();
   const total = totalPages();
   const grid = $("#page-grid");
   grid.innerHTML = Array.from({ length: total }, (_, i) => {
     const p = i + 1;
     const items = pageQuestions(p);
-    const answered = items.filter(q => state.answers[q.id]).length;
+    const answered = items.filter(q => recordFor(q)).length;
     const wrong = items.some(q => state.answers[q.id] && !state.answers[q.id].correct);
     const done = items.length > 0 && answered === items.length;
     const cls = ["page-btn", p === state.page ? "current" : "", done ? "done" : "", wrong ? "has-wrong" : ""].join(" ").trim();
@@ -1022,6 +1054,7 @@ function openDirectory() {
 }
 
 function setMode(mode) {
+  hideToast();
   if (mode === "wrong") {
     const wrong = wrongQuestions();
     if (!wrong.length) {
@@ -1030,9 +1063,11 @@ function setMode(mode) {
     }
     wrongIds = wrong.map(q => q.id);
     state.mode = "wrong";
+    retryActive = new Set(wrongIds);
   } else {
     state.mode = "all";
     wrongIds = [];
+    retryActive = new Set();
   }
   state.page = 1;
   save();
@@ -1043,10 +1078,12 @@ function setMode(mode) {
 }
 
 function resetAll() {
+  hideToast();
   state.answers = {};
   state.page = 1;
   state.mode = "all";
   wrongIds = [];
+  retryActive = new Set();
   pending.clear();
   save();
   refresh(true);
@@ -1064,7 +1101,7 @@ function bindEvents() {
     if (!q) return;
 
     if (btn.dataset.action === "option") {
-      if (state.answers[qid]) return;
+      if (state.answers[qid] && !retryActive.has(qid)) return;
       const letter = btn.dataset.letter;
       if (q.type === "single") {
         commit(qid, [letter]);
@@ -1137,6 +1174,8 @@ function init() {
     if (!wrongIds.length) {
       state.mode = "all";
       state.page = 1;
+    } else {
+      retryActive = new Set(wrongIds);
     }
   }
   clampPage();

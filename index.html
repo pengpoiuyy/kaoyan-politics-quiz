@@ -957,7 +957,7 @@ function renderChrome() {
 
   $("#page-title").textContent = `第 ${page} 页`;
   $("#page-sub").textContent = `共 ${total} 页 · ${list.length} 题`;
-  $("#page-progress").textContent = `本页已答 ${answeredOnPage} / ${items.length}`;
+  $("#page-progress").textContent = `${state.mode === "wrong" ? "本页已重练" : "本页已答"} ${answeredOnPage} / ${items.length}`;
   $("#retry-note").hidden = state.mode !== "wrong";
   $("#pager-label").innerHTML = `<b>${page}</b> / ${total}`;
   $("#prev").disabled = page <= 1;

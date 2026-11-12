@@ -8,4 +8,6 @@
 
 在线做题：<https://pengpoiuyy.github.io/kaoyan-politics-quiz/>
 
+![扫码做题](qr.png)
+
 题目与答案整理自《2027考研政治背诵手册》，仅作个人学习使用。

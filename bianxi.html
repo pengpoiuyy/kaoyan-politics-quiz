@@ -1,0 +1,739 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>知识点辨析 · 2027考研政治</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23315d7a'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23fff8ed' font-family='serif'%3E辨%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --paper: #f3eee3;
+    --card: #fffdf8;
+    --ink: #20262b;
+    --ink-soft: #465058;
+    --muted: #81796b;
+    --line: #ded4c3;
+    --line-strong: #cbbda6;
+    --accent: #b23a2f;
+    --accent-soft: #f6e2dc;
+    --jade: #2f6b56;
+    --jade-soft: #e3efe8;
+    --blue: #315d7a;
+    --blue-soft: #eaf1f6;
+    --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+    --sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Hiragino Sans GB", system-ui, sans-serif;
+    --shadow: 0 18px 40px -30px rgba(46,37,23,.55);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: var(--sans);
+    background:
+      radial-gradient(1100px 520px at 8% -10%, #fffaf0 0%, rgba(255,250,240,0) 60%),
+      radial-gradient(900px 480px at 100% 0%, #eadfcc 0%, rgba(234,223,204,0) 55%),
+      var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: .45;
+    background-image: radial-gradient(rgba(74,60,39,.06) .55px, transparent .55px);
+    background-size: 4px 4px;
+  }
+  button, a { font: inherit; color: inherit; }
+  button:focus-visible, a:focus-visible { outline: 3px solid rgba(49,93,122,.4); outline-offset: 2px; }
+  .wrap { width: min(1040px, calc(100% - 40px)); margin-inline: auto; position: relative; z-index: 1; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(243,238,227,.88);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid rgba(203,189,166,.55);
+  }
+  .topbar-inner { display: flex; align-items: center; gap: 12px; padding-block: 12px; }
+  .seal {
+    width: 42px; height: 42px; flex: 0 0 auto;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: var(--blue);
+    color: #fff8ed;
+    font-family: var(--serif);
+    font-size: 22px;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 4px 12px -6px rgba(49,93,122,.8);
+    transform: rotate(-2deg);
+  }
+  .brand h1 { margin: 0; font-family: var(--serif); font-size: 19px; letter-spacing: .04em; }
+  .brand p { margin: 2px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .08em; }
+  .top-stats { display: flex; gap: 16px; margin-left: auto; }
+  .stat { display: flex; flex-direction: column; line-height: 1; }
+  .stat b { font-family: var(--serif); font-size: 18px; font-variant-numeric: tabular-nums; }
+  .stat small { margin-top: 4px; color: var(--muted); font-size: 10px; letter-spacing: .1em; }
+  .top-actions { display: flex; gap: 8px; }
+  .ghost-btn {
+    border: 1px solid var(--line-strong);
+    background: rgba(255,253,248,.56);
+    border-radius: 999px;
+    padding: 8px 13px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .ghost-btn:hover { background: var(--card); color: var(--ink); }
+  .progress-track { height: 3px; background: rgba(203,189,166,.4); overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--blue), #5b8aa6); transition: width .35s ease; }
+
+  /* topic landing */
+  .hero { padding: 36px 0 22px; }
+  .eyebrow { margin: 0 0 10px; color: var(--blue); font-size: 11px; font-weight: 700; letter-spacing: .26em; }
+  .hero h2 { margin: 0; font-family: var(--serif); font-size: clamp(25px, 3.5vw, 36px); }
+  .hero p { margin: 10px 0 0; max-width: 660px; color: var(--muted); font-size: 12.5px; line-height: 1.9; }
+
+  .topic-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; padding-bottom: 12px; }
+  .topic-card {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 18px 18px 15px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--card);
+    box-shadow: var(--shadow);
+    cursor: pointer;
+    text-align: left;
+    transition: transform .18s ease, border-color .18s ease;
+  }
+  .topic-card:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+  .topic-card.all { background: linear-gradient(135deg, #edf4f7, #fffdf8 70%); border-color: rgba(49,93,122,.35); }
+  .topic-head { display: flex; align-items: baseline; gap: 8px; }
+  .topic-num { font-family: var(--serif); font-size: 25px; color: var(--blue); font-variant-numeric: tabular-nums; min-width: 36px; }
+  .topic-name { font-family: var(--serif); font-size: 16px; line-height: 1.5; }
+  .topic-meta { display: flex; align-items: center; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; }
+  .topic-bar { height: 4px; background: rgba(203,189,166,.35); border-radius: 999px; overflow: hidden; }
+  .topic-bar > i { display: block; height: 100%; width: 0; background: var(--blue); border-radius: inherit; }
+  .topic-state { font-size: 10.5px; color: var(--jade); }
+  .topic-state.pending { color: var(--muted); }
+
+  /* quiz */
+  #quiz-view { display: none; }
+  .quiz-head {
+    display: flex; align-items: center; gap: 12px;
+    padding: 20px 0 7px;
+  }
+  .back-btn {
+    border: 1px solid var(--line-strong);
+    background: var(--card);
+    border-radius: 999px;
+    padding: 8px 13px;
+    font-size: 12px;
+    color: var(--ink-soft);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .quiz-title { min-width: 0; }
+  .quiz-title h2 { margin: 0; font-family: var(--serif); font-size: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .quiz-title p { margin: 3px 0 0; font-size: 11px; color: var(--muted); }
+  .quiz-actions { display: flex; gap: 7px; margin-left: auto; }
+  .quiz-actions .ghost-btn { padding: 7px 11px; font-size: 11.5px; }
+
+  .retry-note {
+    margin: 8px 0 0;
+    padding: 9px 13px;
+    border: 1px dashed rgba(49,93,122,.5);
+    border-radius: 10px;
+    background: var(--blue-soft);
+    color: #2b536d;
+    font-size: 11.5px;
+    line-height: 1.7;
+  }
+  .quiz-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 8px 2px 10px; color: var(--muted); font-size: 11.5px; }
+  .quiz-meta strong { color: var(--ink); font-weight: 600; }
+  .quiz-meta .dot { margin: 0 7px; opacity: .5; }
+
+  .quiz { display: flex; flex-direction: column; gap: 12px; }
+  .q-card {
+    background: linear-gradient(180deg, #fffefb 0%, var(--card) 100%);
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    padding: 19px 21px 17px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
+  .q-card::before {
+    content: ""; position: absolute; left: -1px; top: 17px; bottom: 17px; width: 3px; border-radius: 0 3px 3px 0;
+    background: var(--blue); opacity: .4;
+  }
+  .q-card.ok::before { background: var(--jade); opacity: .8; }
+  .q-card.bad::before { background: var(--accent); opacity: .9; }
+  .q-head { display: flex; align-items: center; gap: 9px; margin-bottom: 9px; }
+  .q-index { font-family: var(--serif); font-size: 21px; font-weight: 700; min-width: 33px; font-variant-numeric: tabular-nums; }
+  .topic-pill { padding: 3px 8px; border-radius: 999px; background: var(--blue-soft); color: var(--blue); font-size: 10px; white-space: nowrap; max-width: 70%; overflow: hidden; text-overflow: ellipsis; }
+  .q-status { margin-left: auto; width: 23px; height: 23px; border-radius: 50%; display: grid; place-items: center; font-weight: 700; font-size: 13px; background: #f2ece0; color: var(--muted); }
+  .q-card.ok .q-status { background: var(--jade-soft); color: var(--jade); }
+  .q-card.bad .q-status { background: var(--accent-soft); color: var(--accent); }
+  .q-stem { margin: 0 0 12px; font-family: var(--serif); font-size: 16px; line-height: 1.9; text-align: justify; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option {
+    display: flex; align-items: flex-start; gap: 10px;
+    width: 100%; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 11px;
+    background: rgba(255,254,251,.75);
+    text-align: left; font-size: 14.3px; line-height: 1.65;
+    cursor: pointer; transition: border-color .15s, background .15s, transform .15s;
+  }
+  .option:hover:not(.locked) { border-color: var(--line-strong); background: #fffefb; transform: translateY(-1px); }
+  .option.locked { cursor: default; }
+  .letter { flex: 0 0 auto; width: 26px; height: 26px; display: grid; place-items: center; border: 1px solid var(--line-strong); border-radius: 7px; background: #f7f1e5; font-size: 12px; font-weight: 700; color: var(--ink-soft); }
+  .option .txt { flex: 1; padding-top: 2px; }
+  .option .mark { flex: 0 0 auto; width: 16px; text-align: center; padding-top: 3px; font-weight: 700; font-size: 13px; }
+  .option.correct { border-color: rgba(47,107,86,.6); background: var(--jade-soft); }
+  .option.correct .letter { background: var(--jade); border-color: var(--jade); color: #fff; }
+  .option.correct .mark { color: var(--jade); }
+  .option.wrong { border-color: rgba(178,58,47,.55); background: var(--accent-soft); }
+  .option.wrong .letter { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .option.wrong .mark { color: var(--accent); }
+  .answer-strip { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-top: 11px; padding: 8px 11px; border-radius: 9px; font-size: 12px; }
+  .answer-strip.ok { background: var(--jade-soft); color: #275746; }
+  .answer-strip.bad { background: var(--accent-soft); color: #7e2a21; }
+  .answer-strip b { letter-spacing: .15em; margin-left: 3px; }
+
+  .pager {
+    position: sticky; bottom: max(12px, env(safe-area-inset-bottom)); z-index: 30;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    margin: 18px 0 6px; padding: 7px;
+    background: rgba(255,253,248,.88);
+    border: 1px solid var(--line); border-radius: 999px;
+    box-shadow: 0 18px 40px -26px rgba(46,37,23,.65);
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  }
+  .pager button { border: 0; background: transparent; border-radius: 999px; padding: 8px 14px; font-size: 12.5px; color: var(--ink-soft); cursor: pointer; white-space: nowrap; }
+  .pager button:hover:not(:disabled) { background: #f0e9dc; color: var(--ink); }
+  .pager button:disabled { opacity: .3; cursor: not-allowed; }
+  #pager-label { font-size: 11.5px; color: var(--muted); font-variant-numeric: tabular-nums; }
+  #pager-label b { color: var(--ink); font-size: 13px; }
+  .empty { background: var(--card); border: 1px dashed var(--line-strong); border-radius: 16px; padding: 46px 20px; text-align: center; color: var(--muted); }
+  .empty .big { font-family: var(--serif); font-size: 20px; color: var(--ink); margin-bottom: 6px; }
+  footer { padding: 14px 0 30px; text-align: center; color: var(--muted); font-size: 10.5px; letter-spacing: .05em; }
+
+  dialog { width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 24px); overflow: auto; border: 1px solid var(--line); border-radius: 18px; padding: 0; background: var(--card); color: var(--ink); box-shadow: 0 40px 80px -40px rgba(32,38,43,.55); }
+  dialog::backdrop { background: rgba(32,38,43,.34); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 4px; }
+  .sheet-head h3 { margin: 0; font-family: var(--serif); font-size: 19px; }
+  .icon-btn { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--muted); font-size: 17px; cursor: pointer; }
+  .sheet-sub { margin: 4px 20px 14px; color: var(--muted); font-size: 11.5px; line-height: 1.7; }
+  .page-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 7px; padding: 0 20px 18px; }
+  .page-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 9px 3px 7px; border: 1px solid var(--line); border-radius: 10px; background: #fffefb; cursor: pointer; }
+  .page-btn:hover { border-color: var(--ink-soft); }
+  .page-btn .pnum { font-family: var(--serif); font-size: 16px; font-weight: 700; }
+  .page-btn .pstat { font-size: 9px; color: var(--muted); }
+  .page-btn.current { background: var(--ink); border-color: var(--ink); color: #fffdf8; }
+  .page-btn.current .pstat { color: rgba(255,253,248,.66); }
+  .page-btn.done:not(.current) { background: var(--jade-soft); border-color: rgba(47,107,86,.3); }
+  .page-btn.has-wrong:not(.current) { background: #fbf0ec; border-color: rgba(178,58,47,.25); }
+  .confirm-body { padding: 8px 20px 20px; }
+  .confirm-body p { margin: 0 0 14px; color: var(--ink-soft); font-size: 12.5px; line-height: 1.8; }
+  .confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .btn-danger { border: 0; border-radius: 999px; padding: 8px 16px; background: var(--accent); color: #fff8f3; font-size: 12px; cursor: pointer; }
+  .btn-cancel { border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 16px; background: transparent; color: var(--ink-soft); font-size: 12px; cursor: pointer; }
+  .toast { position: fixed; left: 50%; bottom: 86px; z-index: 80; transform: translate(-50%, 8px); max-width: calc(100vw - 40px); padding: 9px 15px; border-radius: 999px; background: rgba(32,38,43,.94); color: #fffdf8; font-size: 12px; text-align: center; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+  .toast.show { opacity: 1; transform: translate(-50%,0); }
+  .toast.ok { background: rgba(47,107,86,.96); }
+  .toast.bad { background: rgba(143,43,34,.96); }
+
+  @media (max-width: 760px) {
+    .wrap { width: calc(100% - 24px); }
+    .topbar-inner { gap: 8px; }
+    .seal { width: 36px; height: 36px; font-size: 19px; }
+    .brand h1 { font-size: 16px; }
+    .brand p { display: none; }
+    .top-stats .stat:nth-child(2) { display: none; }
+    .top-stats { gap: 10px; }
+    .stat b { font-size: 16px; }
+    .top-actions .ghost-btn { padding: 7px 10px; font-size: 11px; }
+    .hero { padding: 26px 0 16px; }
+    .hero h2 { font-size: 25px; }
+    .topic-grid { grid-template-columns: 1fr; }
+    .topic-card { padding: 15px 15px 13px; }
+    .quiz-head { flex-wrap: wrap; padding-top: 14px; }
+    .quiz-title h2 { font-size: 19px; }
+    .quiz-actions { margin-left: 0; width: 100%; }
+    .quiz-actions .ghost-btn { flex: 1; text-align: center; }
+    .q-card { padding: 16px 14px 14px; border-radius: 14px; }
+    .q-stem { font-size: 15.2px; }
+    .option { font-size: 13.8px; padding: 9px 10px; }
+    .letter { width: 24px; height: 24px; }
+    .page-grid { grid-template-columns: repeat(4,1fr); padding-inline: 16px; }
+    .pager { bottom: max(8px, env(safe-area-inset-bottom)); }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+<div id="topic-view">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="seal" href="index.html" aria-label="返回刷题台">辨</a>
+      <div class="brand">
+        <h1>知识点辨析</h1>
+        <p>第六部分 · 学科总结 · 302题</p>
+      </div>
+      <div class="top-stats">
+        <div class="stat"><b id="overall-answered">0</b><small>已答</small></div>
+        <div class="stat"><b id="overall-accuracy">0%</b><small>正确率</small></div>
+      </div>
+      <div class="top-actions">
+        <a class="ghost-btn" href="index.html">← 返回</a>
+      </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="overall-bar"></div></div>
+  </header>
+
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">按书中分节 · 一题一个对应关系</p>
+      <h2>选一个专题，开始辨析</h2>
+      <p>全部为单选：点击选项立即判分。每个专题单独记进度；也可以从「全部专题」按顺序刷。错题重练会先隐藏旧答案，重新选择后才显示。</p>
+    </section>
+    <div id="topic-grid" class="topic-grid"></div>
+    <footer>题目与答案整理自《2027考研政治背诵手册》第六部分 · 仅作个人学习使用</footer>
+  </main>
+</div>
+
+<div id="quiz-view">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="seal" href="index.html" aria-label="返回刷题台">辨</a>
+      <div class="brand">
+        <h1 id="quiz-brand">知识点辨析</h1>
+        <p id="quiz-brand-sub">单选 · 点击即判</p>
+      </div>
+      <div class="top-stats">
+        <div class="stat"><b id="quiz-answered">0</b><small>已答</small></div>
+        <div class="stat"><b id="quiz-accuracy">0%</b><small>正确率</small></div>
+      </div>
+      <div class="top-actions">
+        <a class="ghost-btn" href="index.html">← 返回</a>
+      </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="quiz-bar"></div></div>
+  </header>
+
+  <main class="wrap">
+    <div class="quiz-head">
+      <button class="back-btn" id="btn-back" type="button">← 专题</button>
+      <div class="quiz-title">
+        <h2 id="scope-title">全部专题</h2>
+        <p id="scope-sub">302 题 · 单选</p>
+      </div>
+      <div class="quiz-actions">
+        <button class="ghost-btn" id="btn-retry" type="button">错题重练</button>
+        <button class="ghost-btn" id="btn-directory" type="button">目录</button>
+        <button class="ghost-btn" id="btn-reset" type="button">重置</button>
+      </div>
+    </div>
+    <div id="retry-note" class="retry-note" hidden>错题重练：之前的选择和答案已隐藏，重新选择后才会显示。答对后退出重练即可移出错题本。</div>
+    <div class="quiz-meta">
+      <div><strong id="page-title">第 1 页</strong><span class="dot">·</span><span id="page-sub">10 题</span></div>
+      <div id="page-progress">本页已答 0 / 10</div>
+    </div>
+    <section id="quiz" class="quiz"></section>
+    <section id="empty" class="empty" hidden>
+      <div class="big">这个范围还没有错题</div>
+      <p>先去「全部专题」或对应专题做几题，答错的题会自动收进这里。</p>
+    </section>
+    <nav class="pager" aria-label="翻页">
+      <button id="prev" type="button">← 上一页</button>
+      <span id="pager-label"><b>1</b> / 1</span>
+      <button id="next" type="button">下一页 →</button>
+    </nav>
+    <footer>题目与答案整理自《2027考研政治背诵手册》第六部分 · 仅作个人学习使用</footer>
+  </main>
+</div>
+
+<dialog id="directory-dialog">
+  <div class="sheet-head">
+    <h3>选择页面</h3>
+    <button class="icon-btn" type="button" data-close="directory-dialog" aria-label="关闭">×</button>
+  </div>
+  <p class="sheet-sub" id="directory-sub">每页 10 题，点击页码跳转。</p>
+  <div class="page-grid" id="page-grid"></div>
+</dialog>
+
+<dialog id="reset-dialog">
+  <div class="sheet-head">
+    <h3>重置知识点辨析？</h3>
+    <button class="icon-btn" type="button" data-close="reset-dialog" aria-label="关闭">×</button>
+  </div>
+  <div class="confirm-body">
+    <p>这会清空本模块全部专题的作答记录和错题，不影响「时政190题」的进度。此操作不可撤销。</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" type="button" data-close="reset-dialog">取消</button>
+      <button class="btn-danger" id="confirm-reset" type="button">确认重置</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+const TOPICS = [{"id":"t2","num":2,"title":"第2节 马原·根本","short":"根本","count":29},{"id":"t3","num":3,"title":"第3节 马原·本质与实质","short":"本质与实质","count":23},{"id":"t4","num":4,"title":"第4节 马原·前提与基础","short":"前提与基础","count":12},{"id":"t5","num":5,"title":"第5节 马原·源泉","short":"源泉","count":7},{"id":"t6","num":6,"title":"第6节 马原·根源","short":"根源","count":13},{"id":"t7","num":7,"title":"第7节 马原·决定","short":"决定","count":43},{"id":"t10","num":10,"title":"第10节 中国共产党的重要会议","short":"重要会议","count":22},{"id":"t13","num":13,"title":"第13节 新思想·重要提法","short":"重要提法","count":86},{"id":"t16","num":16,"title":"第16节 近现代史·第一","short":"第一","count":16},{"id":"t17","num":17,"title":"第17节 近现代史·起点与开端","short":"起点与开端","count":15},{"id":"t18","num":18,"title":"第18节 近现代史·标志","short":"标志","count":14},{"id":"t19","num":19,"title":"第19节 近现代史·里程碑与转折点","short":"里程碑与转折点","count":9},{"id":"t20","num":20,"title":"第20节 近现代史·原因","short":"原因","count":13}];
+const QUESTIONS = [{"id":"t2-001","topic":"t2","q":"物质的根本属性是","options":{"A":"可知性","B":"运动","C":"客观实在性","D":"社会历史性"},"answer":"B"},{"id":"t2-002","topic":"t2","q":"实践是正确发挥人的主观能动性的","options":{"A":"根本方法","B":"根本目的","C":"根本途径","D":"根本动力"},"answer":"C"},{"id":"t2-003","topic":"t2","q":"事物发展的根本规律是","options":{"A":"联系和发展的规律","B":"质量互变规律","C":"否定之否定规律","D":"对立统一规律"},"answer":"D"},{"id":"t2-004","topic":"t2","q":"认识世界和改造世界的根本方法是","options":{"A":"唯物辩证法","B":"矛盾分析方法","C":"群众路线","D":"实事求是"},"answer":"A"},{"id":"t2-005","topic":"t2","q":"认识世界的根本目的在于","options":{"A":"追求剩余价值","B":"改造世界","C":"满足全体社会成员的需要","D":"认识世界"},"answer":"B"},{"id":"t2-006","topic":"t2","q":"认识事物的根本方法是","options":{"A":"历史分析方法","B":"归纳演绎方法","C":"矛盾分析方法","D":"阶级分析方法"},"answer":"C"},{"id":"t2-007","topic":"t2","q":"实践的主体和客体相互作用的关系中最根本的关系是","options":{"A":"生产关系","B":"价值关系","C":"认识关系","D":"实践关系"},"answer":"D"},{"id":"t2-008","topic":"t2","q":"人类认识和实践活动中的基本矛盾，也是认识世界和改造世界的根本动力是","options":{"A":"主观和客观的矛盾","B":"生产力","C":"阶级斗争","D":"社会基本矛盾"},"answer":"A"},{"id":"t2-009","topic":"t2","q":"人类认识世界和改造世界的根本目标是","options":{"A":"改造世界","B":"认识必然和争取自由","C":"实现共产主义","D":"认识世界"},"answer":"B"},{"id":"t2-010","topic":"t2","q":"马克思主义认识论的根本要求是","options":{"A":"在实践中检验真理","B":"实事求是","C":"一切从实际出发","D":"理论联系实际"},"answer":"C"},{"id":"t2-011","topic":"t2","q":"唯物史观与唯心史观的根本分野是","options":{"A":"主张辩证法，还是形而上学","B":"主张可知论，还是不可知论","C":"主张物质决定意识，还是意识决定物质","D":"主张社会存在决定社会意识，还是社会意识决定社会存在"},"answer":"D"},{"id":"t2-012","topic":"t2","q":"人的发展中最根本的是","options":{"A":"人的自由程度的提高","B":"人的全面发展","C":"人的素质提高","D":"人的社会关系丰富"},"answer":"A"},{"id":"t2-013","topic":"t2","q":"从根本上规定社会形态更替客观必然性的是","options":{"A":"人口因素","B":"生产力与生产关系矛盾运动的规律性","C":"地理环境","D":"英雄人物的意志"},"answer":"B"},{"id":"t2-014","topic":"t2","q":"历史发展的根本动力是","options":{"A":"生产力","B":"革命","C":"社会基本矛盾","D":"阶级斗争"},"answer":"C"},{"id":"t2-015","topic":"t2","q":"社会进步的根本内容，也是衡量社会进步的根本尺度是","options":{"A":"社会形态","B":"上层建筑","C":"生产关系","D":"生产力"},"answer":"D"},{"id":"t2-016","topic":"t2","q":"革命爆发的根本原因是","options":{"A":"生产力的发展和旧的生产关系、经济基础的发展和旧的上层建筑之间的矛盾冲突","B":"人口增长","C":"个别领袖的失误","D":"地理环境"},"answer":"A"},{"id":"t2-017","topic":"t2","q":"我们党的生命线和根本工作路线是","options":{"A":"组织路线","B":"群众路线","C":"思想路线","D":"政治路线"},"answer":"B"},{"id":"t2-018","topic":"t2","q":"具体劳动能否还原为抽象劳动，在根本上取决于","options":{"A":"具体劳动和抽象劳动的矛盾","B":"使用价值和价值的矛盾","C":"私人劳动和社会劳动能否实现统一","D":"个别劳动时间和社会必要劳动时间的矛盾"},"answer":"C"},{"id":"t2-019","topic":"t2","q":"资本主义生产的根本目的是","options":{"A":"满足社会需要","B":"实现资本积累","C":"提高劳动生产率","D":"追求剩余价值"},"answer":"D"},{"id":"t2-020","topic":"t2","q":"资本主义经济危机爆发的根本原因是","options":{"A":"资本主义的基本矛盾","B":"货币危机","C":"生产过剩","D":"消费不足"},"answer":"A"},{"id":"t2-021","topic":"t2","q":"资本主义国家职能的根本内容是","options":{"A":"维护社会公共利益","B":"服务于资本主义制度和资产阶级利益","C":"管理社会经济","D":"提供公共服务"},"answer":"B"},{"id":"t2-022","topic":"t2","q":"从根本上说，资本主义国家的社会管理职能服务于","options":{"A":"社会公共服务职能","B":"经济管理职能","C":"其政治统治职能","D":"阶级调和职能"},"answer":"C"},{"id":"t2-023","topic":"t2","q":"经济全球化坚实的物质基础和根本推动力是","options":{"A":"资本输出","B":"国际贸易的发展","C":"跨国公司的扩张","D":"科学技术的进步和生产力的发展"},"answer":"D"},{"id":"t2-024","topic":"t2","q":"资本主义发生变化的根本推动力量是","options":{"A":"科学技术革命和生产力的发展","B":"资本主义制度的自我调整","C":"无产阶级斗争","D":"社会主义国家的影响"},"answer":"A"},{"id":"t2-025","topic":"t2","q":"二战后资本主义发生的变化从根本上说是","options":{"A":"社会主义制度影响的结果","B":"人类社会发展一般规律和资本主义经济规律作用的结果","C":"资产阶级主动让步的结果","D":"科技革命单独作用的结果"},"answer":"B"},{"id":"t2-026","topic":"t2","q":"无产阶级革命的根本问题是","options":{"A":"同盟军问题","B":"领导权问题","C":"国家政权问题","D":"武装斗争问题"},"answer":"C"},{"id":"t2-027","topic":"t2","q":"社会主义社会生产的根本目的是","options":{"A":"追求利润最大化","B":"发展生产力","C":"提高国际竞争力","D":"满足全体社会成员的需要"},"answer":"D"},{"id":"t2-028","topic":"t2","q":"在展望未来社会的问题上，马克思主义与空想社会主义的根本区别是","options":{"A":"是否坚持科学的立场观点方法","B":"是否批判资本主义","C":"是否设想未来社会","D":"是否主张消灭私有制"},"answer":"A"},{"id":"t2-029","topic":"t2","q":"马克思主义追求的根本价值目标，也是共产主义社会的根本特征，是","options":{"A":"物质财富极大丰富","B":"实现人的自由而全面的发展","C":"消灭阶级","D":"实现社会公平正义"},"answer":"B"},{"id":"t3-001","topic":"t3","q":"马克思主义的本质属性是","options":{"A":"获取垄断利润","B":"劳动力的价值或价格","C":"人民性","D":"一切社会关系的总和"},"answer":"C"},{"id":"t3-002","topic":"t3","q":"物质最本质的规定是","options":{"A":"一切社会关系的总和","B":"固定充当一般等价物的商品","C":"能够带来剩余价值的价值","D":"客观实在性"},"answer":"D"},{"id":"t3-003","topic":"t3","q":"辩证否定的实质是","options":{"A":"扬弃","B":"能够带来剩余价值的价值","C":"客观性","D":"生产者之间一定的社会关系"},"answer":"A"},{"id":"t3-004","topic":"t3","q":"意识的本质是","options":{"A":"人类社会发展一般规律和资本主义经济规律作用的结果","B":"人脑的机能和属性，是客观世界的主观映象","C":"资产阶级实行政治统治和社会管理的手段和方式","D":"生产实践基础上形成的物质体系"},"answer":"B"},{"id":"t3-005","topic":"t3","q":"实践的本质是","options":{"A":"主体在实践基础上对客体的能动反映","B":"人脑的机能和属性，是客观世界的主观映象","C":"人类能动地改造世界的社会性的物质活动","D":"人类社会发展一般规律和资本主义经济规律作用的结果"},"answer":"C"},{"id":"t3-006","topic":"t3","q":"认识的本质是","options":{"A":"资产阶级经济和政治的集中反映","B":"能够带来剩余价值的价值","C":"生产实践基础上形成的物质体系","D":"主体在实践基础上对客体的能动反映"},"answer":"D"},{"id":"t3-007","topic":"t3","q":"真理的本质属性是","options":{"A":"客观性","B":"固定充当一般等价物的商品","C":"一切社会关系的总和","D":"客观实在性"},"answer":"A"},{"id":"t3-008","topic":"t3","q":"哲学上价值的本质是","options":{"A":"人脑的机能和属性，是客观世界的主观映象","B":"主体和客体之间的一种特定关系","C":"生产者之间一定的社会关系","D":"垄断资本凭借垄断地位获取高额垄断利润"},"answer":"B"},{"id":"t3-009","topic":"t3","q":"人类社会的本质是","options":{"A":"主体和客体之间的一种特定关系","B":"主体在实践基础上对客体的能动反映","C":"生产实践基础上形成的物质体系","D":"固定充当一般等价物的商品"},"answer":"C"},{"id":"t3-010","topic":"t3","q":"人的本质是","options":{"A":"固定充当一般等价物的商品","B":"主体和客体之间的一种特定关系","C":"获取垄断利润","D":"一切社会关系的总和"},"answer":"D"},{"id":"t3-011","topic":"t3","q":"人的本质属性是","options":{"A":"社会属性","B":"一切社会关系的总和","C":"客观实在性","D":"能够带来剩余价值的价值"},"answer":"A"},{"id":"t3-012","topic":"t3","q":"资本主义工资的本质是","options":{"A":"生产者之间一定的社会关系","B":"劳动力的价值或价格","C":"生产实践基础上形成的物质体系","D":"主体和客体之间的一种特定关系"},"answer":"B"},{"id":"t3-013","topic":"t3","q":"政治经济学中价值的本质是","options":{"A":"资产阶级经济和政治的集中反映","B":"垄断资本凭借垄断地位获取高额垄断利润","C":"生产者之间一定的社会关系","D":"一切社会关系的总和"},"answer":"C"},{"id":"t3-014","topic":"t3","q":"货币的本质是","options":{"A":"资产阶级经济和政治的集中反映","B":"垄断资本凭借垄断地位获取高额垄断利润","C":"人类能动地改造世界的社会性的物质活动","D":"固定充当一般等价物的商品"},"answer":"D"},{"id":"t3-015","topic":"t3","q":"资本的本质是","options":{"A":"能够带来剩余价值的价值","B":"获取垄断利润","C":"资产阶级经济和政治的集中反映","D":"劳动力的价值或价格"},"answer":"A"},{"id":"t3-016","topic":"t3","q":"剩余价值的实质是","options":{"A":"垄断资本凭借垄断地位获取高额垄断利润","B":"雇佣工人所创造并被资本家无偿占有的超过劳动力价值的那部分价值","C":"人脑的机能和属性，是客观世界的主观映象","D":"生产实践基础上形成的物质体系"},"answer":"B"},{"id":"t3-017","topic":"t3","q":"资本积累的本质是","options":{"A":"主体和客体之间的一种特定关系","B":"人类社会发展一般规律和资本主义经济规律作用的结果","C":"资本家不断利用无偿占有的剩余价值扩大资本规模，进一步扩大和加强对工人的剥削和统治","D":"垄断资本凭借垄断地位获取高额垄断利润"},"answer":"C"},{"id":"t3-018","topic":"t3","q":"资本主义政治制度的本质是","options":{"A":"生产实践基础上形成的物质体系","B":"资产阶级国家力量同垄断组织力量结合在一起的垄断资本主义","C":"人脑的机能和属性，是客观世界的主观映象","D":"资产阶级实行政治统治和社会管理的手段和方式"},"answer":"D"},{"id":"t3-019","topic":"t3","q":"资本主义意识形态的本质是","options":{"A":"资产阶级经济和政治的集中反映","B":"生产者之间一定的社会关系","C":"一切社会关系的总和","D":"人脑的机能和属性，是客观世界的主观映象"},"answer":"A"},{"id":"t3-020","topic":"t3","q":"垄断资本的实质是","options":{"A":"客观性","B":"获取垄断利润","C":"扬弃","D":"生产者之间一定的社会关系"},"answer":"B"},{"id":"t3-021","topic":"t3","q":"垄断资本主义的实质是","options":{"A":"人类社会发展一般规律和资本主义经济规律作用的结果","B":"主体和客体之间的一种特定关系","C":"垄断资本凭借垄断地位获取高额垄断利润","D":"生产者之间一定的社会关系"},"answer":"C"},{"id":"t3-022","topic":"t3","q":"国家垄断资本主义的本质是","options":{"A":"资产阶级实行政治统治和社会管理的手段和方式","B":"雇佣工人所创造并被资本家无偿占有的超过劳动力价值的那部分价值","C":"主体和客体之间的一种特定关系","D":"资产阶级国家力量同垄断组织力量结合在一起的垄断资本主义"},"answer":"D"},{"id":"t3-023","topic":"t3","q":"二战后资本主义发生变化的实质是","options":{"A":"人类社会发展一般规律和资本主义经济规律作用的结果","B":"资产阶级国家力量同垄断组织力量结合在一起的垄断资本主义","C":"资产阶级经济和政治的集中反映","D":"垄断资本凭借垄断地位获取高额垄断利润"},"answer":"A"},{"id":"t4-001","topic":"t4","q":"解决其他一切哲学问题的前提和基础是","options":{"A":"同一性","B":"对哲学基本问题的回答","C":"内容","D":"尊重客观规律"},"answer":"B"},{"id":"t4-002","topic":"t4","q":"客观规律性与主观能动性统一的基础是","options":{"A":"物质生产实践","B":"物质生产活动及生产方式","C":"实践","D":"分析"},"answer":"C"},{"id":"t4-003","topic":"t4","q":"正确发挥主观能动性的前提是","options":{"A":"现实的人及其活动","B":"同一性","C":"真理","D":"尊重客观规律"},"answer":"D"},{"id":"t4-004","topic":"t4","q":"事物存在和发展的前提是","options":{"A":"同一性","B":"真理","C":"分析","D":"正确认识世界"},"answer":"A"},{"id":"t4-005","topic":"t4","q":"事物存在的基础是","options":{"A":"实践","B":"内容","C":"物质生产实践","D":"对哲学基本问题的回答"},"answer":"B"},{"id":"t4-006","topic":"t4","q":"综合的基础是","options":{"A":"对哲学基本问题的回答","B":"物质生产活动及生产方式","C":"分析","D":"现实的人及其活动"},"answer":"C"},{"id":"t4-007","topic":"t4","q":"人的认识产生和发展的基础、动力、目的，也是真理与价值统一的基础是","options":{"A":"同一性","B":"内容","C":"尊重客观规律","D":"实践"},"answer":"D"},{"id":"t4-008","topic":"t4","q":"全部社会生活的基础是","options":{"A":"物质生产实践","B":"对哲学基本问题的回答","C":"实践","D":"现实的人及其活动"},"answer":"A"},{"id":"t4-009","topic":"t4","q":"人类社会赖以存在和发展的基础，也是人类其他一切活动的首要前提是","options":{"A":"实践","B":"物质生产活动及生产方式","C":"对哲学基本问题的回答","D":"分析"},"answer":"B"},{"id":"t4-010","topic":"t4","q":"价值尺度必须以什么为前提","options":{"A":"物质生产活动及生产方式","B":"对哲学基本问题的回答","C":"真理","D":"尊重客观规律"},"answer":"C"},{"id":"t4-011","topic":"t4","q":"有效改造世界的必要前提是","options":{"A":"分析","B":"尊重客观规律","C":"物质生产实践","D":"正确认识世界"},"answer":"D"},{"id":"t4-012","topic":"t4","q":"社会历史存在和发展的前提是","options":{"A":"现实的人及其活动","B":"分析","C":"物质生产实践","D":"正确认识世界"},"answer":"A"},{"id":"t5-001","topic":"t5","q":"创造价值的唯一源泉是","options":{"A":"劳动力商品的使用价值","B":"抽象劳动","C":"资本积累","D":"具体劳动"},"answer":"B"},{"id":"t5-002","topic":"t5","q":"价值的源泉是","options":{"A":"剩余价值","B":"具体劳动","C":"劳动力商品的使用价值","D":"抽象劳动"},"answer":"C"},{"id":"t5-003","topic":"t5","q":"剩余价值的唯一源泉是","options":{"A":"从殖民地掠夺的巨额财富","B":"资本积累","C":"抽象劳动","D":"雇佣劳动者的剩余劳动"},"answer":"D"},{"id":"t5-004","topic":"t5","q":"资本主义条件下生产自动化，剩余价值的唯一源泉仍然是","options":{"A":"雇佣工人的剩余劳动","B":"劳动力商品的使用价值","C":"抽象劳动","D":"资本积累"},"answer":"A"},{"id":"t5-005","topic":"t5","q":"资本主义扩大再生产的源泉是","options":{"A":"剩余价值","B":"资本积累","C":"劳动力商品的使用价值","D":"抽象劳动"},"answer":"B"},{"id":"t5-006","topic":"t5","q":"资本积累的源泉是","options":{"A":"资本积累","B":"抽象劳动","C":"剩余价值","D":"从殖民地掠夺的巨额财富"},"answer":"C"},{"id":"t5-007","topic":"t5","q":"资本主义国家资本积累、发展和增长的重要源泉，也是维持垄断统治和经济实力的源泉是","options":{"A":"雇佣工人的剩余劳动","B":"剩余价值","C":"资本积累","D":"从殖民地掠夺的巨额财富"},"answer":"D"},{"id":"t6-001","topic":"t6","q":"真理的绝对性与相对性根源于","options":{"A":"人类认识世界能力的无限性与有限性、绝对性与相对性的矛盾","B":"资本主义生产方式的基本矛盾","C":"生产力和交往形式之间的矛盾","D":"社会发展的必然性与人们的历史选择性相统一的过程"},"answer":"A"},{"id":"t6-002","topic":"t6","q":"社会意识根源于","options":{"A":"社会基本矛盾的尖锐化","B":"社会存在","C":"社会基本矛盾","D":"生产力和交往形式之间的矛盾"},"answer":"B"},{"id":"t6-003","topic":"t6","q":"社会意识的根源总是深藏于","options":{"A":"社会基本矛盾","B":"生产力","C":"经济事实当中","D":"物质交往"},"answer":"C"},{"id":"t6-004","topic":"t6","q":"精神交往的基础和根源是","options":{"A":"资本主义生产方式的基本矛盾","B":"资本积累","C":"生产资料私有制","D":"物质交往"},"answer":"D"},{"id":"t6-005","topic":"t6","q":"社会形态更替的统一性与多样性根源于","options":{"A":"社会发展的必然性与人们的历史选择性相统一的过程","B":"私人劳动和社会劳动的矛盾","C":"人类认识世界能力的无限性与有限性、绝对性与相对性的矛盾","D":"资本主义生产方式的基本矛盾"},"answer":"A"},{"id":"t6-006","topic":"t6","q":"一切历史冲突都根源于","options":{"A":"阶级之间物质利益的根本对立","B":"生产力和交往形式之间的矛盾","C":"私人劳动和社会劳动的矛盾","D":"社会存在"},"answer":"B"},{"id":"t6-007","topic":"t6","q":"其他一切社会矛盾的根源是","options":{"A":"资本积累","B":"社会存在","C":"社会基本矛盾","D":"阶级之间物质利益的根本对立"},"answer":"C"},{"id":"t6-008","topic":"t6","q":"阶级斗争根源于","options":{"A":"人口因素","B":"地理环境","C":"社会分工","D":"阶级之间物质利益的根本对立"},"answer":"D"},{"id":"t6-009","topic":"t6","q":"革命根源于","options":{"A":"社会基本矛盾的尖锐化","B":"人口因素","C":"物质交往","D":"阶级利益的根本对立"},"answer":"A"},{"id":"t6-010","topic":"t6","q":"商品使用价值和价值的矛盾、具体劳动和抽象劳动的矛盾根源于","options":{"A":"物质交往","B":"私人劳动和社会劳动的矛盾","C":"生产资料私有制","D":"资本主义生产方式的基本矛盾"},"answer":"B"},{"id":"t6-011","topic":"t6","q":"资本主义社会失业现象产生的根源是","options":{"A":"生产资料私有制","B":"消费不足","C":"资本积累","D":"社会基本矛盾"},"answer":"C"},{"id":"t6-012","topic":"t6","q":"无产阶级反抗资产阶级斗争的根源在于","options":{"A":"人口因素","B":"地理环境","C":"生产力发展水平","D":"资本主义生产方式的基本矛盾"},"answer":"D"},{"id":"t6-013","topic":"t6","q":"造成资本主义罪恶的总根源是","options":{"A":"生产资料私有制","B":"社会基本矛盾的尖锐化","C":"社会基本矛盾","D":"物质交往"},"answer":"A"},{"id":"t7-001","topic":"t7","q":"决定意识的是","options":{"A":"人民群众","B":"物质","C":"社会分工","D":"主要矛盾"},"answer":"B"},{"id":"t7-002","topic":"t7","q":"决定事物不同性质的是","options":{"A":"实践的能动性","B":"劳动的二重性","C":"矛盾的特殊性","D":"生产资料私有制"},"answer":"C"},{"id":"t7-003","topic":"t7","q":"对事物发展起决定作用的矛盾是","options":{"A":"劳动的二重性","B":"生产力","C":"社会存在","D":"主要矛盾"},"answer":"D"},{"id":"t7-004","topic":"t7","q":"事物的性质是由什么决定的","options":{"A":"主要矛盾的主要方面","B":"真理的本性和实践的特点","C":"人类社会的发展规律","D":"生产资料所有制性质"},"answer":"A"},{"id":"t7-005","topic":"t7","q":"对形式具有决定作用的是","options":{"A":"主要矛盾","B":"内容","C":"价值","D":"实践"},"answer":"B"},{"id":"t7-006","topic":"t7","q":"本质决定","options":{"A":"革命","B":"价值","C":"现象","D":"生产力"},"answer":"C"},{"id":"t7-007","topic":"t7","q":"在认识活动中起决定性作用的是","options":{"A":"革命","B":"社会分工","C":"社会存在","D":"实践"},"answer":"D"},{"id":"t7-008","topic":"t7","q":"决定真理一元性的是","options":{"A":"真理的客观性","B":"劳动的二重性","C":"主要矛盾","D":"生产资料私有制"},"answer":"A"},{"id":"t7-009","topic":"t7","q":"实践能够作为检验真理的唯一标准，是由什么决定的","options":{"A":"生产资料所有制关系","B":"真理的本性和实践的特点","C":"社会基本矛盾运动的结果","D":"理论与实践必须相结合"},"answer":"B"},{"id":"t7-010","topic":"t7","q":"实践标准的确定性或绝对性，由什么决定","options":{"A":"人类社会的发展规律","B":"资本主义基本矛盾运动的阶段性","C":"实践标准的客观性和唯一性","D":"社会基本矛盾运动的结果"},"answer":"C"},{"id":"t7-011","topic":"t7","q":"决定价值相对性的是","options":{"A":"生产资料私有制","B":"人民群众","C":"实践的能动性","D":"价值的主体性"},"answer":"D"},{"id":"t7-012","topic":"t7","q":"决定价值社会历史性的是","options":{"A":"人类社会历史发展","B":"主要矛盾的主要方面","C":"生产资料所有制性质","D":"生产资料私有制"},"answer":"A"},{"id":"t7-013","topic":"t7","q":"认识世界和改造世界的统一，决定了","options":{"A":"生产资料所有制性质","B":"理论与实践必须相结合","C":"资本主义经济制度的本质","D":"在交往中建立的社会关系"},"answer":"B"},{"id":"t7-014","topic":"t7","q":"社会存在和发展的基础及决定力量是","options":{"A":"实践的能动性","B":"社会基本矛盾","C":"物质生产方式","D":"价值的主体性"},"answer":"C"},{"id":"t7-015","topic":"t7","q":"决定社会意识的是","options":{"A":"主要矛盾","B":"价值","C":"劳动的二重性","D":"社会存在"},"answer":"D"},{"id":"t7-016","topic":"t7","q":"决定社会意识反映社会存在能动性的是","options":{"A":"实践的能动性","B":"价值的主体性","C":"矛盾的特殊性","D":"真理的客观性"},"answer":"A"},{"id":"t7-017","topic":"t7","q":"决定生产关系的是","options":{"A":"主要矛盾","B":"生产力","C":"内容","D":"价值"},"answer":"B"},{"id":"t7-018","topic":"t7","q":"决定上层建筑的是","options":{"A":"生产力","B":"社会分工","C":"经济基础","D":"社会存在"},"answer":"C"},{"id":"t7-019","topic":"t7","q":"决定人的发展程度的是","options":{"A":"真理的本性和实践的特点","B":"主要矛盾的主要方面","C":"资本主义经济制度的本质","D":"在交往中建立的社会关系"},"answer":"D"},{"id":"t7-020","topic":"t7","q":"经济形态是社会形态的基础，具有决定性意义的是","options":{"A":"生产资料所有制关系","B":"产品的分配关系","C":"人们在生产中的地位","D":"生产力的发展水平"},"answer":"A"},{"id":"t7-021","topic":"t7","q":"社会形态更替归根结底是","options":{"A":"实践标准的客观性和唯一性","B":"社会基本矛盾运动的结果","C":"理论与实践必须相结合","D":"真理的本性和实践的特点"},"answer":"B"},{"id":"t7-022","topic":"t7","q":"社会形态变革的决定力量是","options":{"A":"劳动的二重性","B":"经济基础","C":"人民群众","D":"社会分工"},"answer":"C"},{"id":"t7-023","topic":"t7","q":"决定社会历史一般进程、推动社会向前发展的是","options":{"A":"劳动的二重性","B":"价值的主体性","C":"生产资料私有制","D":"社会基本矛盾"},"answer":"D"},{"id":"t7-024","topic":"t7","q":"实现社会形态更替的重要手段和决定性环节是","options":{"A":"革命","B":"人民群众","C":"实践","D":"主要矛盾"},"answer":"A"},{"id":"t7-025","topic":"t7","q":"在社会历史发展过程中起决定性作用的是","options":{"A":"经济基础","B":"人民群众","C":"资本的本性","D":"社会存在"},"answer":"B"},{"id":"t7-026","topic":"t7","q":"决定商品交换比例的是","options":{"A":"社会分工","B":"内容","C":"价值","D":"社会存在"},"answer":"C"},{"id":"t7-027","topic":"t7","q":"决定商品二因素的是","options":{"A":"人民群众","B":"资本的本性","C":"矛盾的特殊性","D":"劳动的二重性"},"answer":"D"},{"id":"t7-028","topic":"t7","q":"决定商品价值量的是","options":{"A":"社会必要劳动时间","B":"人类社会的发展规律","C":"资本主义的内在矛盾","D":"生产资料所有制关系"},"answer":"A"},{"id":"t7-029","topic":"t7","q":"商品生产者劳动的社会性质是由什么决定的","options":{"A":"劳动的二重性","B":"社会分工","C":"内容","D":"经济基础"},"answer":"B"},{"id":"t7-030","topic":"t7","q":"商品生产者劳动的私人性质是由什么决定的","options":{"A":"主要矛盾的主要方面","B":"真理的客观性","C":"生产资料私有制","D":"矛盾的特殊性"},"answer":"C"},{"id":"t7-031","topic":"t7","q":"决定商品经济各种内在矛盾及其发展趋势的是","options":{"A":"在交往中建立的社会关系","B":"社会基本矛盾运动的结果","C":"主要矛盾的主要方面","D":"私人劳动和社会劳动的矛盾"},"answer":"D"},{"id":"t7-032","topic":"t7","q":"决定生产关系性质的是","options":{"A":"生产资料所有制性质","B":"生产力的发展水平","C":"人们的消费方式","D":"产品的交换方式"},"answer":"A"},{"id":"t7-033","topic":"t7","q":"资本主义所有制决定的资本与雇佣劳动之间剥削与被剥削的关系，反映了","options":{"A":"人类社会的发展规律","B":"资本主义经济制度的本质","C":"生产资料所有制性质","D":"理论与实践必须相结合"},"answer":"B"},{"id":"t7-034","topic":"t7","q":"劳动力的价值是由什么决定的","options":{"A":"私人劳动和社会劳动的矛盾","B":"各个国家的生产力发展状况和社会发展阶段","C":"生产、发展、维持和延续劳动力所必需的生活必需品的价值","D":"资本主义基本矛盾运动的阶段性"},"answer":"C"},{"id":"t7-035","topic":"t7","q":"资本主义生产的直接目的和决定性动机是","options":{"A":"真理的本性和实践的特点","B":"社会基本矛盾运动的结果","C":"私人劳动和社会劳动的矛盾","D":"无休止地获取尽可能多的剩余价值"},"answer":"D"},{"id":"t7-036","topic":"t7","q":"资本的有机构成是","options":{"A":"由资本技术构成决定并反映技术构成变化的资本价值构成","B":"资本主义基本矛盾运动的阶段性","C":"无休止地获取尽可能多的剩余价值","D":"私人劳动和社会劳动的矛盾"},"answer":"A"},{"id":"t7-037","topic":"t7","q":"资本有机构成提高的一般趋势是由什么决定的","options":{"A":"主要矛盾","B":"资本的本性","C":"价值的主体性","D":"劳动的二重性"},"answer":"B"},{"id":"t7-038","topic":"t7","q":"资本主义经济危机周期性是由什么决定的","options":{"A":"无休止地获取尽可能多的剩余价值","B":"实践标准的客观性和唯一性","C":"资本主义基本矛盾运动的阶段性","D":"在交往中建立的社会关系"},"answer":"C"},{"id":"t7-039","topic":"t7","q":"垄断利润形成的关键在于","options":{"A":"资本主义经济制度的本质","B":"社会生产力发展水平的客观规律","C":"各个国家的生产力发展状况和社会发展阶段","D":"垄断组织在经济生活中起决定性作用"},"answer":"D"},{"id":"t7-040","topic":"t7","q":"资本主义必然被社会主义所代替，是由什么决定的","options":{"A":"资本主义的内在矛盾","B":"个别领袖人物的意志","C":"人口因素","D":"地理环境"},"answer":"A"},{"id":"t7-041","topic":"t7","q":"社会主义建设过程的长期性是由什么决定的","options":{"A":"资本主义经济制度的本质","B":"社会生产力发展水平的客观规律","C":"垄断组织在经济生活中起决定性作用","D":"私人劳动和社会劳动的矛盾"},"answer":"B"},{"id":"t7-042","topic":"t7","q":"社会主义发展道路具有不同特点，是由什么决定的","options":{"A":"垄断组织在经济生活中起决定性作用","B":"无休止地获取尽可能多的剩余价值","C":"各个国家的生产力发展状况和社会发展阶段","D":"由资本技术构成决定并反映技术构成变化的资本价值构成"},"answer":"C"},{"id":"t7-043","topic":"t7","q":"共产主义一定能够实现，是由什么决定的","options":{"A":"地理环境的变化","B":"科学技术的进步","C":"个别英雄人物的意志","D":"人类社会的发展规律"},"answer":"D"},{"id":"t10-001","topic":"t10","q":"中共一大的主要贡献是","options":{"A":"成立中国共产党，通过党的第一个纲领和决议","B":"提出“建设有中国特色的社会主义”命题","C":"决定共产党员以个人身份加入国民党，建立联合战线","D":"毛泽东明确提出“马克思主义的中国化”命题"},"answer":"A"},{"id":"t10-002","topic":"t10","q":"中共二大的主要贡献是","options":{"A":"决定共产党员以个人身份加入国民党，建立联合战线","B":"第一次提出反帝反封建的民主革命纲领，制定第一部党章","C":"成立中国共产党，通过党的第一个纲领和决议","D":"提出“两个务必”，指出工作重心由乡村转移到城市"},"answer":"B"},{"id":"t10-003","topic":"t10","q":"中共三大的主要决定是","options":{"A":"把“三个代表”重要思想确定为党的指导思想","B":"毛泽东明确提出“马克思主义的中国化”命题","C":"决定共产党员以个人身份加入国民党，建立联合战线","D":"成立中国共产党，通过党的第一个纲领和决议"},"answer":"C"},{"id":"t10-004","topic":"t10","q":"中共四大的主要贡献是","options":{"A":"第一次提出反帝反封建的民主革命纲领，制定第一部党章","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求","D":"明确提出无产阶级在民主革命中的领导权和工农联盟问题"},"answer":"D"},{"id":"t10-005","topic":"t10","q":"八七会议的主要决定是","options":{"A":"确定土地革命和武装起义的方针","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"提出“建设有中国特色的社会主义”命题","D":"提出“两个务必”，指出工作重心由乡村转移到城市"},"answer":"A"},{"id":"t10-006","topic":"t10","q":"中共六大的主要判断是","options":{"A":"正确分析社会主义改造完成后中国社会的主要矛盾和主要任务","B":"指出中国仍是半殖民地半封建社会，革命仍是资产阶级民主主义革命","C":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","D":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点"},"answer":"B"},{"id":"t10-007","topic":"t10","q":"遵义会议的主要意义是","options":{"A":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","B":"指出中国仍是半殖民地半封建社会，革命仍是资产阶级民主主义革命","C":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点","D":"明确提出无产阶级在民主革命中的领导权和工农联盟问题"},"answer":"C"},{"id":"t10-008","topic":"t10","q":"瓦窑堡会议的主要贡献是","options":{"A":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","B":"成立中国共产党，通过党的第一个纲领和决议","C":"提出“两个务必”，指出工作重心由乡村转移到城市","D":"提出抗日条件下与民族资产阶级重建统一战线的新政策"},"answer":"D"},{"id":"t10-009","topic":"t10","q":"中共六届六中全会的主要贡献是","options":{"A":"毛泽东明确提出“马克思主义的中国化”命题","B":"决定共产党员以个人身份加入国民党，建立联合战线","C":"明确提出无产阶级在民主革命中的领导权和工农联盟问题","D":"成立中国共产党，通过党的第一个纲领和决议"},"answer":"A"},{"id":"t10-010","topic":"t10","q":"中共七大的主要贡献是","options":{"A":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"提出抗日条件下与民族资产阶级重建统一战线的新政策","D":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求"},"answer":"B"},{"id":"t10-011","topic":"t10","q":"中共七届二中全会的主要贡献是","options":{"A":"决定共产党员以个人身份加入国民党，建立联合战线","B":"毛泽东明确提出“马克思主义的中国化”命题","C":"提出“两个务必”，指出工作重心由乡村转移到城市","D":"第一次提出反帝反封建的民主革命纲领，制定第一部党章"},"answer":"C"},{"id":"t10-012","topic":"t10","q":"中共八大的主要贡献是","options":{"A":"决定共产党员以个人身份加入国民党，建立联合战线","B":"明确提出无产阶级在民主革命中的领导权和工农联盟问题","C":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求","D":"正确分析社会主义改造完成后中国社会的主要矛盾和主要任务"},"answer":"D"},{"id":"t10-013","topic":"t10","q":"十一届三中全会的主要意义是","options":{"A":"结束“以阶级斗争为纲”，开启改革开放和社会主义现代化建设新时期","B":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点","C":"正确分析社会主义改造完成后中国社会的主要矛盾和主要任务","D":"第一次提出反帝反封建的民主革命纲领，制定第一部党章"},"answer":"A"},{"id":"t10-014","topic":"t10","q":"中共十二大的主要贡献是","options":{"A":"成立中国共产党，通过党的第一个纲领和决议","B":"提出“建设有中国特色的社会主义”命题","C":"确立社会主义市场经济体制改革目标","D":"提出抗日条件下与民族资产阶级重建统一战线的新政策"},"answer":"B"},{"id":"t10-015","topic":"t10","q":"中共十三大的主要贡献是","options":{"A":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"系统阐述社会主义初级阶段理论，概括党在社会主义初级阶段的基本路线","D":"明确提出无产阶级在民主革命中的领导权和工农联盟问题"},"answer":"C"},{"id":"t10-016","topic":"t10","q":"中共十四大的主要贡献是","options":{"A":"把“三个代表”重要思想确定为党的指导思想","B":"成立中国共产党，通过党的第一个纲领和决议","C":"提出抗日条件下与民族资产阶级重建统一战线的新政策","D":"确立社会主义市场经济体制改革目标"},"answer":"D"},{"id":"t10-017","topic":"t10","q":"中共十五大的主要贡献是","options":{"A":"正式提出“邓小平理论”并确定为党的指导思想","B":"第一次提出反帝反封建的民主革命纲领，制定第一部党章","C":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","D":"把“三个代表”重要思想确定为党的指导思想"},"answer":"A"},{"id":"t10-018","topic":"t10","q":"中共十六大的主要贡献是","options":{"A":"正式提出“邓小平理论”并确定为党的指导思想","B":"把“三个代表”重要思想确定为党的指导思想","C":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","D":"提出“建设有中国特色的社会主义”命题"},"answer":"B"},{"id":"t10-019","topic":"t10","q":"中共十七大的主要贡献是","options":{"A":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","D":"提出抗日条件下与民族资产阶级重建统一战线的新政策"},"answer":"C"},{"id":"t10-020","topic":"t10","q":"中共十八大的主要贡献是","options":{"A":"指出中国仍是半殖民地半封建社会，革命仍是资产阶级民主主义革命","B":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","C":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","D":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求"},"answer":"D"},{"id":"t10-021","topic":"t10","q":"中共十九大召开的时间和地点是","options":{"A":"2017年10月，北京","B":"2002年11月，北京","C":"2007年10月，北京","D":"2022年10月"},"answer":"A"},{"id":"t10-022","topic":"t10","q":"中共二十大召开的时间是","options":{"A":"2007年10月，北京","B":"2022年10月","C":"2017年10月，北京","D":"2002年11月，北京"},"answer":"B"},{"id":"t13-001","topic":"t13","q":"新时代我国发展新的历史方位，标志着","options":{"A":"自主创新、重点跨越、支撑发展、引领未来","B":"坚持为人民服务、为社会主义服务的根本方向","C":"中国特色社会主义事业进入新的发展阶段","D":"坚持亲诚惠容和与邻为善、以邻为伴"},"answer":"C"},{"id":"t13-002","topic":"t13","q":"如期全面建成小康社会，标志着","options":{"A":"服务民族复兴、促进人类进步","B":"正确认识历史方位和发展阶段","C":"我国进入了一个新发展阶段","D":"第一个百年奋斗目标胜利实现"},"answer":"D"},{"id":"t13-003","topic":"t13","q":"开启全面建设社会主义现代化国家新征程、向第二个百年奋斗目标进军，标志着","options":{"A":"我国进入了一个新发展阶段","B":"坚持以马克思主义为指导","C":"健全和完善社会保障体系","D":"中华民族创造的优秀传统文化"},"answer":"A"},{"id":"t13-004","topic":"t13","q":"中国式现代化区别于西方现代化的显著标志是","options":{"A":"坚持尽力而为、量力而行","B":"全体人民共同富裕的现代化","C":"坚持百花齐放、百家争鸣","D":"中华民族创造的优秀传统文化"},"answer":"B"},{"id":"t13-005","topic":"t13","q":"中国共产党的根本政治立场是","options":{"A":"制度建设","B":"改革创新","C":"人民立场","D":"党的领导"},"answer":"C"},{"id":"t13-006","topic":"t13","q":"国家经济现代化的重要标志是","options":{"A":"中国共产党领导","B":"勇于自我革命","C":"“六个必须坚持”","D":"现代化产业体系"},"answer":"D"},{"id":"t13-007","topic":"t13","q":"新时代我国民主政治领域具有重大创新意义的标志性成果是","options":{"A":"全过程人民民主","B":"党的领导制度","C":"“六个必须坚持”","D":"人民当家作主"},"answer":"A"},{"id":"t13-008","topic":"t13","q":"当代中国哲学社会科学区别于其他哲学社会科学的根本标志是","options":{"A":"健全和完善社会保障体系","B":"坚持以马克思主义为指导","C":"处理好政府和市场的关系","D":"内需为主导、内部可循环"},"answer":"B"},{"id":"t13-009","topic":"t13","q":"现代化国家的显著标志是","options":{"A":"创新","B":"共同富裕","C":"文明","D":"发展"},"answer":"C"},{"id":"t13-010","topic":"t13","q":"中国共产党区别于其他政党的显著标志，也是我们党最大的优势、最鲜明的品格的是","options":{"A":"党的领导制度","B":"坚持党的领导","C":"科技自立自强","D":"勇于自我革命"},"answer":"D"},{"id":"t13-011","topic":"t13","q":"我们坚定“四个自信”的理论支撑和根本依据是","options":{"A":"马克思主义揭示的社会主义必然代替资本主义的客观规律","B":"自主创新、重点跨越、支撑发展、引领未来","C":"把党内法规体系纳入中国特色社会主义法治体系","D":"着力解决好培养什么人、怎样培养人、为谁培养人的问题"},"answer":"A"},{"id":"t13-012","topic":"t13","q":"认识把握社会发展阶段性特征的重要依据是","options":{"A":"内需为主导、内部可循环","B":"社会主要矛盾状况及其变化","C":"健全和完善社会保障体系","D":"全体人民共同富裕的现代化"},"answer":"B"},{"id":"t13-013","topic":"t13","q":"我们党作出中国特色社会主义进入新时代重大判断的基本依据是","options":{"A":"内需为主导、内部可循环","B":"健全和完善社会保障体系","C":"我国社会主要矛盾的变化","D":"处理好政府和市场的关系"},"answer":"C"},{"id":"t13-014","topic":"t13","q":"我们党明确各个阶段中心任务、制定正确路线方针政策的根本依据是","options":{"A":"服务民族复兴、促进人类进步","B":"增进民生福祉、促进社会公平","C":"听党指挥、能打胜仗、作风优良","D":"正确认识历史方位和发展阶段"},"answer":"D"},{"id":"t13-015","topic":"t13","q":"我国国家各种制度和法律法规的总依据是","options":{"A":"宪法","B":"文明","C":"创新","D":"人民立场"},"answer":"A"},{"id":"t13-016","topic":"t13","q":"现代化建设的出发点和落脚点是","options":{"A":"健全和完善社会保障体系","B":"实现人民对美好生活的向往","C":"内需为主导、内部可循环","D":"增进民生福祉、促进社会公平"},"answer":"B"},{"id":"t13-017","topic":"t13","q":"发展的出发点和落脚点是","options":{"A":"中华民族创造的优秀传统文化","B":"听党指挥、能打胜仗、作风优良","C":"满足人民群众对美好生活的新期待","D":"坚持“和平统一、一国两制”基本方针"},"answer":"C"},{"id":"t13-018","topic":"t13","q":"社会主义改革开放的出发点和落脚点是","options":{"A":"坚持为人民服务、为社会主义服务的根本方向","B":"把党内法规体系纳入中国特色社会主义法治体系","C":"坚持求同存异，发扬“团结—批评—团结”的优良传统","D":"更好实现和维护人民利益、让老百姓过上好日子"},"answer":"D"},{"id":"t13-019","topic":"t13","q":"进一步全面深化改革的出发点和落脚点是","options":{"A":"促进社会公平正义、增进人民福祉","B":"听党指挥、能打胜仗、作风优良","C":"中华民族创造的优秀传统文化","D":"是不是真正做到了人民当家作主"},"answer":"A"},{"id":"t13-020","topic":"t13","q":"社会主义现代化的出发点和落脚点是","options":{"A":"坚持亲诚惠容和与邻为善、以邻为伴","B":"实现好、维护好、发展好最广大人民根本利益","C":"更好实现和维护人民利益、让老百姓过上好日子","D":"加强党的长期执政能力建设、先进性和纯洁性建设"},"answer":"B"},{"id":"t13-021","topic":"t13","q":"民主政治建设的出发点和落脚点是","options":{"A":"内需为主导、内部可循环","B":"健全和完善社会保障体系","C":"实现最广大人民根本利益","D":"处理好政府和市场的关系"},"answer":"C"},{"id":"t13-022","topic":"t13","q":"文艺和文艺工作的出发点和落脚点是","options":{"A":"深化供给侧结构性改革","B":"坚持以马克思主义为指导","C":"人心向背、力量对比","D":"满足人民精神文化需求"},"answer":"D"},{"id":"t13-023","topic":"t13","q":"全面建设社会主义现代化国家的出发点和落脚点是","options":{"A":"让人民生活越过越好","B":"党要管党、从严治党","C":"实现高水平的自立自强","D":"人心向背、力量对比"},"answer":"A"},{"id":"t13-024","topic":"t13","q":"健全社会保障体系的根本出发点和落脚点是","options":{"A":"正确认识历史方位和发展阶段","B":"增进民生福祉、促进社会公平","C":"我国进入了一个新发展阶段","D":"服务民族复兴、促进人类进步"},"answer":"B"},{"id":"t13-025","topic":"t13","q":"全军各项建设的出发点和落脚点是","options":{"A":"勇于自我革命","B":"共同富裕","C":"提高战斗力","D":"以人为核心"},"answer":"C"},{"id":"t13-026","topic":"t13","q":"我国对外工作的出发点和落脚点是","options":{"A":"服务民族复兴、促进人类进步","B":"满足人民群众对美好生活的新期待","C":"是不是真正做到了人民当家作主","D":"维护国家主权、安全、发展利益"},"answer":"D"},{"id":"t13-027","topic":"t13","q":"发展经济的着力点是","options":{"A":"实体经济","B":"制度建设","C":"爱国主义","D":"人民立场"},"answer":"A"},{"id":"t13-028","topic":"t13","q":"世界科技强国竞争的着力点是","options":{"A":"人心向背、力量对比","B":"国家战略科技力量","C":"现代化产业体系","D":"全面建成小康社会"},"answer":"B"},{"id":"t13-029","topic":"t13","q":"新时代加强社会建设的重要着力点是","options":{"A":"坚持以马克思主义为指导","B":"坚持百花齐放、百家争鸣","C":"健全和完善社会保障体系","D":"实现最广大人民根本利益"},"answer":"C"},{"id":"t13-030","topic":"t13","q":"新时代加强军队建设的聚焦点和着力点是","options":{"A":"坚定中国特色社会主义文化自信","B":"满足人民群众对美好生活的新期待","C":"中华民族创造的优秀传统文化","D":"听党指挥、能打胜仗、作风优良"},"answer":"D"},{"id":"t13-031","topic":"t13","q":"新时代党的建设的着力点是","options":{"A":"调动全党积极性、主动性、创造性","B":"中华民族创造的优秀传统文化","C":"增进民生福祉、促进社会公平","D":"听党指挥、能打胜仗、作风优良"},"answer":"A"},{"id":"t13-032","topic":"t13","q":"统筹推进各领域各方面改革开放必须坚持的主线是","options":{"A":"标本兼治","B":"制度建设","C":"共同富裕","D":"积极防御"},"answer":"B"},{"id":"t13-033","topic":"t13","q":"进一步全面深化改革的主线是","options":{"A":"党的领导","B":"爱国主义","C":"制度建设","D":"实体经济"},"answer":"C"},{"id":"t13-034","topic":"t13","q":"新发展阶段我国经济发展必须把握的主线是","options":{"A":"健全和完善社会保障体系","B":"坚持以马克思主义为指导","C":"满足人民精神文化需求","D":"深化供给侧结构性改革"},"answer":"D"},{"id":"t13-035","topic":"t13","q":"党的民族工作主线是","options":{"A":"铸牢中华民族共同体意识","B":"全体人民共同富裕的现代化","C":"我国社会主要矛盾的变化","D":"内需为主导、内部可循环"},"answer":"A"},{"id":"t13-036","topic":"t13","q":"中国特色大国外交必须牢牢把握的主线是","options":{"A":"增进民生福祉、促进社会公平","B":"服务民族复兴、促进人类进步","C":"正确认识历史方位和发展阶段","D":"全体人民共同富裕的现代化"},"answer":"B"},{"id":"t13-037","topic":"t13","q":"新时代党的建设必须坚持的主线是","options":{"A":"自主创新、重点跨越、支撑发展、引领未来","B":"坚决维护习近平同志党中央的核心、全党的核心地位","C":"加强党的长期执政能力建设、先进性和纯洁性建设","D":"坚持求同存异，发扬“团结—批评—团结”的优良传统"},"answer":"C"},{"id":"t13-038","topic":"t13","q":"党的领导的最高原则是","options":{"A":"深化供给侧结构性改革","B":"党要管党、从严治党","C":"全面建成小康社会","D":"党中央集中统一领导"},"answer":"D"},{"id":"t13-039","topic":"t13","q":"党的领导制度体系必须坚持的最高原则是","options":{"A":"完善坚定维护党中央权威和集中统一领导的各项制度","B":"实现好、维护好、发展好最广大人民根本利益","C":"加强党的长期执政能力建设、先进性和纯洁性建设","D":"自主创新、重点跨越、支撑发展、引领未来"},"answer":"A"},{"id":"t13-040","topic":"t13","q":"“一国两制”方针的最高原则是","options":{"A":"听党指挥、能打胜仗、作风优良","B":"维护国家主权、安全、发展利益","C":"第一个百年奋斗目标胜利实现","D":"满足人民群众对美好生活的新期待"},"answer":"B"},{"id":"t13-041","topic":"t13","q":"习近平新时代中国特色社会主义思想的鲜明特征是","options":{"A":"国家战略科技力量","B":"人心向背、力量对比","C":"“六个必须坚持”","D":"党中央集中统一领导"},"answer":"C"},{"id":"t13-042","topic":"t13","q":"改革开放的鲜明特征是","options":{"A":"人心向背、力量对比","B":"坚持以马克思主义为指导","C":"党中央集中统一领导","D":"解放和发展社会生产力"},"answer":"D"},{"id":"t13-043","topic":"t13","q":"我国法治区别于其他国家法治的鲜明特征是","options":{"A":"把党内法规体系纳入中国特色社会主义法治体系","B":"坚持“和平统一、一国两制”基本方针","C":"坚持为人民服务、为社会主义服务的根本方向","D":"实现好、维护好、发展好最广大人民根本利益"},"answer":"A"},{"id":"t13-044","topic":"t13","q":"新时代推进反腐败斗争的鲜明特征是","options":{"A":"实体经济","B":"标本兼治","C":"改革开放","D":"共同富裕"},"answer":"B"},{"id":"t13-045","topic":"t13","q":"统一战线最鲜明的特征是","options":{"A":"共同富裕","B":"创新创造","C":"党的领导","D":"改革创新"},"answer":"C"},{"id":"t13-046","topic":"t13","q":"中国式现代化的重要特征是","options":{"A":"人民立场","B":"积极防御","C":"实体经济","D":"共同富裕"},"answer":"D"},{"id":"t13-047","topic":"t13","q":"共产主义的本质特征是","options":{"A":"实现人的自由而全面发展","B":"坚持以马克思主义为指导","C":"坚持尽力而为、量力而行","D":"全体人民共同富裕的现代化"},"answer":"A"},{"id":"t13-048","topic":"t13","q":"社会主义民主政治的本质特征是","options":{"A":"提高战斗力","B":"人民当家作主","C":"以人为核心","D":"科技自立自强"},"answer":"B"},{"id":"t13-049","topic":"t13","q":"文化的本质特征是","options":{"A":"实体经济","B":"制度建设","C":"创新创造","D":"改革创新"},"answer":"C"},{"id":"t13-050","topic":"t13","q":"中国特色社会主义最本质的特征是","options":{"A":"坚持党的领导","B":"“六个必须坚持”","C":"全过程人民民主","D":"中国共产党领导"},"answer":"D"},{"id":"t13-051","topic":"t13","q":"构建新发展格局最本质的特征是","options":{"A":"实现高水平的自立自强","B":"党要管党、从严治党","C":"深化供给侧结构性改革","D":"内需为主导、内部可循环"},"answer":"A"},{"id":"t13-052","topic":"t13","q":"当代中国最显著的特征是","options":{"A":"制度建设","B":"改革开放","C":"标本兼治","D":"党的领导"},"answer":"B"},{"id":"t13-053","topic":"t13","q":"大国经济的特征是","options":{"A":"坚持百花齐放、百家争鸣","B":"我国社会主要矛盾的变化","C":"内需为主导、内部可循环","D":"健全和完善社会保障体系"},"answer":"C"},{"id":"t13-054","topic":"t13","q":"新的时代特征是","options":{"A":"共同富裕","B":"实体经济","C":"宪法","D":"数字化"},"answer":"D"},{"id":"t13-055","topic":"t13","q":"我们区别于其他国家和民族的根本特征是","options":{"A":"中华民族创造的优秀传统文化","B":"增进民生福祉、促进社会公平","C":"坚定中国特色社会主义文化自信","D":"实现人民对美好生活的向往"},"answer":"A"},{"id":"t13-056","topic":"t13","q":"实施乡村振兴战略的总方针是","options":{"A":"党中央集中统一领导","B":"坚持农业农村优先发展","C":"解放和发展社会生产力","D":"人心向背、力量对比"},"answer":"B"},{"id":"t13-057","topic":"t13","q":"增强自主创新能力要坚持的方针是","options":{"A":"促进社会公平正义、增进人民福祉","B":"坚持亲诚惠容和与邻为善、以邻为伴","C":"自主创新、重点跨越、支撑发展、引领未来","D":"坚决维护习近平同志党中央的核心、全党的核心地位"},"answer":"C"},{"id":"t13-058","topic":"t13","q":"繁荣发展社会主义文化的重要方针是","options":{"A":"实现人的自由而全面发展","B":"健全和完善社会保障体系","C":"铸牢中华民族共同体意识","D":"坚持百花齐放、百家争鸣"},"answer":"D"},{"id":"t13-059","topic":"t13","q":"保障和改善民生的重要方针是","options":{"A":"坚持尽力而为、量力而行","B":"实现最广大人民根本利益","C":"铸牢中华民族共同体意识","D":"坚持百花齐放、百家争鸣"},"answer":"A"},{"id":"t13-060","topic":"t13","q":"中国军队坚持的战略方针是","options":{"A":"党的领导","B":"积极防御","C":"创新创造","D":"爱国主义"},"answer":"B"},{"id":"t13-061","topic":"t13","q":"中国统一的大政方针是","options":{"A":"自主创新、重点跨越、支撑发展、引领未来","B":"促进社会公平正义、增进人民福祉","C":"坚持“和平统一、一国两制”基本方针","D":"坚持亲诚惠容和与邻为善、以邻为伴"},"answer":"C"},{"id":"t13-062","topic":"t13","q":"周边外交方针是","options":{"A":"调动全党积极性、主动性、创造性","B":"坚持“和平统一、一国两制”基本方针","C":"听党指挥、能打胜仗、作风优良","D":"坚持亲诚惠容和与邻为善、以邻为伴"},"answer":"D"},{"id":"t13-063","topic":"t13","q":"党的建设的一贯要求和根本方针是","options":{"A":"党要管党、从严治党","B":"“六个必须坚持”","C":"人心向背、力量对比","D":"党中央集中统一领导"},"answer":"A"},{"id":"t13-064","topic":"t13","q":"实现中华民族伟大复兴中国梦的关键一步是","options":{"A":"“六个必须坚持”","B":"全面建成小康社会","C":"人心向背、力量对比","D":"管好用好互联网"},"answer":"B"},{"id":"t13-065","topic":"t13","q":"党保持团结统一和强大战斗力、不断取得胜利的关键所在是","options":{"A":"坚持农业农村优先发展","B":"深化供给侧结构性改革","C":"党中央集中统一领导","D":"实现高水平的自立自强"},"answer":"C"},{"id":"t13-066","topic":"t13","q":"维护党中央权威和集中统一领导最关键的是","options":{"A":"实现好、维护好、发展好最广大人民根本利益","B":"自主创新、重点跨越、支撑发展、引领未来","C":"完善坚定维护党中央权威和集中统一领导的各项制度","D":"坚决维护习近平同志党中央的核心、全党的核心地位"},"answer":"D"},{"id":"t13-067","topic":"t13","q":"决定当代中国命运的关键一招，也是决定实现“两个一百年”奋斗目标、实现中华民族伟大复兴的关键一招是","options":{"A":"改革开放","B":"党的领导","C":"爱国主义","D":"创新创造"},"answer":"A"},{"id":"t13-068","topic":"t13","q":"新时代全面深化改革的关键所在是","options":{"A":"党要管党、从严治党","B":"解放和增强社会活力","C":"“六个必须坚持”","D":"人心向背、力量对比"},"answer":"B"},{"id":"t13-069","topic":"t13","q":"解决我国一切问题的基础和关键是","options":{"A":"科技","B":"创新创造","C":"发展","D":"人民立场"},"answer":"C"},{"id":"t13-070","topic":"t13","q":"构建高水平社会主义市场经济体制的关键是","options":{"A":"坚持以马克思主义为指导","B":"坚持百花齐放、百家争鸣","C":"实现最广大人民根本利益","D":"处理好政府和市场的关系"},"answer":"D"},{"id":"t13-071","topic":"t13","q":"畅通国内国际双循环、促进我国发展大局的关键是","options":{"A":"科技自立自强","B":"现代化产业体系","C":"党的领导制度","D":"管好用好互联网"},"answer":"A"},{"id":"t13-072","topic":"t13","q":"全面建设社会主义现代化国家的关键是","options":{"A":"党的领导","B":"科技","C":"数字化","D":"人民立场"},"answer":"B"},{"id":"t13-073","topic":"t13","q":"一个国家民主不民主的关键是","options":{"A":"第一个百年奋斗目标胜利实现","B":"维护国家主权、安全、发展利益","C":"是不是真正做到了人民当家作主","D":"满足人民群众对美好生活的新期待"},"answer":"C"},{"id":"t13-074","topic":"t13","q":"决定党和人民事业成败的关键是","options":{"A":"让人民生活越过越好","B":"党中央集中统一领导","C":"解放和增强社会活力","D":"人心向背、力量对比"},"answer":"D"},{"id":"t13-075","topic":"t13","q":"统战工作的关键是","options":{"A":"坚持求同存异，发扬“团结—批评—团结”的优良传统","B":"马克思主义揭示的社会主义必然代替资本主义的客观规律","C":"实现好、维护好、发展好最广大人民根本利益","D":"坚决维护习近平同志党中央的核心、全党的核心地位"},"answer":"A"},{"id":"t13-076","topic":"t13","q":"建设社会主义文化强国、推动社会主义文化繁荣兴盛的关键是","options":{"A":"中华民族创造的优秀传统文化","B":"坚定中国特色社会主义文化自信","C":"正确认识历史方位和发展阶段","D":"维护国家主权、安全、发展利益"},"answer":"B"},{"id":"t13-077","topic":"t13","q":"决定社会主义文化事业前途命运的关键是","options":{"A":"把党内法规体系纳入中国特色社会主义法治体系","B":"坚持“和平统一、一国两制”基本方针","C":"坚持为人民服务、为社会主义服务的根本方向","D":"中国特色社会主义事业进入新的发展阶段"},"answer":"C"},{"id":"t13-078","topic":"t13","q":"新形势下做好新闻舆论工作的关键是","options":{"A":"全面建成小康社会","B":"现代化产业体系","C":"“六个必须坚持”","D":"管好用好互联网"},"answer":"D"},{"id":"t13-079","topic":"t13","q":"中国国家治理体系的核心是","options":{"A":"中国共产党领导","B":"党的领导制度","C":"国家战略科技力量","D":"管好用好互联网"},"answer":"A"},{"id":"t13-080","topic":"t13","q":"中国特色社会主义制度体系的核心是","options":{"A":"以人为核心","B":"党的领导制度","C":"坚持党的领导","D":"提高战斗力"},"answer":"B"},{"id":"t13-081","topic":"t13","q":"新型城镇化的核心是","options":{"A":"制度建设","B":"坚持党的领导","C":"以人为核心","D":"党的领导制度"},"answer":"C"},{"id":"t13-082","topic":"t13","q":"在国家发展全局中居于核心位置的是","options":{"A":"宪法","B":"党的领导","C":"科技","D":"创新"},"answer":"D"},{"id":"t13-083","topic":"t13","q":"建设教育强国的核心课题是","options":{"A":"着力解决好培养什么人、怎样培养人、为谁培养人的问题","B":"坚持为人民服务、为社会主义服务的根本方向","C":"把党内法规体系纳入中国特色社会主义法治体系","D":"坚持求同存异，发扬“团结—批评—团结”的优良传统"},"answer":"A"},{"id":"t13-084","topic":"t13","q":"统一战线最核心最根本的问题是","options":{"A":"全过程人民民主","B":"坚持党的领导","C":"现代化产业体系","D":"科技自立自强"},"answer":"B"},{"id":"t13-085","topic":"t13","q":"中华民族精神的核心是","options":{"A":"实体经济","B":"党的领导","C":"爱国主义","D":"制度建设"},"answer":"C"},{"id":"t13-086","topic":"t13","q":"时代精神的核心是","options":{"A":"积极防御","B":"共同富裕","C":"党的领导","D":"改革创新"},"answer":"D"},{"id":"t16-001","topic":"t16","q":"中国近代史上第一个不平等条约是","options":{"A":"《南京条约》","B":"《中华民国临时约法》","C":"毛泽东思想","D":"中华苏维埃共和国"},"answer":"A"},{"id":"t16-002","topic":"t16","q":"中国近代史上中国人民第一次大规模的反侵略武装斗争是","options":{"A":"维新派与守旧派的论战","B":"三元里人民的抗英斗争","C":"中国人民抗日战争的胜利","D":"毛泽东思想"},"answer":"B"},{"id":"t16-003","topic":"t16","q":"近代中国睁眼看世界的第一人是","options":{"A":"《中华民国临时约法》","B":"三元里人民的抗英斗争","C":"林则徐","D":"同盟会"},"answer":"C"},{"id":"t16-004","topic":"t16","q":"近代中国第一个比较系统的发展资本主义的方案是","options":{"A":"同盟会","B":"南昌起义","C":"中华苏维埃共和国","D":"《资政新篇》"},"answer":"D"},{"id":"t16-005","topic":"t16","q":"资产阶级思想与封建主义思想在中国的第一次正面交锋是","options":{"A":"维新派与守旧派的论战","B":"《中华民国临时约法》","C":"1937年9月平型关大捷","D":"《南京条约》"},"answer":"A"},{"id":"t16-006","topic":"t16","q":"孙中山在檀香山组建的第一个革命团体是","options":{"A":"《南京条约》","B":"兴中会","C":"林则徐","D":"毛泽东思想"},"answer":"B"},{"id":"t16-007","topic":"t16","q":"近代中国第一个领导资产阶级革命的全国性政党是","options":{"A":"林则徐","B":"《资政新篇》","C":"同盟会","D":"南昌起义"},"answer":"C"},{"id":"t16-008","topic":"t16","q":"中国历史上第一部具有资产阶级共和国宪法性质的法典是","options":{"A":"三元里人民的抗英斗争","B":"《资政新篇》","C":"中华苏维埃共和国","D":"《中华民国临时约法》"},"answer":"D"},{"id":"t16-009","topic":"t16","q":"第一次提出反帝反封建的民主革命纲领的大会是","options":{"A":"中共二大","B":"《中华民国临时约法》","C":"《资政新篇》","D":"毛泽东思想"},"answer":"A"},{"id":"t16-010","topic":"t16","q":"中国第一个农民协会是","options":{"A":"毛泽东思想","B":"浙江萧山县衙前村成立的农民协会","C":"1937年9月平型关大捷","D":"《南京条约》"},"answer":"B"},{"id":"t16-011","topic":"t16","q":"中国工人运动的第一个高潮是","options":{"A":"中国人民抗日战争的胜利","B":"《南京条约》","C":"1922年1月香港海员罢工到1923年2月京汉铁路工人罢工","D":"浙江萧山县衙前村成立的农民协会"},"answer":"C"},{"id":"t16-012","topic":"t16","q":"打响了武装反抗国民党反动派第一枪的是","options":{"A":"三元里人民的抗英斗争","B":"《中华民国临时约法》","C":"中共二大","D":"南昌起义"},"answer":"D"},{"id":"t16-013","topic":"t16","q":"中国历史上第一个全国性的工农民主政权是","options":{"A":"中华苏维埃共和国","B":"1937年9月平型关大捷","C":"《中华民国临时约法》","D":"三元里人民的抗英斗争"},"answer":"A"},{"id":"t16-014","topic":"t16","q":"全民族抗战以来中国军队主动寻歼敌人的第一次重大胜利是","options":{"A":"《资政新篇》","B":"1937年9月平型关大捷","C":"毛泽东思想","D":"中共二大"},"answer":"B"},{"id":"t16-015","topic":"t16","q":"近代以来中国人民反抗外敌入侵第一次取得完全胜利的民族解放斗争是","options":{"A":"《资政新篇》","B":"浙江萧山县衙前村成立的农民协会","C":"中国人民抗日战争的胜利","D":"1937年9月平型关大捷"},"answer":"C"},{"id":"t16-016","topic":"t16","q":"马克思主义中国化时代化的第一个重大理论成果是","options":{"A":"中共二大","B":"《中华民国临时约法》","C":"三元里人民的抗英斗争","D":"毛泽东思想"},"answer":"D"},{"id":"t17-001","topic":"t17","q":"中国近代史的起点是","options":{"A":"鸦片战争","B":"洋务运动","C":"李大钊","D":"三湾改编"},"answer":"A"},{"id":"t17-002","topic":"t17","q":"中国近代化的开端是","options":{"A":"武昌起义","B":"洋务运动","C":"李大钊","D":"全国范围的大革命高潮"},"answer":"B"},{"id":"t17-003","topic":"t17","q":"中国近代教育的开始是","options":{"A":"李大钊","B":"党的十一届三中全会","C":"洋务运动","D":"《论十大关系》"},"answer":"C"},{"id":"t17-004","topic":"t17","q":"掀起辛亥革命高潮、打开清王朝统治缺口的是","options":{"A":"遵义会议","B":"三湾改编","C":"全国范围的大革命高潮","D":"武昌起义"},"answer":"D"},{"id":"t17-005","topic":"t17","q":"新民主主义革命的开端是","options":{"A":"五四运动","B":"三湾改编","C":"全国范围的大革命高潮","D":"鸦片战争"},"answer":"A"},{"id":"t17-006","topic":"t17","q":"在中国大地上率先举起马克思主义旗帜的人物是","options":{"A":"洋务运动","B":"李大钊","C":"南昌起义","D":"三湾改编"},"answer":"B"},{"id":"t17-007","topic":"t17","q":"1925年5月，以五卅运动为起点，掀起了","options":{"A":"三湾改编","B":"从进攻大城市转到向农村进军","C":"全国范围的大革命高潮","D":"日本关东军制造九一八事变"},"answer":"C"},{"id":"t17-008","topic":"t17","q":"中国共产党独立领导革命战争、创建人民军队和武装夺取政权的开端是","options":{"A":"五四运动","B":"武昌起义","C":"《论十大关系》","D":"南昌起义"},"answer":"D"},{"id":"t17-009","topic":"t17","q":"中国人民革命史上具有决定意义的新起点是","options":{"A":"从进攻大城市转到向农村进军","B":"全国范围的大革命高潮","C":"《论十大关系》","D":"三湾改编"},"answer":"A"},{"id":"t17-010","topic":"t17","q":"建设无产阶级领导的新型人民军队的重要开端是","options":{"A":"五四运动","B":"三湾改编","C":"党的十一届三中全会","D":"洋务运动"},"answer":"B"},{"id":"t17-011","topic":"t17","q":"日本变中国为其独占殖民地侵略战争的开始是","options":{"A":"全国范围的大革命高潮","B":"遵义会议","C":"日本关东军制造九一八事变","D":"武昌起义"},"answer":"C"},{"id":"t17-012","topic":"t17","q":"中国人民抗日战争的起点是","options":{"A":"武昌起义","B":"南昌起义","C":"党的十一届三中全会","D":"1931年九一八事变，中国人民在白山黑水间的奋起抵抗"},"answer":"D"},{"id":"t17-013","topic":"t17","q":"开启了中国共产党独立自主解决中国革命实际问题新阶段的是","options":{"A":"遵义会议","B":"五四运动","C":"《论十大关系》","D":"南昌起义"},"answer":"A"},{"id":"t17-014","topic":"t17","q":"党探索中国社会主义建设道路的良好开端是","options":{"A":"五四运动","B":"《论十大关系》","C":"全国范围的大革命高潮","D":"洋务运动"},"answer":"B"},{"id":"t17-015","topic":"t17","q":"开启了我国改革开放和社会主义现代化建设新时期的是","options":{"A":"遵义会议","B":"五四运动","C":"党的十一届三中全会","D":"全国范围的大革命高潮"},"answer":"C"},{"id":"t18-001","topic":"t18","q":"甲午战争一役，北洋海军全军覆没，标志着","options":{"A":"党在政治上思想上组织上走向成熟","B":"如期全面建成小康社会","C":"中国资产阶级民主革命进入了一个新的阶段","D":"以“自强”“求富”为目标的洋务运动的失败"},"answer":"D"},{"id":"t18-002","topic":"t18","q":"同盟会成立，标志着","options":{"A":"中国资产阶级民主革命进入了一个新的阶段","B":"党的十八大的召开","C":"第一次国共合作正式形成","D":"被日本占领50年之久的台湾以及澎湖列岛重归中国主权管辖"},"answer":"A"},{"id":"t18-003","topic":"t18","q":"区分新旧民主主义革命的根本标志是","options":{"A":"党的十八大的召开","B":"领导权的变化","C":"整风运动胜利结束","D":"一二·九运动"},"answer":"B"},{"id":"t18-004","topic":"t18","q":"五四运动，标志着","options":{"A":"中国资产阶级民主革命进入了一个新的阶段","B":"以“自强”“求富”为目标的洋务运动的失败","C":"中国青年成为推动中国社会变革的急先锋","D":"如期全面建成小康社会"},"answer":"C"},{"id":"t18-005","topic":"t18","q":"国民党一大，标志着","options":{"A":"第一届人民政协会议的召开","B":"一二·九运动","C":"领导权的变化","D":"第一次国共合作正式形成"},"answer":"D"},{"id":"t18-006","topic":"t18","q":"标志着中国人民抗日救亡运动新高潮到来的事件是","options":{"A":"一二·九运动","B":"如期全面建成小康社会","C":"领导权的变化","D":"中国青年成为推动中国社会变革的急先锋"},"answer":"A"},{"id":"t18-007","topic":"t18","q":"中共扩大的六届七中全会原则通过《关于若干历史问题的决议》，标志着","options":{"A":"如期全面建成小康社会","B":"整风运动胜利结束","C":"第一次国共合作正式形成","D":"党的十八大的召开"},"answer":"B"},{"id":"t18-008","topic":"t18","q":"中共七大，标志着","options":{"A":"第一届人民政协会议的召开","B":"制定《关于建国以来党的若干历史问题的决议》","C":"党在政治上思想上组织上走向成熟","D":"中国青年成为推动中国社会变革的急先锋"},"answer":"C"},{"id":"t18-009","topic":"t18","q":"抗日战争取得完全胜利的重要标志是","options":{"A":"党的十八大的召开","B":"中国青年成为推动中国社会变革的急先锋","C":"如期全面建成小康社会","D":"被日本占领50年之久的台湾以及澎湖列岛重归中国主权管辖"},"answer":"D"},{"id":"t18-010","topic":"t18","q":"标志着中国革命重心从农村转向城市的是","options":{"A":"1949年3月25日，毛泽东等中央领导人与中央机关、人民解放军总部进驻北平香山","B":"如期全面建成小康社会","C":"党在政治上思想上组织上走向成熟","D":"中国青年成为推动中国社会变革的急先锋"},"answer":"A"},{"id":"t18-011","topic":"t18","q":"标志着中国新型政党制度——中国共产党领导的多党合作和政治协商制度确立的是","options":{"A":"第一次国共合作正式形成","B":"第一届人民政协会议的召开","C":"以“自强”“求富”为目标的洋务运动的失败","D":"如期全面建成小康社会"},"answer":"B"},{"id":"t18-012","topic":"t18","q":"标志着从中共十一届三中全会以来党和国家在指导思想上拨乱反正胜利完成的是","options":{"A":"党在政治上思想上组织上走向成熟","B":"被日本占领50年之久的台湾以及澎湖列岛重归中国主权管辖","C":"制定《关于建国以来党的若干历史问题的决议》","D":"第一届人民政协会议的召开"},"answer":"C"},{"id":"t18-013","topic":"t18","q":"中国特色社会主义进入新时代的标志是","options":{"A":"领导权的变化","B":"一二·九运动","C":"第一届人民政协会议的召开","D":"党的十八大的召开"},"answer":"D"},{"id":"t18-014","topic":"t18","q":"标志着第一个百年奋斗目标圆满完成，为实现第二个百年奋斗目标奠定坚实基础的是","options":{"A":"如期全面建成小康社会","B":"整风运动胜利结束","C":"中国资产阶级民主革命进入了一个新的阶段","D":"中国青年成为推动中国社会变革的急先锋"},"answer":"A"},{"id":"t19-001","topic":"t19","q":"中国人民为救亡图存、振兴中华而奋起革命的一座里程碑是","options":{"A":"八七会议","B":"辛亥革命","C":"遵义会议","D":"古田会议决议"},"answer":"B"},{"id":"t19-002","topic":"t19","q":"由大革命失败到土地革命战争兴起的历史性转变是","options":{"A":"古田会议决议","B":"红军长征胜利","C":"八七会议","D":"遵义会议"},"answer":"C"},{"id":"t19-003","topic":"t19","q":"党和人民军队建设史上的重要里程碑是","options":{"A":"八七会议","B":"遵义会议","C":"红军长征胜利","D":"古田会议决议"},"answer":"D"},{"id":"t19-004","topic":"t19","q":"党的历史上一个生死攸关的转折点是","options":{"A":"遵义会议","B":"红军长征胜利","C":"八七会议","D":"党的十一届三中全会"},"answer":"A"},{"id":"t19-005","topic":"t19","q":"实现了中国共产党和中国革命事业从挫折走向胜利的伟大转折的是","options":{"A":"八七会议","B":"红军长征胜利","C":"遵义会议","D":"中国人民抗日战争的胜利"},"answer":"B"},{"id":"t19-006","topic":"t19","q":"中华民族从近代以来陷入深重危机走向伟大复兴的历史转折点是","options":{"A":"党的十一届三中全会","B":"红军长征胜利","C":"中国人民抗日战争的胜利","D":"辛亥革命"},"answer":"C"},{"id":"t19-007","topic":"t19","q":"抗美援朝战争的伟大胜利，是中华民族走向伟大复兴的","options":{"A":"历史转折点","B":"根本标志","C":"起点","D":"重要里程碑"},"answer":"D"},{"id":"t19-008","topic":"t19","q":"开启了我国改革开放和社会主义现代化建设新时期，实现了历史性的伟大转折的是","options":{"A":"党的十一届三中全会","B":"八七会议","C":"遵义会议","D":"辛亥革命"},"answer":"A"},{"id":"t19-009","topic":"t19","q":"新时代十年的伟大变革，在党史、新中国史、改革开放史、社会主义发展史、中华民族发展史上具有","options":{"A":"转折点意义","B":"里程碑意义","C":"起点意义","D":"根本标志意义"},"answer":"B"},{"id":"t20-001","topic":"t20","q":"帝国主义列强不能实现灭亡和瓜分中国的根本原因是","options":{"A":"中国共产党的领导","B":"以爱国主义为核心的民族精神","C":"中华民族进行的不屈不挠的反侵略斗争","D":"洋务运动的指导思想是“中学为体，西学为用”，这就决定了它必然失败的命运"},"answer":"C"},{"id":"t20-002","topic":"t20","q":"反侵略战争失败的根本原因是","options":{"A":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命","B":"中国共产党的领导","C":"中华民族进行的不屈不挠的反侵略斗争","D":"社会制度的腐败"},"answer":"D"},{"id":"t20-003","topic":"t20","q":"太平天国农民起义失败的根本原因是","options":{"A":"农民阶级不是新的生产力和生产关系的代表，无法从根本上提出完整的、正确的政治纲领和社会改革方案","B":"以爱国主义为核心的民族精神","C":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对","D":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误"},"answer":"A"},{"id":"t20-004","topic":"t20","q":"洋务运动失败的原因是","options":{"A":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对","B":"洋务运动的指导思想是“中学为体，西学为用”，这就决定了它必然失败的命运","C":"中华民族进行的不屈不挠的反侵略斗争","D":"在帝国主义时代，在半殖民地半封建的中国，资本主义的建国方案是行不通的"},"answer":"B"},{"id":"t20-005","topic":"t20","q":"戊戌维新运动失败的主要原因是","options":{"A":"农民阶级不是新的生产力和生产关系的代表，无法从根本上提出完整的、正确的政治纲领和社会改革方案","B":"以爱国主义为核心的民族精神","C":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对","D":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误"},"answer":"C"},{"id":"t20-006","topic":"t20","q":"预备立宪没有能够挽救清王朝，反而激化了社会矛盾、加重了危机的主要原因是","options":{"A":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","B":"中国共产党的领导","C":"中华民族进行的不屈不挠的反侵略斗争","D":"清政府改革的根本目的是延续其反动统治"},"answer":"D"},{"id":"t20-007","topic":"t20","q":"辛亥革命失败的根本原因是","options":{"A":"在帝国主义时代，在半殖民地半封建的中国，资本主义的建国方案是行不通的","B":"以爱国主义为核心的民族精神","C":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","D":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命"},"answer":"A"},{"id":"t20-008","topic":"t20","q":"近代以后中国人民的反帝反封建斗争屡遭挫折和失败的最重要原因是","options":{"A":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对","B":"没有先进的坚强的政党作为凝聚力量的领导核心","C":"清政府改革的根本目的是延续其反动统治","D":"以爱国主义为核心的民族精神"},"answer":"B"},{"id":"t20-009","topic":"t20","q":"大革命失败、白色恐怖极其严重条件下，中国革命能够坚持和发展的根本原因是","options":{"A":"中华民族进行的不屈不挠的反侵略斗争","B":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","C":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命","D":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对"},"answer":"C"},{"id":"t20-010","topic":"t20","q":"20世纪30年代前期、中期，中国共产党内屡次出现严重“左”倾错误的主要原因是","options":{"A":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","B":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命","C":"洋务运动的指导思想是“中学为体，西学为用”，这就决定了它必然失败的命运","D":"党的马克思主义理论准备不足，缺乏实践经验，不善于把马克思列宁主义与中国实际全面地、正确地结合起来"},"answer":"D"},{"id":"t20-011","topic":"t20","q":"正面战场除台儿庄战役取得大捷外，其他战役几乎都以退却、失败而结束的原因是","options":{"A":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","B":"农民阶级不是新的生产力和生产关系的代表，无法从根本上提出完整的、正确的政治纲领和社会改革方案","C":"在帝国主义时代，在半殖民地半封建的中国，资本主义的建国方案是行不通的","D":"没有先进的坚强的政党作为凝聚力量的领导核心"},"answer":"A"},{"id":"t20-012","topic":"t20","q":"抗日战争胜利的决定因素是","options":{"A":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命","B":"以爱国主义为核心的民族精神","C":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","D":"维新派自身的局限以及以慈禧太后为首的强大的守旧势力的反对"},"answer":"B"},{"id":"t20-013","topic":"t20","q":"中国革命胜利的根本原因是","options":{"A":"中国共产党紧紧地依靠农民，领导农民进行了土地制度的革命","B":"客观原因是日军在力量对比上占很大优势，主观原因是国民党战略指导方针的失误","C":"中国共产党的领导","D":"以爱国主义为核心的民族精神"},"answer":"C"}];
+const STORAGE_KEY = "kaoyan-politics-bianxi-2027-v1";
+const PAGE_SIZE = 10;
+
+const byId = new Map(QUESTIONS.map(q => [q.id, q]));
+const topicById = new Map(TOPICS.map(t => [t.id, t]));
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+const state = { answers: {}, pages: {} };
+let scope = "all";
+let retryMode = false;
+let retryIds = new Set();
+let retryList = [];
+let toastTimer = null;
+
+function esc(v) {
+  return String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved && saved.answers && typeof saved.answers === "object") {
+      for (const [id, rec] of Object.entries(saved.answers)) {
+        const q = byId.get(id);
+        if (!q || !rec || !Array.isArray(rec.picks)) continue;
+        const letter = rec.picks[0];
+        if (!q.options[letter]) continue;
+        state.answers[id] = { picks: [letter], correct: letter === q.answer };
+      }
+    }
+    if (saved && saved.pages && typeof saved.pages === "object") state.pages = saved.pages;
+  } catch (err) { console.warn(err); }
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers, pages: state.pages })); }
+  catch (err) { console.warn(err); }
+}
+
+function scopeQuestions() {
+  return scope === "all" ? QUESTIONS : QUESTIONS.filter(q => q.topic === scope);
+}
+
+function currentQuestions() {
+  if (!retryMode) return scopeQuestions();
+  return retryList.map(id => byId.get(id)).filter(Boolean);
+}
+
+function totalPages() { return Math.max(1, Math.ceil(currentQuestions().length / PAGE_SIZE)); }
+function currentPage() { return Math.min(Math.max(1, state.pages[scope] || 1), totalPages()); }
+function pageQuestions() {
+  const p = currentPage();
+  return currentQuestions().slice((p - 1) * PAGE_SIZE, p * PAGE_SIZE);
+}
+
+function recordFor(q) {
+  if (retryMode && retryIds.has(q.id)) return null;
+  return state.answers[q.id] || null;
+}
+
+function statsFor(list) {
+  const answered = list.filter(q => state.answers[q.id]).length;
+  const correct = list.filter(q => state.answers[q.id] && state.answers[q.id].correct).length;
+  return { answered, correct, accuracy: answered ? Math.round(correct / answered * 100) : 0, wrong: answered - correct };
+}
+
+function savePage(p) { state.pages[scope] = p; save(); }
+
+function showTopics() {
+  retryMode = false;
+  retryIds.clear();
+  retryList = [];
+  scope = "all";
+  $("#topic-view").style.display = "block";
+  $("#quiz-view").style.display = "none";
+  history.replaceState(null, "", location.pathname + location.search);
+  renderTopics();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openTopic(id) {
+  if (id !== "all" && !topicById.has(id)) id = "all";
+  scope = id;
+  retryMode = false;
+  retryIds.clear();
+  retryList = [];
+  $("#topic-view").style.display = "none";
+  $("#quiz-view").style.display = "block";
+  history.replaceState(null, "", id === "all" ? location.pathname + location.search : "#" + id);
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function renderTopics() {
+  const all = statsFor(QUESTIONS);
+  $("#overall-answered").textContent = all.answered;
+  $("#overall-accuracy").textContent = all.accuracy + "%";
+  $("#overall-bar").style.width = (all.answered / QUESTIONS.length * 100) + "%";
+
+  const cards = [];
+  cards.push(`
+    <button class="topic-card all" data-topic="all" type="button">
+      <div class="topic-head"><span class="topic-num">00</span><span class="topic-name">全部专题</span></div>
+      <div class="topic-meta"><span>${QUESTIONS.length} 题 · 按书中顺序</span><span class="topic-state">${all.answered ? `已答 ${all.answered}` : "尚未开始"}</span></div>
+      <div class="topic-bar"><i style="width:${all.answered / QUESTIONS.length * 100}%"></i></div>
+    </button>`);
+  for (const t of TOPICS) {
+    const list = QUESTIONS.filter(q => q.topic === t.id);
+    const s = statsFor(list);
+    const pct = list.length ? s.answered / list.length * 100 : 0;
+    cards.push(`
+      <button class="topic-card" data-topic="${t.id}" type="button">
+        <div class="topic-head"><span class="topic-num">${String(t.num).padStart(2, "0")}</span><span class="topic-name">${esc(t.title)}</span></div>
+        <div class="topic-meta"><span>${list.length} 题</span><span class="topic-state ${s.answered ? "" : "pending"}">${s.answered ? `已答 ${s.answered} · 正确 ${s.correct}` : "尚未开始"}</span></div>
+        <div class="topic-bar"><i style="width:${pct}%"></i></div>
+      </button>`);
+  }
+  $("#topic-grid").innerHTML = cards.join("");
+}
+
+function optionClass(q, letter, rec) {
+  if (!rec) return "";
+  if (letter === q.answer) return "correct";
+  if (rec.picks.includes(letter)) return "wrong";
+  return "";
+}
+
+function cardHTML(q, index) {
+  const rec = recordFor(q);
+  const topic = topicById.get(q.topic);
+  const isRight = rec && rec.correct;
+  const cls = rec ? (isRight ? "ok" : "bad") : "";
+  const status = rec ? (isRight ? "✓" : "×") : "";
+  const options = ["A", "B", "C", "D"].map(letter => {
+    const c = optionClass(q, letter, rec);
+    const picked = rec ? rec.picks.includes(letter) : false;
+    const mark = rec ? (letter === q.answer ? "✓" : picked ? "×" : "") : "";
+    return `<button type="button" class="option ${c} ${rec ? "locked" : ""}" data-qid="${q.id}" data-letter="${letter}" aria-pressed="${picked}" ${rec ? 'aria-disabled="true"' : ""}>
+      <span class="letter">${letter}</span><span class="txt">${esc(q.options[letter])}</span><span class="mark" aria-hidden="true">${mark}</span>
+    </button>`;
+  }).join("");
+  const strip = rec ? `<div class="answer-strip ${isRight ? "ok" : "bad"}" role="status">
+      <span>${isRight ? "✓ 回答正确" : "✕ 回答错误"}</span>
+      <span>正确答案<b>${q.answer}</b>${isRight ? "" : ` · 你的选择 ${rec.picks[0]}`}</span>
+    </div>` : "";
+  return `<article class="q-card ${cls}" data-card="${q.id}">
+    <div class="q-head">
+      <div class="q-index">${String(index + 1).padStart(2, "0")}</div>
+      <span class="topic-pill">${esc(topic ? topic.title : "")}</span>
+      <div class="q-status" aria-hidden="true">${status}</div>
+    </div>
+    <p class="q-stem">${esc(q.q)}（ ）</p>
+    <div class="options">${options}</div>
+    ${strip}
+  </article>`;
+}
+
+function renderQuiz() {
+  const list = scopeQuestions();
+  const pageList = pageQuestions();
+  const page = currentPage();
+  const total = totalPages();
+  const s = statsFor(list);
+  const answeredOnPage = pageList.filter(q => recordFor(q)).length;
+
+  $("#scope-title").textContent = scope === "all" ? "全部专题" : topicById.get(scope).title;
+  $("#scope-sub").textContent = `${list.length} 题 · 单选${retryMode ? " · 错题重练" : ""}`;
+  $("#quiz-brand").textContent = "知识点辨析";
+  $("#quiz-brand-sub").textContent = `${scope === "all" ? "全部专题" : topicById.get(scope).title} · ${list.length} 题`;
+
+  $("#quiz-answered").textContent = s.answered;
+  $("#quiz-accuracy").textContent = s.accuracy + "%";
+  $("#quiz-bar").style.width = (list.length ? s.answered / list.length * 100 : 0) + "%";
+
+  $("#retry-note").hidden = !retryMode;
+  $("#btn-retry").textContent = retryMode ? "退出重练" : "错题重练";
+
+  $("#page-title").textContent = `第 ${page} 页`;
+  $("#page-sub").textContent = `共 ${total} 页 · ${list.length} 题`;
+  $("#page-progress").textContent = `${retryMode ? "本页已重练" : "本页已答"} ${answeredOnPage} / ${pageList.length}`;
+  $("#pager-label").innerHTML = `<b>${page}</b> / ${total}`;
+  $("#prev").disabled = page <= 1;
+  $("#next").disabled = page >= total;
+
+  const quiz = $("#quiz");
+  const empty = $("#empty");
+  if (!pageList.length) {
+    quiz.innerHTML = "";
+    quiz.hidden = true;
+    empty.hidden = false;
+  } else {
+    quiz.hidden = false;
+    empty.hidden = true;
+    quiz.innerHTML = pageList.map((q, i) => cardHTML(q, (page - 1) * PAGE_SIZE + i)).join("");
+  }
+}
+
+function commit(qid, letter) {
+  const q = byId.get(qid);
+  const isRetry = retryIds.has(qid);
+  if (!q || (state.answers[qid] && !isRetry)) return;
+  state.answers[qid] = { picks: [letter], correct: letter === q.answer };
+  retryIds.delete(qid);
+  save();
+  renderQuiz();
+  toast(letter === q.answer ? `回答正确 · 答案 ${q.answer}` : `回答错误 · 正确答案 ${q.answer}`, letter === q.answer ? "ok" : "bad");
+}
+
+function goPage(page) {
+  const target = Math.min(Math.max(1, page), totalPages());
+  if (target === currentPage()) return;
+  hideToast();
+  savePage(target);
+  renderQuiz();
+  const meta = $(".quiz-meta");
+  const top = meta.getBoundingClientRect().top + window.scrollY - 82;
+  window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+}
+
+function startRetry() {
+  if (retryMode) {
+    retryMode = false;
+    retryIds.clear();
+    retryList = [];
+    state.pages[scope] = 1;
+    save();
+    renderQuiz();
+    return;
+  }
+  const wrong = scopeQuestions().filter(q => state.answers[q.id] && !state.answers[q.id].correct);
+  if (!wrong.length) { toast("这个范围暂时没有错题"); return; }
+  retryIds = new Set(wrong.map(q => q.id));
+  retryList = wrong.map(q => q.id);
+  retryMode = true;
+  state.pages[scope] = 1;
+  save();
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openDirectory() {
+  hideToast();
+  const total = totalPages();
+  const items = currentQuestions();
+  const grid = $("#page-grid");
+  $("#directory-sub").textContent = `每页 10 题，点击页码跳转。绿色为已全部作答，红色表示本页有错题。`;
+  grid.innerHTML = Array.from({ length: total }, (_, i) => {
+    const p = i + 1;
+    const pageItems = items.slice(i * PAGE_SIZE, (i + 1) * PAGE_SIZE);
+    const answered = pageItems.filter(q => recordFor(q)).length;
+    const wrong = pageItems.some(q => { const r = recordFor(q); return r && !r.correct; });
+    const done = pageItems.length > 0 && answered === pageItems.length;
+    const cls = ["page-btn", p === currentPage() ? "current" : "", done ? "done" : "", wrong ? "has-wrong" : ""].join(" ").trim();
+    return `<button type="button" class="${cls}" data-page="${p}"><span class="pnum">${String(p).padStart(2, "0")}</span><span class="pstat">${answered}/${pageItems.length}</span></button>`;
+  }).join("");
+  $("#directory-dialog").showModal();
+}
+
+function toast(message, type = "") {
+  const el = $("#toast");
+  el.textContent = message;
+  el.className = "toast" + (type ? " " + type : "");
+  void el.offsetWidth;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+}
+function hideToast() { clearTimeout(toastTimer); $("#toast").classList.remove("show"); }
+
+function resetAll() {
+  state.answers = {};
+  state.pages = {};
+  scope = "all";
+  retryMode = false;
+  retryIds.clear();
+  retryList = [];
+  save();
+  $("#reset-dialog").close();
+  showTopics();
+  toast("已重置，重新开始");
+}
+
+function bind() {
+  $("#topic-grid").addEventListener("click", e => {
+    const card = e.target.closest("[data-topic]");
+    if (card) openTopic(card.dataset.topic);
+  });
+  $("#btn-back").addEventListener("click", showTopics);
+  $("#prev").addEventListener("click", () => goPage(currentPage() - 1));
+  $("#next").addEventListener("click", () => goPage(currentPage() + 1));
+  $("#btn-retry").addEventListener("click", startRetry);
+  $("#btn-directory").addEventListener("click", openDirectory);
+  $("#btn-reset").addEventListener("click", () => $("#reset-dialog").showModal());
+  $("#confirm-reset").addEventListener("click", resetAll);
+
+  $("#quiz").addEventListener("click", e => {
+    const opt = e.target.closest(".option");
+    if (!opt) return;
+    commit(opt.dataset.qid, opt.dataset.letter);
+  });
+
+  document.addEventListener("click", e => {
+    const close = e.target.closest("[data-close]");
+    if (close) {
+      const d = document.getElementById(close.dataset.close);
+      if (d) d.close();
+      return;
+    }
+    const pageBtn = e.target.closest("[data-page]");
+    if (pageBtn) {
+      $("#directory-dialog").close();
+      goPage(Number(pageBtn.dataset.page));
+    }
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      $$("dialog[open]").forEach(d => d.close());
+      return;
+    }
+    if (document.querySelector("dialog[open]")) return;
+    if (e.target.closest("input,textarea,select")) return;
+    if (e.key === "ArrowLeft") goPage(currentPage() - 1);
+    if (e.key === "ArrowRight") goPage(currentPage() + 1);
+  });
+}
+
+function init() {
+  load();
+  bind();
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (hash && topicById.has(hash)) {
+    openTopic(hash);
+  } else {
+    renderTopics();
+    $("#topic-view").style.display = "block";
+    $("#quiz-view").style.display = "none";
+  }
+}
+
+init();
+</script>
+</body>
+</html>

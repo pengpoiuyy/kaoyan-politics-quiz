@@ -328,6 +328,7 @@ let retryMode = false;
 let retryList = [];
 let retryIds = new Set();
 let toastTimer = null;
+let autoNextTimer = null;
 
 function esc(v) {
   return String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
@@ -378,6 +379,7 @@ function saveIndex(i) {
 }
 
 function showSections() {
+  clearTimeout(autoNextTimer);
   hideToast();
   retryMode = false; retryIds.clear(); retryList = [];
   $("#topic-view").style.display = "block";
@@ -388,6 +390,7 @@ function showSections() {
 }
 
 function openSection(id) {
+  clearTimeout(autoNextTimer);
   hideToast();
   if (!SECTION_BY_ID.has(id)) id = "s10";
   currentSection = id;
@@ -465,7 +468,7 @@ function renderQuiz() {
   $("#quiz").innerHTML = `<div class="q-panel">
     <div class="q-kicker"><span class="pill">${esc(sec.short)}</span><span>${sec.bank.length} 个候选</span></div>
     <p class="q-stem">${esc(q.stem)}</p>
-    <p class="q-hint">从下面全部候选里选出对应的一项，点击即判。</p>
+    <p class="q-hint">从下面全部候选里选出对应的一项。答对会自动进入下一题；答错会标出正确答案。</p>
     <div class="bank-label"><span>答案池</span><b>${sec.bank.length} 项</b></div>
     <div class="bank-grid ${cols}">${bank}</div>
     ${feedback}
@@ -518,10 +521,18 @@ function commit(choice) {
   retryIds.delete(q.id);
   save();
   renderQuiz();
-  toast(correct ? "回答正确" : `回答错误 · 正确答案：${q.answer}`, correct ? "ok" : "bad");
+  clearTimeout(autoNextTimer);
+  if (correct) {
+    const isLast = index === activeQuestions().length - 1;
+    toast(isLast ? "回答正确，本节完成" : "回答正确，进入下一题", "ok");
+    autoNextTimer = setTimeout(() => goIndex(index + 1), 650);
+  } else {
+    toast(`回答错误 · 正确答案：${q.answer}`, "bad");
+  }
 }
 
 function goIndex(target) {
+  clearTimeout(autoNextTimer);
   hideToast();
   const total = activeQuestions().length;
   if (target >= total) {
@@ -537,6 +548,7 @@ function goIndex(target) {
 }
 
 function startRetry() {
+  clearTimeout(autoNextTimer);
   hideToast();
   if (retryMode) {
     retryMode = false; retryIds.clear(); retryList = []; index = 0; renderQuiz(); return;
@@ -563,6 +575,7 @@ function openDirectory() {
 }
 
 function resetSection() {
+  clearTimeout(autoNextTimer);
   hideToast();
   for (const q of section().questions) delete state.answers[q.id];
   state.indices[currentSection] = 0;

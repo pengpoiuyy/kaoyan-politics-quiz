@@ -1,0 +1,645 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>会议·人物·著作 · 配对练习</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%232f6b56'/%3E%3Ctext x='32' y='44' font-size='32' text-anchor='middle' fill='%23fff8ed' font-family='serif'%3E配%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --paper: #f3eee3;
+    --card: #fffdf8;
+    --ink: #20262b;
+    --ink-soft: #465058;
+    --muted: #81796b;
+    --line: #ded4c3;
+    --line-strong: #cbbda6;
+    --accent: #b23a2f;
+    --accent-soft: #f6e2dc;
+    --jade: #2f6b56;
+    --jade-soft: #e3efe8;
+    --blue: #315d7a;
+    --blue-soft: #eaf1f6;
+    --serif: "Songti SC", "STSong", "Noto Serif CJK SC", "Source Han Serif SC", "SimSun", serif;
+    --sans: "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", "Hiragino Sans GB", system-ui, sans-serif;
+    --shadow: 0 18px 40px -30px rgba(46,37,23,.55);
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    color: var(--ink);
+    font-family: var(--sans);
+    background:
+      radial-gradient(1100px 520px at 8% -10%, #fffaf0 0%, rgba(255,250,240,0) 60%),
+      radial-gradient(900px 480px at 100% 0%, #eadfcc 0%, rgba(234,223,204,0) 55%),
+      var(--paper);
+    -webkit-font-smoothing: antialiased;
+  }
+  body::before {
+    content: "";
+    position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .45;
+    background-image: radial-gradient(rgba(74,60,39,.06) .55px, transparent .55px);
+    background-size: 4px 4px;
+  }
+  button, a { font: inherit; color: inherit; }
+  button:focus-visible, a:focus-visible { outline: 3px solid rgba(47,107,86,.35); outline-offset: 2px; }
+  .wrap { width: min(1040px, calc(100% - 40px)); margin-inline: auto; position: relative; z-index: 1; }
+
+  .topbar {
+    position: sticky; top: 0; z-index: 40;
+    background: rgba(243,238,227,.88);
+    backdrop-filter: blur(14px) saturate(1.2);
+    -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border-bottom: 1px solid rgba(203,189,166,.55);
+  }
+  .topbar-inner { display: flex; align-items: center; gap: 12px; padding-block: 12px; }
+  .seal {
+    width: 42px; height: 42px; flex: 0 0 auto;
+    display: grid; place-items: center;
+    border-radius: 10px;
+    background: var(--jade);
+    color: #fff8ed;
+    font-family: var(--serif);
+    font-size: 22px;
+    text-decoration: none;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.18), 0 4px 12px -6px rgba(47,107,86,.8);
+    transform: rotate(-2deg);
+  }
+  .brand h1 { margin: 0; font-family: var(--serif); font-size: 19px; letter-spacing: .04em; }
+  .brand p { margin: 2px 0 0; font-size: 11px; color: var(--muted); letter-spacing: .08em; }
+  .top-stats { display: flex; gap: 16px; margin-left: auto; }
+  .stat { display: flex; flex-direction: column; line-height: 1; }
+  .stat b { font-family: var(--serif); font-size: 18px; font-variant-numeric: tabular-nums; }
+  .stat small { margin-top: 4px; color: var(--muted); font-size: 10px; letter-spacing: .1em; }
+  .top-actions { display: flex; gap: 8px; }
+  .ghost-btn { border: 1px solid var(--line-strong); background: rgba(255,253,248,.56); border-radius: 999px; padding: 8px 13px; font-size: 12px; color: var(--ink-soft); cursor: pointer; text-decoration: none; white-space: nowrap; }
+  .ghost-btn:hover { background: var(--card); color: var(--ink); }
+  .progress-track { height: 3px; background: rgba(203,189,166,.4); overflow: hidden; }
+  .progress-fill { height: 100%; width: 0; background: linear-gradient(90deg, var(--jade), #5d937d); transition: width .35s ease; }
+
+  .hero { padding: 36px 0 22px; }
+  .eyebrow { margin: 0 0 10px; color: var(--jade); font-size: 11px; font-weight: 700; letter-spacing: .26em; }
+  .hero h2 { margin: 0; font-family: var(--serif); font-size: clamp(25px, 3.5vw, 36px); }
+  .hero p { margin: 10px 0 0; max-width: 680px; color: var(--muted); font-size: 12.5px; line-height: 1.9; }
+
+  .section-grid { display: grid; grid-template-columns: repeat(2, minmax(0,1fr)); gap: 12px; padding-bottom: 12px; }
+  .section-card {
+    display: flex; flex-direction: column; gap: 10px;
+    padding: 18px 18px 15px;
+    border: 1px solid var(--line); border-radius: 16px; background: var(--card);
+    box-shadow: var(--shadow); cursor: pointer; text-align: left; transition: transform .18s, border-color .18s;
+  }
+  .section-card:hover { transform: translateY(-2px); border-color: var(--line-strong); }
+  .section-head { display: flex; align-items: baseline; gap: 8px; }
+  .section-num { font-family: var(--serif); font-size: 25px; color: var(--jade); min-width: 36px; font-variant-numeric: tabular-nums; }
+  .section-name { font-family: var(--serif); font-size: 16px; line-height: 1.5; }
+  .section-meta { display: flex; justify-content: space-between; gap: 10px; color: var(--muted); font-size: 11px; }
+  .section-bar { height: 4px; background: rgba(203,189,166,.35); border-radius: 999px; overflow: hidden; }
+  .section-bar > i { display: block; height: 100%; width: 0; background: var(--jade); border-radius: inherit; }
+
+  #quiz-view { display: none; }
+  .quiz-head { display: flex; align-items: center; gap: 12px; padding: 20px 0 7px; }
+  .back-btn { border: 1px solid var(--line-strong); background: var(--card); border-radius: 999px; padding: 8px 13px; font-size: 12px; color: var(--ink-soft); cursor: pointer; white-space: nowrap; }
+  .quiz-title { min-width: 0; }
+  .quiz-title h2 { margin: 0; font-family: var(--serif); font-size: 22px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .quiz-title p { margin: 3px 0 0; font-size: 11px; color: var(--muted); }
+  .quiz-actions { display: flex; gap: 7px; margin-left: auto; }
+  .quiz-actions .ghost-btn { padding: 7px 11px; font-size: 11.5px; }
+
+  .retry-note { margin: 8px 0 0; padding: 9px 13px; border: 1px dashed rgba(47,107,86,.5); border-radius: 10px; background: var(--jade-soft); color: #275746; font-size: 11.5px; line-height: 1.7; }
+  .quiz-meta { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 2px 10px; color: var(--muted); font-size: 11.5px; }
+  .quiz-meta strong { color: var(--ink); font-weight: 600; }
+
+  .q-panel { background: linear-gradient(180deg, #fffefb 0%, var(--card) 100%); border: 1px solid var(--line); border-radius: 18px; padding: 24px 24px 20px; box-shadow: var(--shadow); }
+  .q-kicker { display: flex; align-items: center; gap: 8px; margin-bottom: 12px; color: var(--muted); font-size: 11px; letter-spacing: .04em; }
+  .q-kicker .pill { padding: 3px 8px; border-radius: 999px; background: var(--jade-soft); color: var(--jade); font-size: 10px; }
+  .q-stem { margin: 0; font-family: var(--serif); font-size: clamp(17px, 2.3vw, 21px); line-height: 1.95; text-align: justify; }
+  .q-hint { margin: 14px 0 0; color: var(--muted); font-size: 11.5px; line-height: 1.7; }
+  .bank-label { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin: 18px 0 9px; color: var(--muted); font-size: 11px; }
+  .bank-label b { color: var(--ink); font-weight: 600; }
+  .bank-grid { display: grid; gap: 8px; }
+  .bank-grid.cols-2 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+  .bank-grid.cols-3 { grid-template-columns: repeat(3, minmax(0,1fr)); }
+  .bank-grid.cols-4 { grid-template-columns: repeat(4, minmax(0,1fr)); }
+  .bank-item {
+    display: flex; align-items: center; gap: 8px;
+    min-height: 46px; padding: 9px 11px;
+    border: 1px solid var(--line); border-radius: 10px;
+    background: #fffefb; text-align: left;
+    font-size: 13px; line-height: 1.45; color: var(--ink-soft);
+    cursor: pointer; transition: border-color .15s, background .15s, transform .15s;
+  }
+  .bank-item:hover:not(.locked) { border-color: var(--jade); background: #fbfdfb; transform: translateY(-1px); }
+  .bank-item.locked { cursor: default; }
+  .bank-item .mark { margin-left: auto; font-weight: 700; font-size: 13px; flex: 0 0 auto; }
+  .bank-item.correct { border-color: rgba(47,107,86,.7); background: var(--jade-soft); color: #275746; }
+  .bank-item.correct .mark { color: var(--jade); }
+  .bank-item.wrong { border-color: rgba(178,58,47,.6); background: var(--accent-soft); color: #7e2a21; }
+  .bank-item.wrong .mark { color: var(--accent); }
+
+  .feedback { margin-top: 14px; padding: 10px 13px; border-radius: 10px; font-size: 12.5px; line-height: 1.6; display: flex; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .feedback.ok { background: var(--jade-soft); color: #275746; }
+  .feedback.bad { background: var(--accent-soft); color: #7e2a21; }
+  .feedback b { letter-spacing: .02em; }
+
+  .q-actions { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 18px; }
+  .q-actions .side { border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; padding: 9px 16px; font-size: 12.5px; color: var(--ink-soft); cursor: pointer; }
+  .q-actions .side:disabled { opacity: .3; cursor: not-allowed; }
+  .q-actions .next { border: 0; background: var(--ink); color: #fffdf8; border-radius: 999px; padding: 10px 20px; font-size: 12.5px; font-weight: 600; cursor: pointer; }
+  .q-actions .next.ready { background: var(--jade); }
+  .q-actions .next:hover { transform: translateY(-1px); }
+
+  .done-panel { background: var(--card); border: 1px solid var(--line); border-radius: 18px; padding: 40px 24px; text-align: center; box-shadow: var(--shadow); }
+  .done-panel .mark { width: 56px; height: 56px; margin: 0 auto 14px; border-radius: 50%; background: var(--jade-soft); color: var(--jade); display: grid; place-items: center; font-size: 25px; }
+  .done-panel h2 { margin: 0; font-family: var(--serif); font-size: 26px; }
+  .done-panel p { margin: 10px 0 0; color: var(--muted); font-size: 12.5px; line-height: 1.8; }
+  .done-actions { display: flex; justify-content: center; gap: 8px; flex-wrap: wrap; margin-top: 20px; }
+  .done-actions button { border: 1px solid var(--line-strong); background: transparent; border-radius: 999px; padding: 9px 16px; font-size: 12px; cursor: pointer; }
+  .done-actions button.primary { background: var(--ink); color: #fffdf8; border-color: var(--ink); }
+
+  footer { padding: 14px 0 30px; text-align: center; color: var(--muted); font-size: 10.5px; letter-spacing: .05em; }
+
+  dialog { width: min(560px, calc(100vw - 32px)); max-height: calc(100dvh - 24px); overflow: auto; border: 1px solid var(--line); border-radius: 18px; padding: 0; background: var(--card); color: var(--ink); box-shadow: 0 40px 80px -40px rgba(32,38,43,.55); }
+  dialog::backdrop { background: rgba(32,38,43,.34); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); }
+  .sheet-head { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 4px; }
+  .sheet-head h3 { margin: 0; font-family: var(--serif); font-size: 19px; }
+  .icon-btn { width: 30px; height: 30px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--muted); font-size: 17px; cursor: pointer; }
+  .sheet-sub { margin: 4px 20px 14px; color: var(--muted); font-size: 11.5px; line-height: 1.7; }
+  .q-grid { display: grid; grid-template-columns: repeat(6,1fr); gap: 7px; padding: 0 20px 18px; }
+  .q-btn { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 8px 2px 6px; border: 1px solid var(--line); border-radius: 9px; background: #fffefb; cursor: pointer; }
+  .q-btn:hover { border-color: var(--ink-soft); }
+  .q-btn .n { font-family: var(--serif); font-size: 15px; font-weight: 700; }
+  .q-btn .s { font-size: 8.5px; color: var(--muted); }
+  .q-btn.current { background: var(--ink); border-color: var(--ink); color: #fffdf8; }
+  .q-btn.current .s { color: rgba(255,253,248,.66); }
+  .q-btn.done:not(.current) { background: var(--jade-soft); border-color: rgba(47,107,86,.3); }
+  .q-btn.done.wrong:not(.current) { background: #fbf0ec; border-color: rgba(178,58,47,.25); }
+  .confirm-body { padding: 8px 20px 20px; }
+  .confirm-body p { margin: 0 0 14px; color: var(--ink-soft); font-size: 12.5px; line-height: 1.8; }
+  .confirm-actions { display: flex; justify-content: flex-end; gap: 8px; }
+  .btn-danger { border: 0; border-radius: 999px; padding: 8px 16px; background: var(--accent); color: #fff8f3; font-size: 12px; cursor: pointer; }
+  .btn-cancel { border: 1px solid var(--line-strong); border-radius: 999px; padding: 8px 16px; background: transparent; color: var(--ink-soft); font-size: 12px; cursor: pointer; }
+  .toast { position: fixed; left: 50%; bottom: 24px; z-index: 80; transform: translate(-50%, 8px); max-width: calc(100vw - 40px); padding: 9px 15px; border-radius: 999px; background: rgba(32,38,43,.94); color: #fffdf8; font-size: 12px; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; }
+  .toast.show { opacity: 1; transform: translate(-50%,0); }
+  .toast.ok { background: rgba(47,107,86,.96); }
+  .toast.bad { background: rgba(143,43,34,.96); }
+
+  @media (max-width: 760px) {
+    .wrap { width: calc(100% - 24px); }
+    .topbar-inner { gap: 8px; }
+    .seal { width: 36px; height: 36px; font-size: 19px; }
+    .brand h1 { font-size: 16px; }
+    .brand p { display: none; }
+    .top-stats .stat:nth-child(2) { display: none; }
+    .top-stats { gap: 10px; }
+    .stat b { font-size: 16px; }
+    .top-actions .ghost-btn { padding: 7px 10px; font-size: 11px; }
+    .hero { padding: 26px 0 16px; }
+    .hero h2 { font-size: 25px; }
+    .section-grid { grid-template-columns: 1fr; }
+    .section-card { padding: 15px; }
+    .quiz-head { flex-wrap: wrap; padding-top: 14px; }
+    .quiz-title h2 { font-size: 19px; }
+    .quiz-actions { margin-left: 0; width: 100%; }
+    .quiz-actions .ghost-btn { flex: 1; text-align: center; }
+    .q-panel { padding: 18px 14px 16px; border-radius: 15px; }
+    .q-stem { font-size: 16px; }
+    .bank-grid.cols-2, .bank-grid.cols-3, .bank-grid.cols-4 { grid-template-columns: repeat(2, minmax(0,1fr)); }
+    .bank-item { font-size: 12px; min-height: 48px; padding: 8px 9px; }
+    .q-actions .side { padding: 8px 12px; font-size: 11.5px; }
+    .q-actions .next { padding: 9px 16px; font-size: 12px; }
+    .q-grid { grid-template-columns: repeat(5,1fr); padding-inline: 16px; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after { transition-duration: .001ms !important; animation-duration: .001ms !important; }
+  }
+</style>
+</head>
+<body>
+<div id="topic-view">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="seal" href="index.html" aria-label="返回刷题台">配</a>
+      <div class="brand">
+        <h1>会议 · 人物 · 著作</h1>
+        <p>第六部分 · 配对练习 · 60题</p>
+      </div>
+      <div class="top-stats">
+        <div class="stat"><b id="overall-answered">0</b><small>已答</small></div>
+        <div class="stat"><b id="overall-accuracy">0%</b><small>正确率</small></div>
+      </div>
+      <div class="top-actions"><a class="ghost-btn" href="index.html">← 返回</a></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="overall-bar"></div></div>
+  </header>
+  <main class="wrap">
+    <section class="hero">
+      <p class="eyebrow">题干给内容 · 下面列全部候选</p>
+      <h2>从答案池里选出对应项</h2>
+      <p>会议、人物、著作分开练。每题的题干是一段内容，下面把所有候选答案排成几行；点中即判，答错会同时标出正确项。</p>
+    </section>
+    <div id="section-grid" class="section-grid"></div>
+    <footer>题目与答案整理自《2027考研政治背诵手册》第六部分 · 仅作个人学习使用</footer>
+  </main>
+</div>
+
+<div id="quiz-view">
+  <header class="topbar">
+    <div class="wrap topbar-inner">
+      <a class="seal" href="index.html" aria-label="返回刷题台">配</a>
+      <div class="brand">
+        <h1 id="quiz-brand">会议 · 人物 · 著作</h1>
+        <p id="quiz-brand-sub">配对练习</p>
+      </div>
+      <div class="top-stats">
+        <div class="stat"><b id="quiz-answered">0</b><small>已答</small></div>
+        <div class="stat"><b id="quiz-accuracy">0%</b><small>正确率</small></div>
+      </div>
+      <div class="top-actions"><a class="ghost-btn" href="index.html">← 返回</a></div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="quiz-bar"></div></div>
+  </header>
+  <main class="wrap">
+    <div class="quiz-head">
+      <button class="back-btn" id="btn-back" type="button">← 专题</button>
+      <div class="quiz-title">
+        <h2 id="scope-title">第10节 中国共产党的重要会议</h2>
+        <p id="scope-sub">22 题 · 22 个候选</p>
+      </div>
+      <div class="quiz-actions">
+        <button class="ghost-btn" id="btn-retry" type="button">错题重练</button>
+        <button class="ghost-btn" id="btn-directory" type="button">题号</button>
+        <button class="ghost-btn" id="btn-reset" type="button">重置本节</button>
+      </div>
+    </div>
+    <div id="retry-note" class="retry-note" hidden>错题重练：之前的选择和答案已隐藏，重新选择后才会显示。</div>
+    <div class="quiz-meta">
+      <div><strong id="q-position">第 1 / 22 题</strong><span id="q-progress-text"></span></div>
+      <div id="q-progress">本节已答 0 / 22</div>
+    </div>
+    <section id="quiz"></section>
+    <section id="done" class="done-panel" hidden></section>
+    <footer>题目与答案整理自《2027考研政治背诵手册》第六部分 · 仅作个人学习使用</footer>
+  </main>
+</div>
+
+<dialog id="directory-dialog">
+  <div class="sheet-head">
+    <h3>选择题目</h3>
+    <button class="icon-btn" type="button" data-close="directory-dialog" aria-label="关闭">×</button>
+  </div>
+  <p class="sheet-sub">绿色为答对，红色为答错，点击题号跳转。</p>
+  <div class="q-grid" id="q-grid"></div>
+</dialog>
+
+<dialog id="reset-dialog">
+  <div class="sheet-head">
+    <h3>重置本节？</h3>
+    <button class="icon-btn" type="button" data-close="reset-dialog" aria-label="关闭">×</button>
+  </div>
+  <div class="confirm-body">
+    <p>这会清空当前专题的作答记录和错题，不影响其他专题。此操作不可撤销。</p>
+    <div class="confirm-actions">
+      <button class="btn-cancel" type="button" data-close="reset-dialog">取消</button>
+      <button class="btn-danger" id="confirm-reset" type="button">确认重置</button>
+    </div>
+  </div>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script>
+const SECTIONS = [{"id":"s10","num":10,"title":"第10节 中国共产党的重要会议","short":"重要会议","bank":["中共一大","中共二大","中共三大","中共四大","八七会议","中共六大","遵义会议","瓦窑堡会议","中共六届六中全会","中共七大","中共七届二中全会","中共八大","十一届三中全会","中共十二大","中共十三大","中共十四大","中共十五大","中共十六大","中共十七大","中共十八大","中共十九大","中共二十大"],"count":22,"questions":[{"id":"s10-01","section":"s10","stem":"成立中国共产党，通过党的第一个纲领和决议","answer":"中共一大"},{"id":"s10-02","section":"s10","stem":"第一次提出反帝反封建的民主革命纲领，制定第一部党章","answer":"中共二大"},{"id":"s10-03","section":"s10","stem":"决定共产党员以个人身份加入国民党，建立联合战线","answer":"中共三大"},{"id":"s10-04","section":"s10","stem":"明确提出无产阶级在民主革命中的领导权和工农联盟问题","answer":"中共四大"},{"id":"s10-05","section":"s10","stem":"确定土地革命和武装起义的方针，开始从大革命失败到土地革命战争兴起的历史性转变","answer":"八七会议"},{"id":"s10-06","section":"s10","stem":"指出中国仍是半殖民地半封建社会，革命仍是资产阶级民主主义革命","answer":"中共六大"},{"id":"s10-07","section":"s10","stem":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点","answer":"遵义会议"},{"id":"s10-08","section":"s10","stem":"提出抗日条件下与民族资产阶级重建统一战线的新政策","answer":"瓦窑堡会议"},{"id":"s10-09","section":"s10","stem":"毛泽东明确提出“马克思主义的中国化”命题","answer":"中共六届六中全会"},{"id":"s10-10","section":"s10","stem":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","answer":"中共七大"},{"id":"s10-11","section":"s10","stem":"提出“两个务必”，指出工作重心由乡村转移到城市","answer":"中共七届二中全会"},{"id":"s10-12","section":"s10","stem":"正确分析社会主义改造完成后中国社会的主要矛盾和主要任务","answer":"中共八大"},{"id":"s10-13","section":"s10","stem":"结束“以阶级斗争为纲”，开启改革开放和社会主义现代化建设新时期","answer":"十一届三中全会"},{"id":"s10-14","section":"s10","stem":"提出“建设有中国特色的社会主义”命题","answer":"中共十二大"},{"id":"s10-15","section":"s10","stem":"系统阐述社会主义初级阶段理论，概括党在社会主义初级阶段的基本路线","answer":"中共十三大"},{"id":"s10-16","section":"s10","stem":"确立社会主义市场经济体制改革目标","answer":"中共十四大"},{"id":"s10-17","section":"s10","stem":"正式提出“邓小平理论”并确定为党的指导思想","answer":"中共十五大"},{"id":"s10-18","section":"s10","stem":"把“三个代表”重要思想确定为党的指导思想","answer":"中共十六大"},{"id":"s10-19","section":"s10","stem":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","answer":"中共十七大"},{"id":"s10-20","section":"s10","stem":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求","answer":"中共十八大"},{"id":"s10-21","section":"s10","stem":"2017年10月，北京","answer":"中共十九大"},{"id":"s10-22","section":"s10","stem":"2022年10月","answer":"中共二十大"}]},{"id":"s11","num":11,"title":"第11节 必须了解的毛泽东的主要著作","short":"毛泽东著作","bank":["《中国社会各阶级的分析》","《湖南农民运动考察报告》","《关于纠正党内的错误思想》","《星星之火，可以燎原》","《反对本本主义》","《论反对日本帝国主义的策略》","《论持久战》","《〈共产党人〉发刊词》","《中国革命和中国共产党》","《新民主主义论》","《改造我们的学习》","《在延安文艺座谈会上的讲话》","《论联合政府》","《目前形势和我们的任务》","《在晋绥干部会议上的讲话》","《将革命进行到底》","《在中国共产党第七届中央委员会第二次全体会议上的报告》","《党委会的工作方法》","《论人民民主专政》","《论十大关系》","《关于正确处理人民内部矛盾的问题》"],"count":21,"questions":[{"id":"s11-01","section":"s11","stem":"分析了中国社会各阶级，特别是把中国资产阶级区分为买办资产阶级和民族资产阶级，提出“谁是我们的敌人？谁是我们的朋友？这个问题是革命的首要问题”","answer":"《中国社会各阶级的分析》"},{"id":"s11-02","section":"s11","stem":"总结辛亥革命失败原因，指出没有贫农阶级，决不能打倒土豪劣绅、完成民主革命","answer":"《湖南农民运动考察报告》"},{"id":"s11-03","section":"s11","stem":"提出思想建党、政治建军原则，强调党员不但要在组织上入党，而且要在思想上入党","answer":"《关于纠正党内的错误思想》"},{"id":"s11-04","section":"s11","stem":"进一步发展“工农武装割据”思想，基本形成农村包围城市、武装夺取政权的理论","answer":"《星星之火，可以燎原》"},{"id":"s11-05","section":"s11","stem":"党内第一篇反对教条主义的文献，第一次提出“没有调查，没有发言权”","answer":"《反对本本主义》"},{"id":"s11-06","section":"s11","stem":"阐明与民族资产阶级建立统一战线的可能性，分析民族资产阶级的两面性","answer":"《论反对日本帝国主义的策略》"},{"id":"s11-07","section":"s11","stem":"分析中日双方四个基本特点，预见抗日战争三个阶段，批驳“速胜论”和“亡国论”","answer":"《论持久战》"},{"id":"s11-08","section":"s11","stem":"第一次提出党在革命中的三大法宝，第一次把党的建设称为“伟大的工程”","answer":"《〈共产党人〉发刊词》"},{"id":"s11-09","section":"s11","stem":"第一次提出新民主主义以及新民主主义革命这两个科学概念","answer":"《中国革命和中国共产党》"},{"id":"s11-10","section":"s11","stem":"指出中国革命分两步走，提出新民主主义的政治、经济和文化","answer":"《新民主主义论》"},{"id":"s11-11","section":"s11","stem":"对“实事求是”作出新解释：“‘实事’就是客观存在着的一切事物，‘是’就是客观事物的内部联系，即规律性，‘求’就是我们去研究”","answer":"《改造我们的学习》"},{"id":"s11-12","section":"s11","stem":"第一次提出“为什么人的问题，是一个根本的问题，原则的问题”","answer":"《在延安文艺座谈会上的讲话》"},{"id":"s11-13","section":"s11","stem":"第一次概括党的三大优良作风，提出生产力标准","answer":"《论联合政府》"},{"id":"s11-14","section":"s11","stem":"第一次提出新民主主义的三大经济纲领","answer":"《目前形势和我们的任务》"},{"id":"s11-15","section":"s11","stem":"第一次完整地提出新民主主义革命总路线","answer":"《在晋绥干部会议上的讲话》"},{"id":"s11-16","section":"s11","stem":"第一次公开使用“人民民主专政”概念","answer":"《将革命进行到底》"},{"id":"s11-17","section":"s11","stem":"提出“两个务必”，提醒全党警惕资产阶级“糖衣炮弹”","answer":"《在中国共产党第七届中央委员会第二次全体会议上的报告》"},{"id":"s11-18","section":"s11","stem":"提出十二条工作方法，强调党委书记要善于当班长，学会“弹钢琴”","answer":"《党委会的工作方法》"},{"id":"s11-19","section":"s11","stem":"完整地提出人民民主专政理论，阐明新中国国家政权的性质","answer":"《论人民民主专政》"},{"id":"s11-20","section":"s11","stem":"党探索中国社会主义建设道路的良好开端，论述重工业和轻工业、农业等十大关系","answer":"《论十大关系》"},{"id":"s11-21","section":"s11","stem":"1957年2月发表，系统论述社会主义社会两类不同性质矛盾","answer":"《关于正确处理人民内部矛盾的问题》"}]},{"id":"s12","num":12,"title":"第12节 毛泽东思想八个必须了解的第一","short":"八个第一","bank":["《〈共产党人〉发刊词》","《中国革命和中国共产党》","中共七大刘少奇《关于修改党章的报告》","《在晋绥干部会议上的讲话》","《将革命进行到底》","《在中国共产党第七届中央委员会第二次全体会议上的报告》","中共七届二中全会","《关于建国以来党的若干历史问题的决议》"],"count":8,"questions":[{"id":"s12-01","section":"s12","stem":"第一次提出三大法宝和党的建设是一项伟大工程的著作","answer":"《〈共产党人〉发刊词》"},{"id":"s12-02","section":"s12","stem":"第一次提出新民主主义革命概念和新民主主义革命总路线的著作","answer":"《中国革命和中国共产党》"},{"id":"s12-03","section":"s12","stem":"第一篇系统阐述毛泽东思想的文献","answer":"中共七大刘少奇《关于修改党章的报告》"},{"id":"s12-04","section":"s12","stem":"第一次完整地提出新民主主义革命总路线的著作","answer":"《在晋绥干部会议上的讲话》"},{"id":"s12-05","section":"s12","stem":"第一次公开使用“人民民主专政”概念的文章","answer":"《将革命进行到底》"},{"id":"s12-06","section":"s12","stem":"第一次明确提出党的工作重心从乡村转移到城市的文献","answer":"《在中国共产党第七届中央委员会第二次全体会议上的报告》"},{"id":"s12-07","section":"s12","stem":"第一次明确提出执政党建设问题的会议","answer":"中共七届二中全会"},{"id":"s12-08","section":"s12","stem":"第一次归纳“毛泽东思想的活的灵魂”的文件","answer":"《关于建国以来党的若干历史问题的决议》"}]},{"id":"s15","num":15,"title":"第15节 旧民主主义革命时期重要人物及其著作","short":"旧民主主义人物","bank":["林则徐","魏源","郑观应","洪仁玕","冯桂芬","严复","孙中山","陈独秀","李大钊"],"count":9,"questions":[{"id":"s15-01","section":"s15","stem":"近代中国睁眼看世界的第一人，编成《四洲志》","answer":"林则徐"},{"id":"s15-02","section":"s15","stem":"编成《海国图志》，提出“师夷长技以制夷”，开创中国近代向西方学习的新风","answer":"魏源"},{"id":"s15-03","section":"s15","stem":"著《盛世危言》，提出发展民族工商业、同西方国家进行“商战”、实行“君民共主”制度","answer":"郑观应"},{"id":"s15-04","section":"s15","stem":"提出《资政新篇》，主张具有资本主义色彩的改革方案","answer":"洪仁玕"},{"id":"s15-05","section":"s15","stem":"著《校邠庐抗议》，对洋务派“中体西用”思想作出比较完整的表述","answer":"冯桂芬"},{"id":"s15-06","section":"s15","stem":"写《救亡决论》，翻译《天演论》，用“物竞天择”“适者生存”的社会进化论思想提供理论根据","answer":"严复"},{"id":"s15-07","section":"s15","stem":"组建第一个革命团体兴中会，在《兴中会章程》中喊出“振兴中华”","answer":"孙中山"},{"id":"s15-08","section":"s15","stem":"创办《青年杂志》（后改名《新青年》），成为新文化运动的精神领袖","answer":"陈独秀"},{"id":"s15-09","section":"s15","stem":"率先在中国举起马克思主义旗帜，发表《我的马克思主义观》，比较系统地介绍马克思主义","answer":"李大钊"}]}];
+const STORAGE_KEY = "kaoyan-politics-matching-2027-v1";
+const SECTION_BY_ID = new Map(SECTIONS.map(s => [s.id, s]));
+const ALL_QUESTIONS = SECTIONS.flatMap(s => s.questions);
+const BY_ID = new Map(ALL_QUESTIONS.map(q => [q.id, q]));
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => Array.from(r.querySelectorAll(s));
+
+const state = { answers: {}, indices: {} };
+let currentSection = "s10";
+let index = 0;
+let retryMode = false;
+let retryList = [];
+let retryIds = new Set();
+let toastTimer = null;
+
+function esc(v) {
+  return String(v).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+}
+
+function load() {
+  try {
+    const raw = localStorage.getItem(STORAGE_KEY);
+    if (!raw) return;
+    const saved = JSON.parse(raw);
+    if (saved && saved.answers && typeof saved.answers === "object") {
+      for (const [id, rec] of Object.entries(saved.answers)) {
+        const q = BY_ID.get(id);
+        if (!q || !rec || typeof rec.choice !== "string") continue;
+        state.answers[id] = { choice: rec.choice, correct: rec.choice === q.answer };
+      }
+    }
+    if (saved && saved.indices && typeof saved.indices === "object") state.indices = saved.indices;
+  } catch (err) { console.warn(err); }
+}
+
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify({ answers: state.answers, indices: state.indices })); }
+  catch (err) { console.warn(err); }
+}
+
+function section() { return SECTION_BY_ID.get(currentSection); }
+
+function activeQuestions() {
+  if (!retryMode) return section().questions;
+  return retryList.map(id => BY_ID.get(id)).filter(Boolean);
+}
+
+function recordFor(q) {
+  if (retryMode && retryIds.has(q.id)) return null;
+  return state.answers[q.id] || null;
+}
+
+function statsFor(list) {
+  const answered = list.filter(q => state.answers[q.id]).length;
+  const correct = list.filter(q => state.answers[q.id] && state.answers[q.id].correct).length;
+  return { answered, correct, accuracy: answered ? Math.round(correct / answered * 100) : 0, wrong: answered - correct };
+}
+
+function saveIndex(i) {
+  state.indices[currentSection] = i;
+  save();
+}
+
+function showSections() {
+  hideToast();
+  retryMode = false; retryIds.clear(); retryList = [];
+  $("#topic-view").style.display = "block";
+  $("#quiz-view").style.display = "none";
+  history.replaceState(null, "", location.pathname + location.search);
+  renderSections();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openSection(id) {
+  hideToast();
+  if (!SECTION_BY_ID.has(id)) id = "s10";
+  currentSection = id;
+  retryMode = false; retryIds.clear(); retryList = [];
+  index = Math.min(state.indices[id] || 0, section().questions.length);
+  $("#topic-view").style.display = "none";
+  $("#quiz-view").style.display = "block";
+  history.replaceState(null, "", "#" + id);
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "auto" });
+}
+
+function renderSections() {
+  const overall = statsFor(ALL_QUESTIONS);
+  $("#overall-answered").textContent = overall.answered;
+  $("#overall-accuracy").textContent = overall.accuracy + "%";
+  $("#overall-bar").style.width = (overall.answered / ALL_QUESTIONS.length * 100) + "%";
+  $("#section-grid").innerHTML = SECTIONS.map(s => {
+    const st = statsFor(s.questions);
+    const pct = st.answered / s.questions.length * 100;
+    return `<button class="section-card" data-section="${s.id}" type="button">
+      <div class="section-head"><span class="section-num">${String(s.num).padStart(2, "0")}</span><span class="section-name">${esc(s.title)}</span></div>
+      <div class="section-meta"><span>${s.questions.length} 题 · ${s.bank.length} 个候选</span><span>${st.answered ? `已答 ${st.answered} · 正确 ${st.correct}` : "尚未开始"}</span></div>
+      <div class="section-bar"><i style="width:${pct}%"></i></div>
+    </button>`;
+  }).join("");
+}
+
+function bankClass(s, q, rec, choice) {
+  if (!rec) return "";
+  if (choice === q.answer) return "correct";
+  if (choice === rec.choice) return "wrong";
+  return "";
+}
+
+function renderQuiz() {
+  const sec = section();
+  const list = activeQuestions();
+  const total = list.length;
+  const st = statsFor(sec.questions);
+  $("#quiz-brand").textContent = "会议 · 人物 · 著作";
+  $("#quiz-brand-sub").textContent = sec.title + " · " + sec.questions.length + " 题";
+  $("#scope-title").textContent = sec.title;
+  $("#scope-sub").textContent = `${sec.questions.length} 题 · ${sec.bank.length} 个候选`;
+  $("#quiz-answered").textContent = st.answered;
+  $("#quiz-accuracy").textContent = st.accuracy + "%";
+  $("#quiz-bar").style.width = (st.answered / sec.questions.length * 100) + "%";
+  $("#retry-note").hidden = !retryMode;
+  $("#btn-retry").textContent = retryMode ? "退出重练" : "错题重练";
+
+  if (index >= total) {
+    renderDone();
+    return;
+  }
+  $("#done").hidden = true;
+  $("#quiz").hidden = false;
+  const q = list[index];
+  const rec = recordFor(q);
+  const position = `第 ${index + 1} / ${total} 题`;
+  $("#q-position").textContent = retryMode ? `错题重练 · ${position}` : position;
+  $("#q-progress-text").textContent = "";
+  const answered = sec.questions.filter(x => recordFor(x)).length;
+  $("#q-progress").textContent = `${retryMode ? "重练中已答" : "本节已答"} ${answered} / ${sec.questions.length}`;
+
+  const bank = sec.bank.map(choice => {
+    const cls = bankClass(sec, q, rec, choice);
+    const mark = rec ? (choice === q.answer ? "✓" : choice === rec.choice ? "×" : "") : "";
+    return `<button type="button" class="bank-item ${cls} ${rec ? "locked" : ""}" data-choice="${esc(choice)}" ${rec ? 'aria-disabled="true"' : ""}>${esc(choice)}<span class="mark">${mark}</span></button>`;
+  }).join("");
+  const cols = sec.id === "s11" ? "cols-3" : sec.id === "s15" ? "cols-4" : "cols-4";
+  const feedback = rec ? `<div class="feedback ${rec.correct ? "ok" : "bad"}">
+      <span>${rec.correct ? "✓ 回答正确" : "✕ 回答错误"}</span>
+      <span>正确答案：<b>${esc(q.answer)}</b>${rec.correct ? "" : ` · 你的选择：${esc(rec.choice)}`}</span>
+    </div>` : "";
+  $("#quiz").innerHTML = `<div class="q-panel">
+    <div class="q-kicker"><span class="pill">${esc(sec.short)}</span><span>${sec.bank.length} 个候选</span></div>
+    <p class="q-stem">${esc(q.stem)}</p>
+    <p class="q-hint">从下面全部候选里选出对应的一项，点击即判。</p>
+    <div class="bank-label"><span>答案池</span><b>${sec.bank.length} 项</b></div>
+    <div class="bank-grid ${cols}">${bank}</div>
+    ${feedback}
+    <div class="q-actions">
+      <button class="side" id="btn-prev" type="button" ${index === 0 ? "disabled" : ""}>← 上一题</button>
+      <button class="next ${rec ? "ready" : ""}" id="btn-next" type="button">${index === total - 1 ? "查看结果" : "下一题 →"}</button>
+    </div>
+  </div>`;
+  $("#btn-prev").addEventListener("click", () => goIndex(index - 1));
+  $("#btn-next").addEventListener("click", () => goIndex(index + 1));
+}
+
+function renderDone() {
+  const sec = section();
+  const list = retryMode ? activeQuestions() : sec.questions;
+  const st = statsFor(sec.questions);
+  const unanswered = list.filter(q => !recordFor(q)).length;
+  const wrong = list.filter(q => { const r = recordFor(q); return r && !r.correct; }).length;
+  $("#quiz").hidden = true;
+  const done = $("#done");
+  done.hidden = false;
+  done.innerHTML = `<div class="mark">✓</div>
+    <h2>${retryMode ? "错题重练完成" : "本节完成"}</h2>
+    <p>${sec.title}<br>已答 ${st.answered} / ${sec.questions.length} 题 · 正确 ${st.correct} 题${unanswered ? ` · 还有 ${unanswered} 题未答` : ""}</p>
+    <div class="done-actions">
+      ${unanswered ? `<button class="primary" id="done-continue" type="button">继续作答</button>` : ""}
+      ${wrong ? `<button id="done-retry" type="button">错题重练</button>` : ""}
+      <button id="done-back" type="button">返回专题</button>
+      <button id="done-reset" type="button">重做本节</button>
+    </div>`;
+  if (unanswered) $("#done-continue").addEventListener("click", () => {
+    const i = list.findIndex(q => !recordFor(q));
+    if (i >= 0) goIndex(i);
+  });
+  if (wrong) $("#done-retry").addEventListener("click", startRetry);
+  $("#done-back").addEventListener("click", showSections);
+  $("#done-reset").addEventListener("click", resetSection);
+  $("#q-position").textContent = "本节结果";
+  $("#q-progress-text").textContent = "";
+  $("#q-progress").textContent = `已答 ${st.answered} / ${sec.questions.length}`;
+}
+
+function commit(choice) {
+  const q = activeQuestions()[index];
+  if (!q) return;
+  const rec = state.answers[q.id];
+  if (rec && !retryIds.has(q.id)) return;
+  const correct = choice === q.answer;
+  state.answers[q.id] = { choice, correct };
+  retryIds.delete(q.id);
+  save();
+  renderQuiz();
+  toast(correct ? "回答正确" : `回答错误 · 正确答案：${q.answer}`, correct ? "ok" : "bad");
+}
+
+function goIndex(target) {
+  hideToast();
+  const total = activeQuestions().length;
+  if (target >= total) {
+    index = total;
+    saveIndex(index);
+    renderQuiz();
+    return;
+  }
+  index = Math.max(0, target);
+  saveIndex(index);
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function startRetry() {
+  hideToast();
+  if (retryMode) {
+    retryMode = false; retryIds.clear(); retryList = []; index = 0; renderQuiz(); return;
+  }
+  const wrong = section().questions.filter(q => state.answers[q.id] && !state.answers[q.id].correct);
+  if (!wrong.length) { toast("本节暂时没有错题"); return; }
+  retryList = wrong.map(q => q.id);
+  retryIds = new Set(retryList);
+  retryMode = true;
+  index = 0;
+  renderQuiz();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openDirectory() {
+  const list = activeQuestions();
+  const grid = $("#q-grid");
+  grid.innerHTML = list.map((q, i) => {
+    const rec = recordFor(q);
+    const cls = ["q-btn", i === index ? "current" : "", rec ? "done" : "", rec && !rec.correct ? "wrong" : ""].join(" ").trim();
+    return `<button type="button" class="${cls}" data-qindex="${i}"><span class="n">${String(i + 1).padStart(2, "0")}</span><span class="s">${rec ? (rec.correct ? "正确" : "错误") : "未答"}</span></button>`;
+  }).join("");
+  $("#directory-dialog").showModal();
+}
+
+function resetSection() {
+  hideToast();
+  for (const q of section().questions) delete state.answers[q.id];
+  state.indices[currentSection] = 0;
+  index = 0;
+  retryMode = false; retryIds.clear(); retryList = [];
+  save();
+  $("#reset-dialog").close();
+  $("#done").hidden = true;
+  renderQuiz();
+  toast("本节已重置");
+}
+
+function toast(message, type = "") {
+  const el = $("#toast");
+  el.textContent = message;
+  el.className = "toast" + (type ? " " + type : "");
+  void el.offsetWidth;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2200);
+}
+
+function hideToast() {
+  clearTimeout(toastTimer);
+  const el = $("#toast");
+  if (el) el.classList.remove("show");
+}
+
+function bind() {
+  $("#section-grid").addEventListener("click", e => {
+    const card = e.target.closest("[data-section]");
+    if (card) openSection(card.dataset.section);
+  });
+  $("#btn-back").addEventListener("click", showSections);
+  $("#btn-retry").addEventListener("click", startRetry);
+  $("#btn-directory").addEventListener("click", openDirectory);
+  $("#btn-reset").addEventListener("click", () => $("#reset-dialog").showModal());
+  $("#confirm-reset").addEventListener("click", resetSection);
+
+  $("#quiz").addEventListener("click", e => {
+    const item = e.target.closest(".bank-item");
+    if (item && !item.classList.contains("locked")) commit(item.dataset.choice);
+  });
+
+  document.addEventListener("click", e => {
+    const close = e.target.closest("[data-close]");
+    if (close) { const d = document.getElementById(close.dataset.close); if (d) d.close(); return; }
+    const qb = e.target.closest("[data-qindex]");
+    if (qb) {
+      $("#directory-dialog").close();
+      goIndex(Number(qb.dataset.qindex));
+    }
+  });
+
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") { $$("dialog[open]").forEach(d => d.close()); return; }
+    if (document.querySelector("dialog[open]")) return;
+    if (e.target.closest("input,textarea,select")) return;
+    if (e.key === "ArrowLeft") goIndex(index - 1);
+    if (e.key === "ArrowRight") goIndex(index + 1);
+  });
+}
+
+function init() {
+  load();
+  bind();
+  const hash = decodeURIComponent(location.hash.slice(1));
+  if (SECTION_BY_ID.has(hash)) {
+    openSection(hash);
+  } else {
+    $("#topic-view").style.display = "block";
+    $("#quiz-view").style.display = "none";
+    renderSections();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

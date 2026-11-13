@@ -97,8 +97,8 @@
 
   .modules {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 18px;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
     padding: 8px 0 42px;
   }
   .module {
@@ -133,6 +133,7 @@
   }
   .module.shizheng::after { background: radial-gradient(circle, var(--accent-soft), transparent 70%); }
   .module.bianxi::after { background: radial-gradient(circle, var(--blue-soft), transparent 70%); }
+  .module.matching::after { background: radial-gradient(circle, var(--jade-soft), transparent 70%); }
 
   .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kind {
@@ -147,6 +148,7 @@
   }
   .shizheng .kind { background: var(--accent-soft); color: var(--accent); }
   .bianxi .kind { background: var(--blue-soft); color: var(--blue); }
+  .matching .kind { background: var(--jade-soft); color: var(--jade); }
   .arrow { color: var(--muted); font-size: 18px; transition: transform .2s ease; }
   .module:hover .arrow { transform: translate(3px, -3px); color: var(--ink); }
 
@@ -175,11 +177,17 @@
   .bar > i { display: block; height: 100%; width: 0; border-radius: inherit; transition: width .4s ease; }
   .shizheng .bar > i { background: var(--accent); }
   .bianxi .bar > i { background: var(--blue); }
+  .matching .bar > i { background: var(--jade); }
   .cta { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 16px; font-size: 12.5px; font-weight: 600; }
   .cta span { color: var(--ink); }
   .cta em { font-style: normal; color: var(--muted); font-weight: 400; }
 
   footer { padding: 4px 0 34px; color: var(--muted); font-size: 11px; letter-spacing: .06em; }
+
+  @media (max-width: 980px) {
+    .modules { grid-template-columns: 1fr; }
+    .module { min-height: 300px; }
+  }
 
   @media (max-width: 760px) {
     .wrap { width: calc(100% - 24px); }
@@ -210,7 +218,7 @@
   <section class="hero">
     <p class="eyebrow">每天十题 · 稳步上岸</p>
     <h2>今天刷哪一块？</h2>
-    <p>左边是原来的时政套题，右边是第六部分「学科总结」的知识点辨析。两个模块分开记进度，互不干扰。</p>
+    <p>时政套题、知识点辨析、会议人物著作配对，三个模块分开记进度，互不干扰。</p>
   </section>
 
   <main class="modules">
@@ -253,6 +261,26 @@
         <div class="cta"><span>进入练习</span><em>自动保存</em></div>
       </div>
     </a>
+
+    <a class="module matching" href="matching.html">
+      <div class="card-top">
+        <span class="kind">模块三 · 配对</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </div>
+      <h3>会议·人物·著作</h3>
+      <p class="desc">把一段内容作为题干，下面把本节全部会议、人物或著作排成选项池；点选即判，答错同时标出正确项。</p>
+      <div class="facts">
+        <span class="fact">60 题</span>
+        <span class="fact">4 个专题</span>
+        <span class="fact">答案池</span>
+        <span class="fact">点击即判</span>
+      </div>
+      <div class="progress-block">
+        <div class="progress-line"><span id="pp-label">尚未开始</span><b id="pp-count">0 / 60</b></div>
+        <div class="bar"><i id="pp-bar"></i></div>
+        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+      </div>
+    </a>
   </main>
 
   <footer>题目与答案整理自《2027考研政治背诵手册》 · 仅作个人学习使用</footer>
@@ -261,9 +289,10 @@
 <script>
   const KEYS = {
     shizheng: "kaoyan-politics-quiz-2027-v1",
-    bianxi: "kaoyan-politics-bianxi-2027-v1"
+    bianxi: "kaoyan-politics-bianxi-2027-v1",
+    matching: "kaoyan-politics-matching-2027-v1"
   };
-  const TOTALS = { shizheng: 193, bianxi: 302 };
+  const TOTALS = { shizheng: 193, bianxi: 302, matching: 60 };
 
   function readCount(key) {
     try {
@@ -277,7 +306,7 @@
 
   function paint(id, key, total) {
     const count = Math.min(readCount(key), total);
-    const prefix = id === "sz" ? "sz" : "bx";
+    const prefix = id;
     document.getElementById(`${prefix}-count`).textContent = `${count} / ${total}`;
     document.getElementById(`${prefix}-bar`).style.width = `${(count / total) * 100}%`;
     document.getElementById(`${prefix}-label`).textContent =
@@ -286,6 +315,7 @@
 
   paint("sz", KEYS.shizheng, TOTALS.shizheng);
   paint("bx", KEYS.bianxi, TOTALS.bianxi);
+  paint("pp", KEYS.matching, TOTALS.matching);
 </script>
 </body>
 </html>

@@ -374,14 +374,14 @@
 
 <dialog id="reset-dialog">
   <div class="sheet-head">
-    <h3>重置知识点辨析？</h3>
+    <h3 id="reset-title">重置本页？</h3>
     <button class="icon-btn" type="button" data-close="reset-dialog" aria-label="关闭">×</button>
   </div>
   <div class="confirm-body">
-    <p>这会清空本模块全部专题的作答记录和错题，不影响「时政190题」的进度。此操作不可撤销。</p>
+    <p id="reset-desc">只会清空当前页的作答记录，不影响其他页和专题。此操作不可撤销。</p>
     <div class="confirm-actions">
       <button class="btn-cancel" type="button" data-close="reset-dialog">取消</button>
-      <button class="btn-danger" id="confirm-reset" type="button">确认重置</button>
+      <button class="btn-danger" id="confirm-reset" type="button">重置本页</button>
     </div>
   </div>
 </dialog>
@@ -572,6 +572,7 @@ function renderQuiz() {
 
   $("#retry-note").hidden = !retryMode;
   $("#btn-retry").textContent = retryMode ? "退出重练" : "错题重练";
+  $("#btn-reset").textContent = scope === "all" ? "重置本页" : "重置本节";
 
   $("#page-title").textContent = `第 ${page} 页`;
   $("#page-sub").textContent = `共 ${total} 页 · ${list.length} 题`;
@@ -670,17 +671,29 @@ function toast(message, type = "") {
 }
 function hideToast() { clearTimeout(toastTimer); $("#toast").classList.remove("show"); }
 
-function resetAll() {
-  state.answers = {};
-  state.pages = {};
-  scope = "all";
+function openResetDialog() {
+  const isAll = scope === "all";
+  const topic = isAll ? null : topicById.get(scope);
+  const count = isAll ? pageQuestions().length : scopeQuestions().length;
+  $("#reset-title").textContent = isAll ? "重置本页？" : "重置本节？";
+  $("#reset-desc").textContent = isAll
+    ? `只会清空当前第 ${currentPage()} 页的 ${count} 道题，不影响其他页和专题。此操作不可撤销。`
+    : `只会清空「${topic.title}」这一节的 ${count} 道题，不影响其他专题。此操作不可撤销。`;
+  $("#confirm-reset").textContent = isAll ? "重置本页" : "重置本节";
+  $("#reset-dialog").showModal();
+}
+
+function resetScope() {
+  const targets = scope === "all" ? pageQuestions() : scopeQuestions();
+  for (const q of targets) delete state.answers[q.id];
   retryMode = false;
   retryIds.clear();
   retryList = [];
+  if (scope !== "all") state.pages[scope] = 1;
   save();
   $("#reset-dialog").close();
-  showTopics();
-  toast("已重置，重新开始");
+  renderQuiz();
+  toast(scope === "all" ? "本页已重置" : "本节已重置");
 }
 
 function bind() {
@@ -693,8 +706,8 @@ function bind() {
   $("#next").addEventListener("click", () => goPage(currentPage() + 1));
   $("#btn-retry").addEventListener("click", startRetry);
   $("#btn-directory").addEventListener("click", openDirectory);
-  $("#btn-reset").addEventListener("click", () => $("#reset-dialog").showModal());
-  $("#confirm-reset").addEventListener("click", resetAll);
+  $("#btn-reset").addEventListener("click", openResetDialog);
+  $("#confirm-reset").addEventListener("click", resetScope);
 
   $("#quiz").addEventListener("click", e => {
     const card = e.target.closest("[data-card]");

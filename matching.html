@@ -517,6 +517,7 @@ function showSections() {
   $("#quiz-view").style.display = "none";
   history.replaceState(null, "", location.pathname + location.search);
   renderSections();
+  updateChatContext();
   window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -792,9 +793,17 @@ function currentChatQuestion() {
 function updateChatContext() {
   const el = $("#chat-context");
   if (!el) return;
+  if ($("#quiz-view").style.display === "none") {
+    el.textContent = "专题选择 · 可问任意政治知识点";
+    return;
+  }
   const q = currentChatQuestion();
-  const label = q ? `${section().short} · ${q.stem.replace(/\s+/g, "").slice(0, 28)}${q.stem.length > 28 ? "…" : ""}` : `${section().title} · 本节结果`;
-  el.textContent = label;
+  if (!q) {
+    el.textContent = `${section().title} · 本节结果`;
+    return;
+  }
+  const shortStem = q.stem.replace(/\s+/g, "");
+  el.textContent = `${section().short} · ${shortStem.slice(0, 28)}${shortStem.length > 28 ? "…" : ""}`;
 }
 
 function formatChat(text) {
@@ -836,8 +845,9 @@ function clearChat() {
 async function sendChat(text) {
   const content = String(text || "").replace(/\s+$/, "").trim();
   if (!content || chatPending) return;
-  const q = currentChatQuestion();
-  const sec = section();
+  const quizVisible = $("#quiz-view").style.display !== "none";
+  const q = quizVisible ? currentChatQuestion() : null;
+  const sec = quizVisible ? section() : null;
   const history = chatMessages.slice(-8).map(m => ({ role: m.role, content: m.content }));
   chatMessages.push({ role: "user", content });
   chatPending = true;
@@ -847,7 +857,9 @@ async function sendChat(text) {
   input.style.height = "";
   $("#chat-send").disabled = true;
 
-  const contextText = `【考研政治知识点答疑】当前专题：${sec.title}。当前题目：${q ? q.stem : "（本节结果页）"}。正确答案：${q ? q.answer : "（无）"}。请围绕当前题目和考研政治知识点回答。`;
+  const contextText = q
+    ? `【考研政治知识点答疑】当前专题：${sec.title}。当前题目：${q.stem}。正确答案：${q.answer}。请围绕当前题目和考研政治知识点回答。`
+    : `【考研政治知识点答疑】当前未进入具体题目${sec ? `，在专题选择页（上次浏览：${sec.title}）` : ""}。请直接回答学生的考研政治问题。`;
   const question = `请忽略作文批改场景，作为考研政治辅导老师回答，不要提英语作文。学生问题：${content}`;
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 60000);

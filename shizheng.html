@@ -661,7 +661,7 @@
     </div>
     <div class="top-actions">
       <button class="ghost-btn" id="btn-directory" type="button">目录</button>
-      <button class="ghost-btn" id="btn-reset" type="button">重置</button>
+      <button class="ghost-btn" id="btn-reset" type="button">重置本页</button>
     </div>
   </div>
   <div class="progress-track" aria-hidden="true"><div class="progress-fill" id="progress-fill"></div></div>
@@ -714,20 +714,20 @@
   <div class="page-grid" id="page-grid"></div>
   <div class="sheet-foot">
     <span>作答进度自动保存在本机</span>
-    <button class="link-danger" id="btn-reset-alt" type="button">重置全部进度</button>
+    <button class="link-danger" id="btn-reset-alt" type="button">重置本页</button>
   </div>
 </dialog>
 
 <dialog id="reset-dialog">
   <div class="sheet-head">
-    <h3>重新开始？</h3>
+    <h3 id="reset-title">重置本页？</h3>
     <button class="icon-btn" type="button" data-close="reset-dialog" aria-label="关闭">×</button>
   </div>
   <div class="confirm-body">
-    <p>这会清空本机保存的全部作答记录和错题，回到第 1 页。此操作不可撤销。</p>
+    <p id="reset-desc">只会清空当前页的作答记录，不影响其他页。此操作不可撤销。</p>
     <div class="confirm-actions">
       <button class="btn-cancel" type="button" data-close="reset-dialog">取消</button>
-      <button class="btn-danger" id="confirm-reset" type="button">确认重置</button>
+      <button class="btn-danger" id="confirm-reset" type="button">重置本页</button>
     </div>
   </div>
 </dialog>
@@ -1086,19 +1086,23 @@ function setMode(mode) {
   window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
 }
 
-function resetAll() {
+function openResetDialog() {
+  const items = pageQuestions();
+  $("#reset-title").textContent = "重置本页？";
+  $("#reset-desc").textContent = `只会清空当前第 ${state.page} 页的 ${items.length} 道题，不影响其他页。此操作不可撤销。`;
+  $("#confirm-reset").textContent = "重置本页";
+  $("#reset-dialog").showModal();
+}
+
+function resetPage() {
   hideToast();
-  state.answers = {};
-  state.page = 1;
-  state.mode = "all";
-  wrongIds = [];
-  retryActive = new Set();
+  const items = pageQuestions();
+  for (const q of items) delete state.answers[q.id];
   pending.clear();
   save();
-  refresh(true);
+  refresh();
   $("#reset-dialog").close();
-  toast("已重置，重新开始");
-  window.scrollTo({ top: 0, behavior: "smooth" });
+  toast("本页已重置");
 }
 
 function bindEvents() {
@@ -1137,12 +1141,12 @@ function bindEvents() {
   $("#prev").addEventListener("click", () => goPage(state.page - 1));
   $("#next").addEventListener("click", () => goPage(state.page + 1));
   $("#btn-directory").addEventListener("click", openDirectory);
-  $("#btn-reset").addEventListener("click", () => $("#reset-dialog").showModal());
+  $("#btn-reset").addEventListener("click", openResetDialog);
   $("#btn-reset-alt").addEventListener("click", () => {
     $("#directory-dialog").close();
-    $("#reset-dialog").showModal();
+    openResetDialog();
   });
-  $("#confirm-reset").addEventListener("click", resetAll);
+  $("#confirm-reset").addEventListener("click", resetPage);
 
   $$(".mode-tab").forEach(tab => tab.addEventListener("click", () => setMode(tab.dataset.mode)));
 

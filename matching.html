@@ -529,7 +529,7 @@ function openSection(id) {
   currentSection = id;
   retryMode = false; retryIds.clear(); retryList = [];
   order = shuffle(section().questions.map(q => q.id));
-  bankOrder = shuffle(section().bank);
+  bankOrder = section().bank.slice();
   index = firstUnansweredIndex();
   $("#topic-view").style.display = "none";
   $("#quiz-view").style.display = "block";
@@ -603,7 +603,7 @@ function renderQuiz() {
   $("#quiz").innerHTML = `<div class="q-panel">
     <div class="q-kicker"><span class="pill">${esc(sec.short)}</span><span>${sec.bank.length} 个候选</span></div>
     <p class="q-stem">${esc(q.stem)}</p>
-    <p class="q-hint">从下面全部候选里选出对应的一项（题目和候选顺序均已打乱）。答对会自动进入下一题；答错会标出正确答案。</p>
+    <p class="q-hint">从下面全部候选里选出对应的一项（题目顺序已打乱，候选按书中顺序排列）。答对会自动进入下一题；答错会标出正确答案。</p>
     <div class="bank-label"><span>答案池</span><b>${sec.bank.length} 项</b></div>
     <div class="bank-grid ${cols}">${bank}</div>
     ${feedback}
@@ -690,7 +690,7 @@ function startRetry() {
   if (retryMode) {
     retryMode = false; retryIds.clear(); retryList = [];
     order = shuffle(section().questions.map(q => q.id));
-    bankOrder = shuffle(section().bank);
+    bankOrder = section().bank.slice();
     index = firstUnansweredIndex();
     renderQuiz();
     return;
@@ -699,7 +699,7 @@ function startRetry() {
   if (!wrong.length) { toast("本节暂时没有错题"); return; }
   retryList = shuffle(wrong.map(q => q.id));
   retryIds = new Set(retryList);
-  bankOrder = shuffle(section().bank);
+  bankOrder = section().bank.slice();
   retryMode = true;
   index = 0;
   renderQuiz();
@@ -723,7 +723,7 @@ function resetSection() {
   for (const q of section().questions) delete state.answers[q.id];
   state.indices[currentSection] = 0;
   order = shuffle(section().questions.map(q => q.id));
-  bankOrder = shuffle(section().bank);
+  bankOrder = section().bank.slice();
   index = 0;
   retryMode = false; retryIds.clear(); retryList = [];
   save();

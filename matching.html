@@ -327,6 +327,8 @@ let index = 0;
 let retryMode = false;
 let retryList = [];
 let retryIds = new Set();
+let order = [];
+let bankOrder = [];
 let toastTimer = null;
 let autoNextTimer = null;
 
@@ -357,9 +359,23 @@ function save() {
 
 function section() { return SECTION_BY_ID.get(currentSection); }
 
+function shuffle(list) {
+  const a = [...list];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
 function activeQuestions() {
-  if (!retryMode) return section().questions;
+  if (!retryMode) return order.map(id => BY_ID.get(id)).filter(Boolean);
   return retryList.map(id => BY_ID.get(id)).filter(Boolean);
+}
+
+function firstUnansweredIndex() {
+  const i = activeQuestions().findIndex(q => !recordFor(q));
+  return i === -1 ? activeQuestions().length : i;
 }
 
 function recordFor(q) {
@@ -395,7 +411,9 @@ function openSection(id) {
   if (!SECTION_BY_ID.has(id)) id = "s10";
   currentSection = id;
   retryMode = false; retryIds.clear(); retryList = [];
-  index = Math.min(state.indices[id] || 0, section().questions.length);
+  order = shuffle(section().questions.map(q => q.id));
+  bankOrder = shuffle(section().bank);
+  index = firstUnansweredIndex();
   $("#topic-view").style.display = "none";
   $("#quiz-view").style.display = "block";
   history.replaceState(null, "", "#" + id);
@@ -455,7 +473,7 @@ function renderQuiz() {
   const answered = sec.questions.filter(x => recordFor(x)).length;
   $("#q-progress").textContent = `${retryMode ? "重练中已答" : "本节已答"} ${answered} / ${sec.questions.length}`;
 
-  const bank = sec.bank.map(choice => {
+  const bank = bankOrder.map(choice => {
     const cls = bankClass(sec, q, rec, choice);
     const mark = rec ? (choice === q.answer ? "✓" : choice === rec.choice ? "×" : "") : "";
     return `<button type="button" class="bank-item ${cls} ${rec ? "locked" : ""}" data-choice="${esc(choice)}" ${rec ? 'aria-disabled="true"' : ""}>${esc(choice)}<span class="mark">${mark}</span></button>`;
@@ -468,7 +486,7 @@ function renderQuiz() {
   $("#quiz").innerHTML = `<div class="q-panel">
     <div class="q-kicker"><span class="pill">${esc(sec.short)}</span><span>${sec.bank.length} 个候选</span></div>
     <p class="q-stem">${esc(q.stem)}</p>
-    <p class="q-hint">从下面全部候选里选出对应的一项。答对会自动进入下一题；答错会标出正确答案。</p>
+    <p class="q-hint">从下面全部候选里选出对应的一项（题目和候选顺序均已打乱）。答对会自动进入下一题；答错会标出正确答案。</p>
     <div class="bank-label"><span>答案池</span><b>${sec.bank.length} 项</b></div>
     <div class="bank-grid ${cols}">${bank}</div>
     ${feedback}
@@ -551,12 +569,18 @@ function startRetry() {
   clearTimeout(autoNextTimer);
   hideToast();
   if (retryMode) {
-    retryMode = false; retryIds.clear(); retryList = []; index = 0; renderQuiz(); return;
+    retryMode = false; retryIds.clear(); retryList = [];
+    order = shuffle(section().questions.map(q => q.id));
+    bankOrder = shuffle(section().bank);
+    index = firstUnansweredIndex();
+    renderQuiz();
+    return;
   }
   const wrong = section().questions.filter(q => state.answers[q.id] && !state.answers[q.id].correct);
   if (!wrong.length) { toast("本节暂时没有错题"); return; }
-  retryList = wrong.map(q => q.id);
+  retryList = shuffle(wrong.map(q => q.id));
   retryIds = new Set(retryList);
+  bankOrder = shuffle(section().bank);
   retryMode = true;
   index = 0;
   renderQuiz();
@@ -579,6 +603,8 @@ function resetSection() {
   hideToast();
   for (const q of section().questions) delete state.answers[q.id];
   state.indices[currentSection] = 0;
+  order = shuffle(section().questions.map(q => q.id));
+  bankOrder = shuffle(section().bank);
   index = 0;
   retryMode = false; retryIds.clear(); retryList = [];
   save();

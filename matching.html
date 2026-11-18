@@ -187,6 +187,87 @@
   .toast.ok { background: rgba(47,107,86,.96); }
   .toast.bad { background: rgba(143,43,34,.96); }
 
+
+  /* ---------- AI chat ---------- */
+  .chat-fab {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    z-index: 60;
+    width: 58px; height: 58px;
+    border: 0; border-radius: 50%;
+    background: var(--jade);
+    color: #fffdf8;
+    font-family: var(--serif);
+    font-size: 22px;
+    cursor: pointer;
+    box-shadow: 0 14px 30px -10px rgba(47,107,86,.65), inset 0 0 0 1px rgba(255,255,255,.2);
+    transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .chat-fab:hover { transform: translateY(-2px); box-shadow: 0 18px 34px -10px rgba(47,107,86,.72), inset 0 0 0 1px rgba(255,255,255,.2); }
+  .chat-fab .spark { position: absolute; top: 8px; right: 9px; width: 8px; height: 8px; border-radius: 50%; background: #f3d7a6; box-shadow: 0 0 0 3px rgba(243,215,166,.18); }
+  .chat-panel {
+    position: fixed;
+    right: 24px;
+    bottom: 96px;
+    z-index: 70;
+    width: min(380px, calc(100vw - 32px));
+    height: min(590px, calc(100vh - 124px));
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 20px;
+    box-shadow: 0 30px 70px -28px rgba(32,38,43,.55);
+  }
+  .chat-panel[hidden] { display: none !important; }
+  .chat-head {
+    display: flex; align-items: flex-start; gap: 10px;
+    padding: 14px 15px 12px;
+    background: linear-gradient(135deg, #f2f7f3, #fffdf8);
+    border-bottom: 1px solid rgba(222,212,195,.7);
+  }
+  .chat-avatar {
+    width: 32px; height: 32px; flex: 0 0 auto;
+    border-radius: 9px; background: var(--jade); color: #fffdf8;
+    display: grid; place-items: center; font-family: var(--serif); font-size: 17px;
+  }
+  .chat-head-text { min-width: 0; flex: 1; }
+  .chat-head-text b { display: block; font-family: var(--serif); font-size: 15px; letter-spacing: .04em; }
+  #chat-context { display: block; margin-top: 3px; color: var(--muted); font-size: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .chat-head-actions { display: flex; gap: 4px; }
+  .chat-icon { width: 26px; height: 26px; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--muted); font-size: 14px; cursor: pointer; }
+  .chat-icon:hover { background: #f2ece0; color: var(--ink); }
+  .chat-messages {
+    flex: 1;
+    overflow: auto;
+    padding: 14px 13px 10px;
+    background: #faf6ec;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    scroll-behavior: smooth;
+  }
+  .chat-msg { max-width: 88%; padding: 9px 12px; border-radius: 13px; font-size: 12.8px; line-height: 1.75; white-space: pre-wrap; word-break: break-word; }
+  .chat-msg.bot { align-self: flex-start; background: #fffefb; border: 1px solid var(--line); border-bottom-left-radius: 4px; color: var(--ink-soft); }
+  .chat-msg.user { align-self: flex-end; background: var(--jade); color: #fffdf8; border-bottom-right-radius: 4px; }
+  .chat-msg.bot strong { color: var(--ink); font-weight: 700; }
+  .chat-typing { align-self: flex-start; display: flex; gap: 4px; padding: 10px 13px; background: #fffefb; border: 1px solid var(--line); border-radius: 13px; }
+  .chat-typing i { width: 5px; height: 5px; border-radius: 50%; background: var(--muted); animation: chatDot 1s infinite ease-in-out; }
+  .chat-typing i:nth-child(2) { animation-delay: .15s; }
+  .chat-typing i:nth-child(3) { animation-delay: .3s; }
+  @keyframes chatDot { 0%, 60%, 100% { transform: translateY(0); opacity: .45; } 30% { transform: translateY(-3px); opacity: 1; } }
+  .chat-quick { display: flex; gap: 6px; flex-wrap: wrap; padding: 0 13px 8px; background: #faf6ec; }
+  .chat-chip { border: 1px solid var(--line); background: #fffefb; border-radius: 999px; padding: 5px 9px; font-size: 10.5px; color: var(--ink-soft); cursor: pointer; }
+  .chat-chip:hover { border-color: var(--jade); color: var(--jade); }
+  .chat-input-row { display: flex; gap: 7px; padding: 10px 12px 8px; border-top: 1px solid rgba(222,212,195,.7); background: var(--card); }
+  #chat-input { flex: 1; min-height: 38px; max-height: 100px; resize: none; border: 1px solid var(--line); border-radius: 10px; padding: 9px 10px; font: inherit; font-size: 12.5px; line-height: 1.5; color: var(--ink); background: #fffefb; outline: none; }
+  #chat-input:focus { border-color: var(--jade); }
+  #chat-send { flex: 0 0 auto; align-self: flex-end; border: 0; border-radius: 10px; padding: 9px 13px; background: var(--jade); color: #fffdf8; font-size: 12px; cursor: pointer; }
+  #chat-send:disabled { opacity: .45; cursor: not-allowed; }
+  .chat-note { padding: 0 12px 9px; color: var(--muted); font-size: 9.5px; text-align: center; }
+
   @media (max-width: 760px) {
     .wrap { width: calc(100% - 24px); }
     .topbar-inner { gap: 8px; }
@@ -212,6 +293,8 @@
     .q-actions .side { padding: 8px 12px; font-size: 11.5px; }
     .q-actions .next { padding: 9px 16px; font-size: 12px; }
     .q-grid { grid-template-columns: repeat(5,1fr); padding-inline: 16px; }
+    .chat-fab { right: 16px; bottom: 16px; width: 52px; height: 52px; font-size: 20px; }
+    .chat-panel { right: 10px; left: 10px; bottom: 80px; width: auto; height: min(72vh, 560px); }
   }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
@@ -310,11 +393,41 @@
   </div>
 </dialog>
 
+<button id="chat-fab" class="chat-fab" type="button" aria-label="打开 AI 答疑" aria-expanded="false" title="问 AI">问<span class="spark"></span></button>
+
+<section id="chat-panel" class="chat-panel" hidden aria-label="AI 答疑">
+  <div class="chat-head">
+    <div class="chat-avatar">AI</div>
+    <div class="chat-head-text">
+      <b>政治知识点答疑</b>
+      <span id="chat-context">可以问我当前题目的知识点</span>
+    </div>
+    <div class="chat-head-actions">
+      <button class="chat-icon" id="chat-clear" type="button" title="清空对话">↺</button>
+      <button class="chat-icon" id="chat-close" type="button" title="关闭">×</button>
+    </div>
+  </div>
+  <div id="chat-messages" class="chat-messages"></div>
+  <div class="chat-quick">
+    <button class="chat-chip" type="button" data-prompt="解释这道题的知识点">解释这道题</button>
+    <button class="chat-chip" type="button" data-prompt="这个知识点怎么记">怎么记</button>
+    <button class="chat-chip" type="button" data-prompt="帮我区分这道题附近的易混点">区分易混点</button>
+  </div>
+  <div class="chat-input-row">
+    <textarea id="chat-input" rows="1" placeholder="问一个知识点，Enter 发送"></textarea>
+    <button id="chat-send" type="button">发送</button>
+  </div>
+  <div class="chat-note">AI 回答仅供参考，请以教材和原书表述为准</div>
+</section>
+
 <div id="toast" class="toast" role="status" aria-live="polite"></div>
 
 <script>
 const SECTIONS = [{"id":"s10","num":10,"title":"第10节 中国共产党的重要会议","short":"重要会议","bank":["中共一大","中共二大","中共三大","中共四大","八七会议","中共六大","遵义会议","瓦窑堡会议","中共六届六中全会","中共七大","中共七届二中全会","中共八大","十一届三中全会","中共十二大","中共十三大","中共十四大","中共十五大","中共十六大","中共十七大","中共十八大","中共十九大","中共二十大"],"count":22,"questions":[{"id":"s10-01","section":"s10","stem":"成立中国共产党，通过党的第一个纲领和决议","answer":"中共一大"},{"id":"s10-02","section":"s10","stem":"第一次提出反帝反封建的民主革命纲领，制定第一部党章","answer":"中共二大"},{"id":"s10-03","section":"s10","stem":"决定共产党员以个人身份加入国民党，建立联合战线","answer":"中共三大"},{"id":"s10-04","section":"s10","stem":"明确提出无产阶级在民主革命中的领导权和工农联盟问题","answer":"中共四大"},{"id":"s10-05","section":"s10","stem":"确定土地革命和武装起义的方针，开始从大革命失败到土地革命战争兴起的历史性转变","answer":"八七会议"},{"id":"s10-06","section":"s10","stem":"指出中国仍是半殖民地半封建社会，革命仍是资产阶级民主主义革命","answer":"中共六大"},{"id":"s10-07","section":"s10","stem":"事实上确立毛泽东在党中央和红军的领导地位，成为生死攸关的转折点","answer":"遵义会议"},{"id":"s10-08","section":"s10","stem":"提出抗日条件下与民族资产阶级重建统一战线的新政策","answer":"瓦窑堡会议"},{"id":"s10-09","section":"s10","stem":"毛泽东明确提出“马克思主义的中国化”命题","answer":"中共六届六中全会"},{"id":"s10-10","section":"s10","stem":"对毛泽东思想作科学概括，写入党章，作为全党指导思想","answer":"中共七大"},{"id":"s10-11","section":"s10","stem":"提出“两个务必”，指出工作重心由乡村转移到城市","answer":"中共七届二中全会"},{"id":"s10-12","section":"s10","stem":"正确分析社会主义改造完成后中国社会的主要矛盾和主要任务","answer":"中共八大"},{"id":"s10-13","section":"s10","stem":"结束“以阶级斗争为纲”，开启改革开放和社会主义现代化建设新时期","answer":"十一届三中全会"},{"id":"s10-14","section":"s10","stem":"提出“建设有中国特色的社会主义”命题","answer":"中共十二大"},{"id":"s10-15","section":"s10","stem":"系统阐述社会主义初级阶段理论，概括党在社会主义初级阶段的基本路线","answer":"中共十三大"},{"id":"s10-16","section":"s10","stem":"确立社会主义市场经济体制改革目标","answer":"中共十四大"},{"id":"s10-17","section":"s10","stem":"正式提出“邓小平理论”并确定为党的指导思想","answer":"中共十五大"},{"id":"s10-18","section":"s10","stem":"把“三个代表”重要思想确定为党的指导思想","answer":"中共十六大"},{"id":"s10-19","section":"s10","stem":"强调深入贯彻落实科学发展观，提出全面建设小康社会新要求","answer":"中共十七大"},{"id":"s10-20","section":"s10","stem":"把科学发展观确定为党的指导思想，提出全面建成小康社会新要求","answer":"中共十八大"},{"id":"s10-21","section":"s10","stem":"2017年10月，北京","answer":"中共十九大"},{"id":"s10-22","section":"s10","stem":"2022年10月","answer":"中共二十大"}]},{"id":"s11","num":11,"title":"第11节 必须了解的毛泽东的主要著作","short":"毛泽东著作","bank":["《中国社会各阶级的分析》","《湖南农民运动考察报告》","《关于纠正党内的错误思想》","《星星之火，可以燎原》","《反对本本主义》","《论反对日本帝国主义的策略》","《论持久战》","《〈共产党人〉发刊词》","《中国革命和中国共产党》","《新民主主义论》","《改造我们的学习》","《在延安文艺座谈会上的讲话》","《论联合政府》","《目前形势和我们的任务》","《在晋绥干部会议上的讲话》","《将革命进行到底》","《在中国共产党第七届中央委员会第二次全体会议上的报告》","《党委会的工作方法》","《论人民民主专政》","《论十大关系》","《关于正确处理人民内部矛盾的问题》"],"count":21,"questions":[{"id":"s11-01","section":"s11","stem":"分析了中国社会各阶级，特别是把中国资产阶级区分为买办资产阶级和民族资产阶级，提出“谁是我们的敌人？谁是我们的朋友？这个问题是革命的首要问题”","answer":"《中国社会各阶级的分析》"},{"id":"s11-02","section":"s11","stem":"总结辛亥革命失败原因，指出没有贫农阶级，决不能打倒土豪劣绅、完成民主革命","answer":"《湖南农民运动考察报告》"},{"id":"s11-03","section":"s11","stem":"提出思想建党、政治建军原则，强调党员不但要在组织上入党，而且要在思想上入党","answer":"《关于纠正党内的错误思想》"},{"id":"s11-04","section":"s11","stem":"进一步发展“工农武装割据”思想，基本形成农村包围城市、武装夺取政权的理论","answer":"《星星之火，可以燎原》"},{"id":"s11-05","section":"s11","stem":"党内第一篇反对教条主义的文献，第一次提出“没有调查，没有发言权”","answer":"《反对本本主义》"},{"id":"s11-06","section":"s11","stem":"阐明与民族资产阶级建立统一战线的可能性，分析民族资产阶级的两面性","answer":"《论反对日本帝国主义的策略》"},{"id":"s11-07","section":"s11","stem":"分析中日双方四个基本特点，预见抗日战争三个阶段，批驳“速胜论”和“亡国论”","answer":"《论持久战》"},{"id":"s11-08","section":"s11","stem":"第一次提出党在革命中的三大法宝，第一次把党的建设称为“伟大的工程”","answer":"《〈共产党人〉发刊词》"},{"id":"s11-09","section":"s11","stem":"第一次提出新民主主义以及新民主主义革命这两个科学概念","answer":"《中国革命和中国共产党》"},{"id":"s11-10","section":"s11","stem":"指出中国革命分两步走，提出新民主主义的政治、经济和文化","answer":"《新民主主义论》"},{"id":"s11-11","section":"s11","stem":"对“实事求是”作出新解释：“‘实事’就是客观存在着的一切事物，‘是’就是客观事物的内部联系，即规律性，‘求’就是我们去研究”","answer":"《改造我们的学习》"},{"id":"s11-12","section":"s11","stem":"第一次提出“为什么人的问题，是一个根本的问题，原则的问题”","answer":"《在延安文艺座谈会上的讲话》"},{"id":"s11-13","section":"s11","stem":"第一次概括党的三大优良作风，提出生产力标准","answer":"《论联合政府》"},{"id":"s11-14","section":"s11","stem":"第一次提出新民主主义的三大经济纲领","answer":"《目前形势和我们的任务》"},{"id":"s11-15","section":"s11","stem":"第一次完整地提出新民主主义革命总路线","answer":"《在晋绥干部会议上的讲话》"},{"id":"s11-16","section":"s11","stem":"第一次公开使用“人民民主专政”概念","answer":"《将革命进行到底》"},{"id":"s11-17","section":"s11","stem":"提出“两个务必”，提醒全党警惕资产阶级“糖衣炮弹”","answer":"《在中国共产党第七届中央委员会第二次全体会议上的报告》"},{"id":"s11-18","section":"s11","stem":"提出十二条工作方法，强调党委书记要善于当班长，学会“弹钢琴”","answer":"《党委会的工作方法》"},{"id":"s11-19","section":"s11","stem":"完整地提出人民民主专政理论，阐明新中国国家政权的性质","answer":"《论人民民主专政》"},{"id":"s11-20","section":"s11","stem":"党探索中国社会主义建设道路的良好开端，论述重工业和轻工业、农业等十大关系","answer":"《论十大关系》"},{"id":"s11-21","section":"s11","stem":"1957年2月发表，系统论述社会主义社会两类不同性质矛盾","answer":"《关于正确处理人民内部矛盾的问题》"}]},{"id":"s12","num":12,"title":"第12节 毛泽东思想八个必须了解的第一","short":"八个第一","bank":["《〈共产党人〉发刊词》","《中国革命和中国共产党》","中共七大刘少奇《关于修改党章的报告》","《在晋绥干部会议上的讲话》","《将革命进行到底》","《在中国共产党第七届中央委员会第二次全体会议上的报告》","中共七届二中全会","《关于建国以来党的若干历史问题的决议》"],"count":8,"questions":[{"id":"s12-01","section":"s12","stem":"第一次提出三大法宝和党的建设是一项伟大工程的著作","answer":"《〈共产党人〉发刊词》"},{"id":"s12-02","section":"s12","stem":"第一次提出新民主主义革命概念和新民主主义革命总路线的著作","answer":"《中国革命和中国共产党》"},{"id":"s12-03","section":"s12","stem":"第一篇系统阐述毛泽东思想的文献","answer":"中共七大刘少奇《关于修改党章的报告》"},{"id":"s12-04","section":"s12","stem":"第一次完整地提出新民主主义革命总路线的著作","answer":"《在晋绥干部会议上的讲话》"},{"id":"s12-05","section":"s12","stem":"第一次公开使用“人民民主专政”概念的文章","answer":"《将革命进行到底》"},{"id":"s12-06","section":"s12","stem":"第一次明确提出党的工作重心从乡村转移到城市的文献","answer":"《在中国共产党第七届中央委员会第二次全体会议上的报告》"},{"id":"s12-07","section":"s12","stem":"第一次明确提出执政党建设问题的会议","answer":"中共七届二中全会"},{"id":"s12-08","section":"s12","stem":"第一次归纳“毛泽东思想的活的灵魂”的文件","answer":"《关于建国以来党的若干历史问题的决议》"}]},{"id":"s15","num":15,"title":"第15节 旧民主主义革命时期重要人物及其著作","short":"旧民主主义人物","bank":["林则徐","魏源","郑观应","洪仁玕","冯桂芬","严复","孙中山","陈独秀","李大钊"],"count":9,"questions":[{"id":"s15-01","section":"s15","stem":"近代中国睁眼看世界的第一人，编成《四洲志》","answer":"林则徐"},{"id":"s15-02","section":"s15","stem":"编成《海国图志》，提出“师夷长技以制夷”，开创中国近代向西方学习的新风","answer":"魏源"},{"id":"s15-03","section":"s15","stem":"著《盛世危言》，提出发展民族工商业、同西方国家进行“商战”、实行“君民共主”制度","answer":"郑观应"},{"id":"s15-04","section":"s15","stem":"提出《资政新篇》，主张具有资本主义色彩的改革方案","answer":"洪仁玕"},{"id":"s15-05","section":"s15","stem":"著《校邠庐抗议》，对洋务派“中体西用”思想作出比较完整的表述","answer":"冯桂芬"},{"id":"s15-06","section":"s15","stem":"写《救亡决论》，翻译《天演论》，用“物竞天择”“适者生存”的社会进化论思想提供理论根据","answer":"严复"},{"id":"s15-07","section":"s15","stem":"组建第一个革命团体兴中会，在《兴中会章程》中喊出“振兴中华”","answer":"孙中山"},{"id":"s15-08","section":"s15","stem":"创办《青年杂志》（后改名《新青年》），成为新文化运动的精神领袖","answer":"陈独秀"},{"id":"s15-09","section":"s15","stem":"率先在中国举起马克思主义旗帜，发表《我的马克思主义观》，比较系统地介绍马克思主义","answer":"李大钊"}]}];
 const STORAGE_KEY = "kaoyan-politics-matching-2027-v1";
+const AI_ENDPOINT = "https://detailed-grasshopper-d9a0e9b307d-1420335919.ap-shanghai.app.tcloudbase.com/grade";
+const AI_CODE = "essay2026";
+const CHAT_GREETING = "你好，我是考研政治知识点答疑助手。可以问我当前题目的知识点、易混概念或记忆方法。";
 const SECTION_BY_ID = new Map(SECTIONS.map(s => [s.id, s]));
 const ALL_QUESTIONS = SECTIONS.flatMap(s => s.questions);
 const BY_ID = new Map(ALL_QUESTIONS.map(q => [q.id, q]));
@@ -330,6 +443,8 @@ let retryIds = new Set();
 let order = [];
 let bankOrder = [];
 let toastTimer = null;
+let chatMessages = [{ role: "assistant", content: CHAT_GREETING }];
+let chatPending = false;
 let autoNextTimer = null;
 
 function esc(v) {
@@ -497,6 +612,7 @@ function renderQuiz() {
   </div>`;
   $("#btn-prev").addEventListener("click", () => goIndex(index - 1));
   $("#btn-next").addEventListener("click", () => goIndex(index + 1));
+  updateChatContext();
 }
 
 function renderDone() {
@@ -527,6 +643,7 @@ function renderDone() {
   $("#q-position").textContent = "本节结果";
   $("#q-progress-text").textContent = "";
   $("#q-progress").textContent = `已答 ${st.answered} / ${sec.questions.length}`;
+  updateChatContext();
 }
 
 function commit(choice) {
@@ -665,9 +782,134 @@ function bind() {
   });
 }
 
+
+/* ---------------- AI 答疑 ---------------- */
+function currentChatQuestion() {
+  const list = activeQuestions();
+  return list[index] || null;
+}
+
+function updateChatContext() {
+  const el = $("#chat-context");
+  if (!el) return;
+  const q = currentChatQuestion();
+  const label = q ? `${section().short} · ${q.stem.replace(/\s+/g, "").slice(0, 28)}${q.stem.length > 28 ? "…" : ""}` : `${section().title} · 本节结果`;
+  el.textContent = label;
+}
+
+function formatChat(text) {
+  return esc(text)
+    .replace(/\*\*([^*]+)\*\*/g, "<strong>$1</strong>")
+    .replace(/\n/g, "<br>");
+}
+
+function renderChat() {
+  const box = $("#chat-messages");
+  if (!box) return;
+  box.innerHTML = chatMessages.map(m => {
+    if (m.role === "user") return `<div class="chat-msg user">${esc(m.content)}</div>`;
+    return `<div class="chat-msg bot">${formatChat(m.content)}</div>`;
+  }).join("") + (chatPending ? '<div class="chat-typing" aria-label="正在思考"><i></i><i></i><i></i></div>' : "");
+  box.scrollTop = box.scrollHeight;
+}
+
+function openChat() {
+  $("#chat-panel").hidden = false;
+  $("#chat-fab").setAttribute("aria-expanded", "true");
+  updateChatContext();
+  renderChat();
+  setTimeout(() => $("#chat-input") && $("#chat-input").focus(), 80);
+}
+
+function closeChat() {
+  $("#chat-panel").hidden = true;
+  $("#chat-fab").setAttribute("aria-expanded", "false");
+}
+
+function clearChat() {
+  if (chatPending) return;
+  chatMessages = [{ role: "assistant", content: CHAT_GREETING }];
+  renderChat();
+  $("#chat-input").focus();
+}
+
+async function sendChat(text) {
+  const content = String(text || "").replace(/\s+$/, "").trim();
+  if (!content || chatPending) return;
+  const q = currentChatQuestion();
+  const sec = section();
+  const history = chatMessages.slice(-8).map(m => ({ role: m.role, content: m.content }));
+  chatMessages.push({ role: "user", content });
+  chatPending = true;
+  renderChat();
+  const input = $("#chat-input");
+  input.value = "";
+  input.style.height = "";
+  $("#chat-send").disabled = true;
+
+  const contextText = `【考研政治知识点答疑】当前专题：${sec.title}。当前题目：${q ? q.stem : "（本节结果页）"}。正确答案：${q ? q.answer : "（无）"}。请围绕当前题目和考研政治知识点回答。`;
+  const question = `请忽略作文批改场景，作为考研政治辅导老师回答，不要提英语作文。学生问题：${content}`;
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 60000);
+  try {
+    const res = await fetch(AI_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-access-code": AI_CODE },
+      body: JSON.stringify({
+        mode: "chat",
+        question,
+        context: {
+          type: "big",
+          promptText: contextText,
+          essayText: "",
+          grade: { score: "", band: "", issues: [], deductions: [] }
+        },
+        history
+      }),
+      signal: controller.signal
+    });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+    const answer = (data.answer || "").trim();
+    if (!answer) throw new Error("AI 没有返回内容");
+    chatMessages.push({ role: "assistant", content: answer });
+  } catch (err) {
+    const msg = err.name === "AbortError" ? "请求超时，请稍后再试" : (err.message || "网络错误");
+    chatMessages.push({ role: "assistant", content: `（AI 暂时不可用：${msg}）` });
+  } finally {
+    clearTimeout(timer);
+    chatPending = false;
+    $("#chat-send").disabled = false;
+    renderChat();
+  }
+}
+
+function bindChat() {
+  $("#chat-fab").addEventListener("click", () => {
+    if ($("#chat-panel").hidden) openChat(); else closeChat();
+  });
+  $("#chat-close").addEventListener("click", closeChat);
+  $("#chat-clear").addEventListener("click", clearChat);
+  $("#chat-send").addEventListener("click", () => sendChat($("#chat-input").value));
+  $("#chat-input").addEventListener("keydown", e => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendChat(e.target.value);
+    }
+  });
+  $("#chat-input").addEventListener("input", e => {
+    e.target.style.height = "auto";
+    e.target.style.height = Math.min(e.target.scrollHeight, 100) + "px";
+  });
+  $$("[data-prompt]").forEach(btn => {
+    btn.addEventListener("click", () => sendChat(btn.dataset.prompt));
+  });
+}
+
 function init() {
   load();
   bind();
+  bindChat();
   const hash = decodeURIComponent(location.hash.slice(1));
   if (SECTION_BY_ID.has(hash)) {
     openSection(hash);

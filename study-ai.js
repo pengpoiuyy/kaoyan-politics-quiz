@@ -134,9 +134,19 @@
   }
 
   function aiPrompt(q, hand, rel) {
-    var hb = hand.map(function (p) { return "【" + p.volume + " PDF第" + p.pdfPage + "页 " + (p.heading || "") + "】" + p.text.slice(0, 600); }).join("\n");
-    var xq = rel.map(function (r) { return "（" + r.sectionTitle + " 第" + r.id.split("-").pop() + "题）" + r.stem.slice(0, 160); }).join("\n");
-    return "请忽略作文批改场景，作为考研政治辅导老师，基于下面材料分析这道选择题。不要编造页码，引用背诵手册时只用给出的页码。\n\n【题目】" + q.stem + "\n【选项】" + Object.keys(q.options || {}).map(function (k) { return k + ". " + q.options[k]; }).join("；") + "\n【正确答案】" + answerText(q) + "\n\n【背诵手册命中片段】\n" + (hb || "无") + "\n\n【肖1000相关题】\n" + (xq || "无") + "\n\n请按以下格式输出：\n1. 本题考点：...\n2. 为什么选：...\n3. 干扰项/易错点：...\n4. 相关知识点：结合背诵手册片段说明在哪里、怎么记。\n5. 巩固建议：先看哪一页、再做哪道1000题。\n控制在400字以内。";
+    var hb = hand.slice(0, 2).map(function (p) {
+      return "【" + p.volume + " PDF第" + p.pdfPage + "页】" + String(p.text || "").slice(0, 220);
+    }).join("\n");
+    var xq = rel.slice(0, 3).map(function (r) {
+      return "（" + r.sectionTitle + " 第" + r.id.split("-").pop() + "题）" + String(r.stem || "").slice(0, 90);
+    }).join("\n");
+    var prompt = "请忽略作文批改场景，作为考研政治老师分析这道选择题。不要编造页码，引用背诵手册时只用给出的页码。\n\n【题目】" + String(q.stem || "").slice(0, 520) +
+      "\n【选项】" + Object.keys(q.options || {}).map(function (k) { return k + ". " + String(q.options[k] || "").slice(0, 50); }).join("；") +
+      "\n【正确答案】" + answerText(q) +
+      "\n【背诵手册片段】\n" + (hb || "无") +
+      "\n【肖1000相关题】\n" + (xq || "无") +
+      "\n\n请按格式输出：1.本题考点 2.为什么选 3.干扰项/易错点 4.相关知识点在手册哪里、怎么记 5.巩固建议。400字以内。";
+    return prompt.slice(0, 1450);
   }
 
   function callAI(q, hand, rel) {

@@ -4,10 +4,13 @@
   var AI_ENDPOINT = "https://detailed-grasshopper-d9a0e9b307d-1420335919.ap-shanghai.app.tcloudbase.com/grade";
   var AI_CODE = "essay2026";
   var CACHE_KEY = "kaoyan-study-ai-cache-v1";
+  var NOTES_KEY = "kaoyan-study-notes-v1";
+  var notes = {};
   var panel, body, title, status, cache = {};
   var current = null;
 
   try { cache = JSON.parse(localStorage.getItem(CACHE_KEY) || "{}") || {}; } catch (e) { cache = {}; }
+  try { notes = JSON.parse(localStorage.getItem(NOTES_KEY) || "{}") || {}; } catch (e) { notes = {}; }
 
   function esc(v) {
     return String(v == null ? "" : v).replace(/[&<>"']/g, function (c) {
@@ -93,6 +96,9 @@
       .sa-item b{display:block;font-size:12px;color:var(--jade,#2f6b56);font-weight:600}
       .sa-item span{display:block;color:var(--muted,#81796b);font-size:10.5px;line-height:1.6;margin-top:2px}
       .sa-item em{display:block;font-style:normal;color:var(--ink-soft,#465058);font-size:11.5px;line-height:1.7;margin-top:2px}
+      .sa-note{width:100%;min-height:58px;border:1px solid var(--line,#ded4c3);border-radius:8px;padding:7px 8px;font:inherit;font-size:11.5px;line-height:1.7;resize:vertical;background:#fffefb;color:var(--ink,#20262b)}
+      .sa-note-actions{display:flex;gap:7px;align-items:center;margin-top:5px;flex-wrap:wrap}
+      .sa-note-btn{border:1px solid var(--line,#ded4c3);background:#fffefb;border-radius:8px;padding:5px 9px;font-size:10.5px;color:var(--jade,#2f6b56);cursor:pointer;text-decoration:none}
       .sa-foot{color:var(--muted,#81796b);font-size:10px;text-align:center;margin-top:4px}
       .sa-retry{border:1px solid var(--line,#ded4c3);background:#fffefb;border-radius:8px;padding:6px 10px;font-size:11px;color:var(--jade,#2f6b56);cursor:pointer;margin-top:6px}
       .sa-page-modal{position:fixed;inset:0;z-index:120;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px;}
@@ -145,9 +151,51 @@
         return '<a class="sa-item" href="xiao1000.html?section=' + encodeURIComponent(r.section) + "&q=" + encodeURIComponent(r.id) + "&back=" + encodeURIComponent(location.href) + '"><b>' + esc(r.sectionTitle) + " · 第 " + r.id.split("-").pop() + " 题</b><span>" + esc(r.stem.slice(0, 80)) + "…</span></a>";
       }).join("") + "</div>";
     }
+    html += '<div class="sa-block"><h4>我的笔记</h4><div id="sa-note-view" style="font-size:11.5px;color:#465058;white-space:pre-wrap;line-height:1.7"></div><textarea id="sa-note-input" class="sa-note" placeholder="记下错因、记忆口诀，或把 AI 解析压缩成自己的话…"></textarea><div class="sa-note-actions"><button type="button" class="sa-note-btn" id="sa-note-save">保存笔记</button><button type="button" class="sa-note-btn" id="sa-note-edit">写笔记 / 编辑</button><a class="sa-note-btn" href="notes.html" target="_self">查看全部笔记</a></div></div>';
     html += '<div class="sa-foot">AI 回答仅供参考，页码为 PDF 页；知识点以原书为准。</div>';
     body.innerHTML = html;
     panel.hidden = false;
+    bindNote(q);
+  }
+
+  function bindNote(q) {
+    var view = document.getElementById("sa-note-view");
+    var input = document.getElementById("sa-note-input");
+    var save = document.getElementById("sa-note-save");
+    var edit = document.getElementById("sa-note-edit");
+    if (!view || !input || !save || !edit) return;
+    var rec = notes[q.id];
+    var refresh = function () {
+      view.textContent = rec && rec.note ? rec.note : "还没有笔记。";
+      input.value = rec && rec.note ? rec.note : "";
+      input.hidden = true;
+      save.hidden = true;
+      edit.textContent = rec && rec.note ? "编辑笔记" : "写笔记";
+    };
+    refresh();
+    edit.addEventListener("click", function () {
+      input.hidden = false;
+      save.hidden = false;
+      edit.textContent = "收起";
+      input.focus();
+    });
+    save.addEventListener("click", function () {
+      var txt = input.value.trim();
+      if (!txt) return;
+      var aiEl = document.getElementById("sa-ai");
+      notes[q.id] = {
+        qid: q.id,
+        module: String(q.id || "").charAt(0) === "b" ? "肖八" : "近10年真题",
+        stem: q.stem,
+        answer: q.answer || "",
+        ai: aiEl ? aiEl.textContent : "",
+        note: txt,
+        at: Date.now()
+      };
+      try { localStorage.setItem(NOTES_KEY, JSON.stringify(notes)); } catch (e) {}
+      rec = notes[q.id];
+      refresh();
+    });
   }
 
   function aiPrompt(q, hand, rel) {

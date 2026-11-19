@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>背诵手册 · 2027考研政治</title>
+<style>
+  :root { --paper:#f5f0e6; --card:#fffdf8; --ink:#20262b; --soft:#465058; --muted:#81796b; --line:#ded4c3; --jade:#2f6b56; --jade-soft:#e4efe8; --serif:"Songti SC","STSong","Noto Serif CJK SC",serif; --sans:"PingFang SC","Microsoft YaHei",system-ui,sans-serif; }
+  * { box-sizing:border-box; }
+  body { margin:0; background:var(--paper); color:var(--ink); font-family:var(--sans); }
+  button,input { font:inherit; }
+  .topbar { position:sticky; top:0; z-index:20; display:flex; align-items:center; gap:12px; padding:12px clamp(14px,4vw,40px); background:rgba(255,253,248,.95); border-bottom:1px solid var(--line); backdrop-filter:blur(12px); }
+  .seal { width:42px; height:42px; border-radius:11px; background:var(--jade); color:#fff; display:grid; place-items:center; font-family:var(--serif); font-size:19px; text-decoration:none; }
+  h1 { margin:0; font-family:var(--serif); font-size:clamp(17px,2.2vw,22px); font-weight:500; }
+  .sub { margin:3px 0 0; color:var(--muted); font-size:10px; }
+  .wrap { max-width:1080px; margin:0 auto; padding:18px clamp(12px,3vw,28px) 60px; }
+  .searchbox { display:flex; gap:8px; margin:14px 0 8px; }
+  #q { flex:1; border:1px solid var(--line); background:var(--card); border-radius:12px; padding:12px 14px; font-size:14px; outline:none; }
+  #q:focus { border-color:var(--jade); }
+  #go { border:0; border-radius:12px; padding:0 18px; background:var(--jade); color:#fff; cursor:pointer; }
+  .tabs { display:flex; gap:7px; margin:10px 0 4px; flex-wrap:wrap; }
+  .tab { border:1px solid var(--line); background:transparent; border-radius:999px; padding:6px 12px; font-size:12px; color:var(--soft); cursor:pointer; }
+  .tab.on { background:var(--jade); color:#fff; border-color:var(--jade); }
+  .hint { color:var(--muted); font-size:11px; line-height:1.7; margin:8px 0 14px; }
+  .results { display:grid; gap:10px; }
+  .result { border:1px solid var(--line); background:var(--card); border-radius:14px; padding:13px 15px; cursor:pointer; }
+  .result:hover { border-color:#b8cabb; }
+  .result .meta { display:flex; gap:8px; align-items:center; color:var(--muted); font-size:10px; }
+  .pill { background:var(--jade-soft); color:var(--jade); border-radius:999px; padding:2px 7px; }
+  .result h3 { margin:5px 0 4px; font-size:14px; font-weight:600; }
+  .result p { margin:0; color:var(--soft); font-size:12px; line-height:1.8; }
+  .empty { padding:40px 10px; color:var(--muted); text-align:center; font-size:13px; }
+  dialog { width:min(94vw,760px); max-height:86vh; border:1px solid var(--line); border-radius:16px; background:var(--card); color:var(--ink); padding:0; }
+  dialog::backdrop { background:rgba(32,38,43,.4); }
+  .sheet-head { position:sticky; top:0; display:flex; justify-content:space-between; gap:12px; align-items:center; padding:13px 16px; background:var(--card); border-bottom:1px solid var(--line); }
+  .sheet-head h3 { margin:0; font-family:var(--serif); font-size:16px; font-weight:500; }
+  .icon { border:0; background:transparent; font-size:22px; color:var(--muted); cursor:pointer; }
+  .page-text { padding:16px 20px 28px; white-space:pre-wrap; line-height:2; font-size:14px; color:var(--soft); }
+  @media (max-width:600px){ .topbar{padding:10px 14px} .searchbox{position:sticky;top:64px;z-index:10;background:var(--paper);padding:6px 0} }
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="seal" href="index.html" aria-label="返回">背</a>
+  <div><h1>背诵手册 · 知识点检索</h1><p class="sub">27肖秀荣 上册 + 下册 · 输入关键词找页码</p></div>
+</header>
+<main class="wrap">
+  <div class="searchbox"><input id="q" placeholder="输入知识点，如：社会基本矛盾、全过程人民民主" autocomplete="off"><button id="go">搜索</button></div>
+  <div class="tabs"><button class="tab on" data-vol="all">全部</button><button class="tab" data-vol="上册">上册</button><button class="tab" data-vol="下册">下册</button></div>
+  <p class="hint">搜到后点卡片查看该页 OCR 原文。页码是 PDF 页，和电子书页码一致；OCR 可能有少量错字，以原书为准。</p>
+  <div id="results" class="results"></div>
+</main>
+<dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><button class="icon" data-close type="button">×</button></div><div id="page-text" class="page-text"></div></dialog>
+<script src="handbook-data.js"></script>
+<script>
+const DATA = window.HANDBOOK_INDEX || [];
+const $ = s => document.querySelector(s);
+let vol = 'all';
+function norm(s){ return String(s||'').replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g,''); }
+function tokens(q){ q=norm(q); if(q.length<2) return q?[q]:[]; const out=[]; for(let i=0;i<q.length-1;i++) out.push(q.slice(i,i+2)); if(q.length<=6) out.push(q); return [...new Set(out)]; }
+function score(text, q, ts){ const t=norm(text); let s=0; if(q && t.includes(q)) s+=q.length*8; for(const x of ts){ let i=0,c=0; while((i=t.indexOf(x,i))>=0){c++;i+=x.length;} s+=Math.min(c,6)*x.length; } return s; }
+function snippet(text, q){ const t=String(text||'').replace(/\s+/g,''); if(!q) return t.slice(0,150); const i=t.indexOf(q); if(i<0) return t.slice(0,150); return (i>40?'…':'')+t.slice(Math.max(0,i-40),i+130)+'…'; }
+function search(){
+  const q=norm($('#q').value); const ts=tokens(q); const list=[];
+  for(const p of DATA){ if(vol!=='all'&&p.volume!==vol) continue; const s=score(p.text,q,ts); if(s>0) list.push([s,p]); }
+  list.sort((a,b)=>b[0]-a[0]);
+  const box=$('#results');
+  if(!q){ box.innerHTML='<div class="empty">输入一个知识点开始搜索，例如“社会基本矛盾”“全过程人民民主”“新发展理念”。</div>'; return; }
+  if(!list.length){ box.innerHTML='<div class="empty">没有找到，换一个关键词试试。</div>'; return; }
+  box.innerHTML=list.slice(0,20).map(([s,p])=>`<article class="result" data-id="${p.id}"><div class="meta"><span class="pill">${p.volume}</span><span>PDF 第 ${p.pdfPage} 页</span><span>${esc(p.heading||'')}</span></div><h3>${esc(p.heading||'相关知识点')}</h3><p>${esc(snippet(p.text,q))}</p></article>`).join('');
+}
+function esc(v){ return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+$('#go').addEventListener('click',search);
+$('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
+document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); b.classList.add('on'); vol=b.dataset.vol; search(); }));
+$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; $('#page-title').textContent=`${p.volume} · PDF 第 ${p.pdfPage} 页 · ${p.heading||''}`; $('#page-text').textContent=p.text; $('#page-dialog').showModal(); });
+document.querySelector('[data-close]').addEventListener('click',()=>$('#page-dialog').close());
+search();
+const pageParam = new URLSearchParams(location.search).get("page");
+if (pageParam) {
+  const p = DATA.find(x => x.id === pageParam);
+  if (p) {
+    document.querySelector("#page-title").textContent = p.volume + " · PDF 第 " + p.pdfPage + " 页 · " + (p.heading || "");
+    document.querySelector("#page-text").textContent = p.text;
+    document.querySelector("#page-dialog").showModal();
+  }
+}
+</script>
+</body>
+</html>

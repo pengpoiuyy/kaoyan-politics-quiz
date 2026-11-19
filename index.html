@@ -134,6 +134,8 @@
   .module.shizheng::after { background: radial-gradient(circle, var(--accent-soft), transparent 70%); }
   .module.bianxi::after { background: radial-gradient(circle, var(--blue-soft), transparent 70%); }
   .module.matching::after { background: radial-gradient(circle, var(--jade-soft), transparent 70%); }
+  .module.xiao1000::after { background: radial-gradient(circle, #f2e5cf, transparent 70%); }
+  .module.xiaoba::after { background: radial-gradient(circle, #e7e1f2, transparent 70%); }
 
   .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kind {
@@ -218,11 +220,11 @@
   <section class="hero">
     <p class="eyebrow">每天十题 · 稳步上岸</p>
     <h2>今天刷哪一块？</h2>
-    <p>时政套题、知识点辨析、会议人物著作配对，三个模块分开记进度，互不干扰。</p>
+    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，五个模块分开记进度，互不干扰。</p>
   </section>
 
   <main class="modules">
-    <a class="module shizheng" href="shizheng.html">
+    <a class="module shizheng" href="shizheng.html?v=20261118">
       <div class="card-top">
         <span class="kind">模块一 · 套题</span>
         <span class="arrow" aria-hidden="true">↗</span>
@@ -242,7 +244,7 @@
       </div>
     </a>
 
-    <a class="module bianxi" href="bianxi.html">
+    <a class="module bianxi" href="bianxi.html?v=20261118">
       <div class="card-top">
         <span class="kind">模块二 · 专项</span>
         <span class="arrow" aria-hidden="true">↗</span>
@@ -262,7 +264,7 @@
       </div>
     </a>
 
-    <a class="module matching" href="matching.html">
+    <a class="module matching" href="matching.html?v=20261118">
       <div class="card-top">
         <span class="kind">模块三 · 配对</span>
         <span class="arrow" aria-hidden="true">↗</span>
@@ -281,6 +283,45 @@
         <div class="cta"><span>进入练习</span><em>自动保存</em></div>
       </div>
     </a>
+    <a class="module xiao1000" href="xiao1000.html?v=20261119">
+      <div class="card-top">
+        <span class="kind">模块四 · 题库</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </div>
+      <h3>肖1000题</h3>
+      <p class="desc">按马原、毛中特、习概、史纲、思法分节；单选点击即判，多选选好后提交判分，每页 10 题。</p>
+      <div class="facts">
+        <span class="fact">920 题</span>
+        <span class="fact">10 个部分</span>
+        <span class="fact">单选 + 多选</span>
+        <span class="fact">分节进度</span>
+      </div>
+      <div class="progress-block">
+        <div class="progress-line"><span id="xq-label">尚未开始</span><b id="xq-count">0 / 920</b></div>
+        <div class="bar"><i id="xq-bar"></i></div>
+        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+      </div>
+    </a>
+
+    <a class="module xiaoba" href="xiaoba.html?v=20261119">
+      <div class="card-top">
+        <span class="kind">模块五 · 模拟卷</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </div>
+      <h3>肖八</h3>
+      <p class="desc">2027 肖秀荣冲刺 8 套卷，只取每套的选择题；按套练习，单选点击即判，多选提交判分。</p>
+      <div class="facts">
+        <span class="fact">220 题</span>
+        <span class="fact">8 套卷</span>
+        <span class="fact">只含选择题</span>
+        <span class="fact">分套进度</span>
+      </div>
+      <div class="progress-block">
+        <div class="progress-line"><span id="xb-label">尚未开始</span><b id="xb-count">0 / 220</b></div>
+        <div class="bar"><i id="xb-bar"></i></div>
+        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+      </div>
+    </a>
   </main>
 
   <footer>题目与答案整理自《2027考研政治背诵手册》 · 仅作个人学习使用</footer>
@@ -290,9 +331,11 @@
   const KEYS = {
     shizheng: "kaoyan-politics-quiz-2027-v1",
     bianxi: "kaoyan-politics-bianxi-2027-v1",
-    matching: "kaoyan-politics-matching-2027-v1"
+    matching: "kaoyan-politics-matching-2027-v1",
+    xiao1000: "kaoyan-politics-xiao1000-2027-v1",
+    xiaoba: "kaoyan-politics-xiaoba-2027-v1"
   };
-  const TOTALS = { shizheng: 193, bianxi: 302, matching: 60 };
+  const TOTALS = { shizheng: 193, bianxi: 302, matching: 60, xiao1000: 920, xiaoba: 220 };
 
   function readCount(key) {
     try {
@@ -316,6 +359,8 @@
   paint("sz", KEYS.shizheng, TOTALS.shizheng);
   paint("bx", KEYS.bianxi, TOTALS.bianxi);
   paint("pp", KEYS.matching, TOTALS.matching);
+  paint("xq", KEYS.xiao1000, TOTALS.xiao1000);
+  paint("xb", KEYS.xiaoba, TOTALS.xiaoba);
 </script>
 </body>
 </html>

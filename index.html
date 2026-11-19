@@ -223,7 +223,7 @@
   <section class="hero">
     <p class="eyebrow">每天十题 · 稳步上岸</p>
     <h2>今天刷哪一块？</h2>
-    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，各模块独立保存进度，互不干扰。</p>
+    <p>时政、知识点辨析、会议人物著作、肖1000、肖八、近10年真题、背诵手册、学习笔记，各模块独立保存。</p>
   </section>
 
   <main class="modules">
@@ -306,42 +306,42 @@
       </div>
     </a>
 
-    <a class="module xiaoba" href="xiaoba.html?v=20261119">
+    <a class="module xiaoba" href="wrong.html?module=xiaoba">
       <div class="card-top">
         <span class="kind">模块五 · 模拟卷</span>
         <span class="arrow" aria-hidden="true">↗</span>
       </div>
       <h3>肖八</h3>
-      <p class="desc">2027 肖秀荣冲刺 8 套卷，只取每套的选择题；按套练习，单选点击即判，多选提交判分。</p>
+      <p class="desc">进去直接选套卷，点出这一套的错题号，33 个题号方块选完一起交给 AI 解析；也可进逐题练习。</p>
       <div class="facts">
         <span class="fact">264 题</span>
         <span class="fact">8 套卷</span>
-        <span class="fact">只含选择题</span>
-        <span class="fact">分套进度</span>
+        <span class="fact">33 格错题</span>
+        <span class="fact">AI 批量解析</span>
       </div>
       <div class="progress-block">
-        <div class="progress-line"><span id="xb-label">尚未开始</span><b id="xb-count">0 / 264</b></div>
-        <div class="bar"><i id="xb-bar"></i></div>
-        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+        <div class="progress-line"><span>选错题号 → 一起解析</span><b>33 格</b></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="cta"><span>进入错题分析</span><em>可逐题练习</em></div>
       </div>
     </a>
-    <a class="module zhenti" href="zhenti.html?v=20261119">
+    <a class="module zhenti" href="wrong.html?module=zhenti">
       <div class="card-top">
         <span class="kind">模块六 · 真题</span>
         <span class="arrow" aria-hidden="true">↗</span>
       </div>
       <h3>近10年真题</h3>
-      <p class="desc">2017—2026 考研政治真题，只取选择题；按年份分节，单选点击即判，多选提交判分。</p>
+      <p class="desc">进去先选年份，点出这一年的错题号，33 个方块选完一起交给 AI 解析；也可进逐题练习。</p>
       <div class="facts">
         <span class="fact">330 题</span>
         <span class="fact">10 年</span>
-        <span class="fact">单选 + 多选</span>
-        <span class="fact">按年分节</span>
+        <span class="fact">33 格错题</span>
+        <span class="fact">AI 批量解析</span>
       </div>
       <div class="progress-block">
-        <div class="progress-line"><span id="zt-label">尚未开始</span><b id="zt-count">0 / 330</b></div>
-        <div class="bar"><i id="zt-bar"></i></div>
-        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+        <div class="progress-line"><span>选错题号 → 一起解析</span><b>33 格</b></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="cta"><span>进入错题分析</span><em>可逐题练习</em></div>
       </div>
     </a>
     <a class="module shouce" href="shouce.html">
@@ -421,8 +421,6 @@
   paint("bx", KEYS.bianxi, TOTALS.bianxi);
   paint("pp", KEYS.matching, TOTALS.matching);
   paint("xq", KEYS.xiao1000, TOTALS.xiao1000);
-  paint("xb", KEYS.xiaoba, TOTALS.xiaoba);
-  paint("zt", KEYS.zhenti, TOTALS.zhenti);
 </script>
 <script src="global-search.js"></script>
 </body>

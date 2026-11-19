@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>整卷模考 · 近10年真题</title>
+<style>
+  :root{--paper:#f5f0e6;--card:#fffdf8;--ink:#20262b;--soft:#465058;--muted:#81796b;--line:#ded4c3;--jade:#2f6b56;--jade-soft:#e4efe8;--red:#a44437;--red-soft:#f7e7e1;--serif:"Songti SC","STSong",serif;--sans:"PingFang SC","Microsoft YaHei",sans-serif}
+  *{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans)}
+  button,select{font:inherit}
+  .topbar{position:sticky;top:0;z-index:30;display:flex;align-items:center;gap:12px;padding:11px clamp(14px,4vw,40px);background:rgba(255,253,248,.95);border-bottom:1px solid var(--line);backdrop-filter:blur(12px)}
+  .seal{width:42px;height:42px;border-radius:11px;background:var(--jade);color:#fff;display:grid;place-items:center;font-family:var(--serif);font-size:19px;text-decoration:none}
+  h1{margin:0;font-family:var(--serif);font-size:19px;font-weight:500}.sub{font-size:10px;color:var(--muted);margin:3px 0 0}
+  #year{max-width:160px;border:1px solid var(--line);border-radius:9px;padding:7px 9px;background:var(--card)}
+  .timer{margin-left:auto;font-family:var(--serif);font-size:22px;color:var(--jade);letter-spacing:.04em}
+  .timer.low{color:var(--red)}
+  .ghost{border:1px solid var(--line);border-radius:999px;background:transparent;color:var(--soft);padding:7px 11px;font-size:11px;cursor:pointer}
+  .wrap{max-width:1180px;margin:0 auto;padding:18px clamp(12px,3vw,26px) 70px;display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:18px}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px}
+  .qhead{display:flex;gap:8px;align-items:center;color:var(--muted);font-size:11px;margin-bottom:8px}
+  .pill{background:var(--jade-soft);color:var(--jade);border-radius:999px;padding:2px 8px}
+  .stem{font-size:15px;line-height:1.9;margin:0 0 12px}
+  .options{display:grid;gap:8px}
+  .opt{display:flex;gap:9px;text-align:left;border:1px solid var(--line);background:#fffefb;border-radius:10px;padding:10px;color:var(--soft);font-size:13px;line-height:1.7;cursor:pointer}
+  .opt .l{flex:0 0 21px;height:21px;border-radius:50%;background:#f1eadc;display:grid;place-items:center;font-family:var(--serif);font-size:12px;color:var(--ink)}
+  .opt.sel{border-color:var(--jade);background:#f1f7f2}.opt.sel .l{background:var(--jade);color:#fff}
+  .opt.correct{border-color:#a9cdb7;background:#edf7f0}.opt.correct .l{background:var(--jade);color:#fff}
+  .opt.wrong{border-color:#dfb1a6;background:var(--red-soft)}.opt.wrong .l{background:var(--red);color:#fff}
+  .nav{display:flex;justify-content:space-between;margin-top:14px;gap:8px}
+  .btn{border:0;border-radius:9px;padding:9px 15px;background:var(--jade);color:#fff;font-size:12px;cursor:pointer}.btn.ghostbtn{background:transparent;border:1px solid var(--line);color:var(--soft)}
+  .side{position:sticky;top:88px;align-self:start}
+  .cardbox{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px}
+  .cardbox h3{margin:0 0 8px;font-family:var(--serif);font-size:14px;font-weight:500}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:5px}
+  .cell{height:27px;border:1px solid var(--line);border-radius:6px;background:#fffefb;font-size:10px;color:var(--soft);cursor:pointer}
+  .cell.ans{background:var(--jade-soft);border-color:#b9d5c4;color:var(--jade)}
+  .cell.cur{outline:2px solid var(--jade);outline-offset:1px}
+  .cell.mark{box-shadow:inset 0 0 0 2px #d7b26a}
+  .cell.ok{background:#edf7f0;border-color:#a9cdb7;color:var(--jade)}
+  .cell.bad{background:var(--red-soft);border-color:#dfb1a6;color:var(--red)}
+  .small{font-size:10px;color:var(--muted);line-height:1.7;margin-top:8px}
+  .result{grid-column:1/-1;text-align:center;padding:30px 16px}
+  .result .score{font-family:var(--serif);font-size:52px;color:var(--jade)}.result .score small{font-size:18px;color:var(--muted)}
+  .review{grid-column:1/-1}
+  .fb{margin-top:10px;border-radius:9px;padding:9px 11px;font-size:12px;line-height:1.8}
+  .fb.ok{background:var(--jade-soft);color:#245846}.fb.bad{background:var(--red-soft);color:#7d3329}
+  @media(max-width:800px){.wrap{grid-template-columns:1fr}.side{position:static;order:2}.timer{font-size:18px}.topbar{flex-wrap:wrap}#year{order:5}.grid{grid-template-columns:repeat(8,1fr)}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <a class="seal" href="zhenti.html" aria-label="返回真题">模</a>
+  <div><h1>整卷模考</h1><p class="sub">2017—2026 · 16单选 + 17多选 · 50分</p></div>
+  <select id="year"></select>
+  <div class="timer" id="timer">60:00</div>
+  <button class="ghost" id="submit" type="button">交卷</button>
+</header>
+<main class="wrap" id="app"></main>
+<script src="zhenti-full-data.js"></script>
+<script>
+const DATA = window.ZHENTI_SECTIONS || [];
+const YEARS = DATA.map(x => Number(x.title.replace("年真题","")));
+const $ = s => document.querySelector(s);
+const KEY = "kaoyan-mock-attempt-v1";
+let state = null, tick = null;
+
+function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
+function section(){return DATA.find(x=>String(x.id)==="y"+state.year)||DATA[0];}
+function answers(q){return state.answers[q.id]||[];}
+function correct(q){return String(q.answer||"").split("").sort().join("");}
+function isRight(q){return answers(q).slice().sort().join("")===correct(q);}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem(KEY)||"null");}catch(e){return null;}}
+function fmt(s){s=Math.max(0,s);const m=Math.floor(s/60),x=s%60;return String(m).padStart(2,"0")+":"+String(x).padStart(2,"0");}
+function startTimer(){
+  clearInterval(tick);
+  tick=setInterval(()=>{
+    if(!state||state.submitted)return;
+    const left=Math.round((state.endsAt-Date.now())/1000);
+    $("#timer").textContent=fmt(left);
+    $("#timer").classList.toggle("low",left<=300);
+    if(left<=0){clearInterval(tick);submit(true);}
+  },500);
+}
+function newAttempt(year){
+  const sec=DATA.find(x=>String(x.id)==="y"+year)||DATA[0];
+  state={year:Number(year),index:0,answers:{},marked:{},submitted:false,startedAt:Date.now(),endsAt:Date.now()+60*60*1000};
+  save(); startTimer(); render();
+}
+function initYears(){
+  $("#year").innerHTML=YEARS.map(y=>`<option value="${y}">${y} 年</option>`).join("");
+  const p=new URLSearchParams(location.search); const y=Number(p.get("year"));
+  if(YEARS.includes(y)) $("#year").value=String(y);
+}
+function render(){
+  const app=$("#app");
+  if(!state){app.innerHTML='<div class="panel result"><h2>近10年真题 · 整卷模考</h2><p class="small">16 道单选（每题1分）+ 17 道多选（每题2分），满分50分；多选少选错选不得分。考试时间60分钟。</p><button class="btn" id="start">开始模考</button></div>';$("#start").onclick=()=>newAttempt(Number($("#year").value));return;}
+  const sec=section(), list=sec.questions, q=list[state.index];
+  if(state.submitted){renderResult();return;}
+  app.innerHTML=`<section class="panel"><div class="qhead"><span class="pill">${sec.title}</span><span>第 ${state.index+1} / ${list.length} 题</span><span>${q.type==="multiple"?"多选 · 2分":"单选 · 1分"}</span></div><p class="stem">${esc(q.stem)}</p><div class="options">${["A","B","C","D"].map(l=>{const sel=answers(q).includes(l);return `<button type="button" class="opt ${sel?"sel":""}" data-l="${l}"><span class="l">${l}</span><span>${esc(q.options[l]||"")}</span></button>`;}).join("")}</div><div class="nav"><button class="btn ghostbtn" id="prev" ${state.index===0?"disabled":""}>上一题</button><button class="btn ghostbtn" id="mark">${state.marked[q.id]?"取消标记":"标记本题"}</button><button class="btn" id="next">${state.index===list.length-1?"检查答题卡":"下一题"}</button></div></section><aside class="side"><div class="cardbox"><h3>答题卡</h3><div class="grid">${list.map((x,i)=>`<button class="cell ${state.answers[x.id]&&state.answers[x.id].length?"ans":""} ${i===state.index?"cur":""} ${state.marked[x.id]?"mark":""}" data-i="${i}">${i+1}</button>`).join("")}</div><p class="small">绿色已答 · 金框标记 · 点击跳转</p><button class="btn" style="width:100%;margin-top:10px" id="submit2">交卷</button></div></aside>`;
+  app.querySelectorAll(".opt").forEach(btn=>btn.onclick=()=>{
+    const l=btn.dataset.l; let a=answers(q).slice();
+    if(q.type==="multiple"){ a=a.includes(l)?a.filter(x=>x!==l):a.concat(l); } else { a=[l]; }
+    state.answers[q.id]=a; save(); render();
+  });
+  $("#prev").onclick=()=>{if(state.index>0){state.index--;save();render();}};
+  $("#next").onclick=()=>{if(state.index<list.length-1){state.index++;save();render();}else{alert("请检查答题卡，确认后交卷。");}};
+  $("#mark").onclick=()=>{state.marked[q.id]=!state.marked[q.id];save();render();};
+  $("#submit2").onclick=()=>submit(false);
+  app.querySelectorAll(".cell").forEach(b=>b.onclick=()=>{state.index=Number(b.dataset.i);save();render();});
+}
+function submit(auto){
+  if(!state||state.submitted)return;
+  if(!auto && !confirm("确认交卷？交卷后不能再修改答案。"))return;
+  state.submitted=true;state.submittedAt=Date.now();save();clearInterval(tick);render();
+}
+function renderResult(){
+  const sec=section(),list=sec.questions;let score=0,right=0;
+  for(const q of list){if(isRight(q)){right++;score+=q.type==="multiple"?2:1;}}
+  const app=$("#app");
+  app.innerHTML=`<div class="result"><div class="score">${score}<small> / 50</small></div><p class="small">${sec.title} · 答对 ${right} / ${list.length} 题 · 用时 ${fmt(Math.round((state.submittedAt-state.startedAt)/1000))}</p><button class="btn" id="again">重新模考</button> <a class="btn ghostbtn" href="zhenti.html" style="text-decoration:none;display:inline-block">回真题</a></div><section class="panel review"><div class="qhead"><span class="pill">${sec.title}</span><span>第 ${state.index+1} / ${list.length} 题</span></div>${reviewHTML(list[state.index])}<div class="nav"><button class="btn ghostbtn" id="rprev" ${state.index===0?"disabled":""}>上一题</button><button class="btn ghostbtn" id="rnext" ${state.index===list.length-1?"disabled":""}>下一题</button></div></section><aside class="side"><div class="cardbox"><h3>答题卡</h3><div class="grid">${list.map((x,i)=>`<button class="cell ${isRight(x)?"ok":"bad"} ${i===state.index?"cur":""}" data-i="${i}">${i+1}</button>`).join("")}</div><p class="small">绿色正确 · 红色错误</p></div></aside>`;
+  $("#again").onclick=()=>newAttempt(state.year);
+  $("#rprev").onclick=()=>{if(state.index>0){state.index--;render();}};
+  $("#rnext").onclick=()=>{if(state.index<list.length-1){state.index++;render();}};
+  app.querySelectorAll(".cell").forEach(b=>b.onclick=()=>{state.index=Number(b.dataset.i);render();});
+}
+function reviewHTML(q){
+  const a=answers(q), ok=isRight(q);
+  return `<p class="stem">${esc(q.stem)}</p><div class="options">${["A","B","C","D"].map(l=>{const cls=(String(q.answer).includes(l)?"correct":"")+(a.includes(l)&&!String(q.answer).includes(l)?" wrong":"");return `<div class="opt ${cls}"><span class="l">${l}</span><span>${esc(q.options[l]||"")}</span></div>`;}).join("")}</div><div class="fb ${ok?"ok":"bad"}">${ok?"✓ 回答正确":"✕ 回答错误"} · 正确答案 <b>${esc(q.answer)}</b> · 你的选择 ${esc(a.join("")||"未答")}</div>`;
+}
+initYears();
+const old=load();
+if(old && !old.submitted && old.endsAt>Date.now()){state=old;startTimer();render();}else if(old && old.submitted){state=old;render();}else{render();}
+$("#year").onchange=()=>{if(state&&!state.submitted&&!confirm("切换年份会重新开始，继续？")){$("#year").value=String(state.year);return;}newAttempt(Number($("#year").value));};
+$("#submit").onclick=()=>submit(false);
+</script>
+</body>
+</html>

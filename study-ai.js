@@ -95,16 +95,33 @@
       .sa-item em{display:block;font-style:normal;color:var(--ink-soft,#465058);font-size:11.5px;line-height:1.7;margin-top:2px}
       .sa-foot{color:var(--muted,#81796b);font-size:10px;text-align:center;margin-top:4px}
       .sa-retry{border:1px solid var(--line,#ded4c3);background:#fffefb;border-radius:8px;padding:6px 10px;font-size:11px;color:var(--jade,#2f6b56);cursor:pointer;margin-top:6px}
+      .sa-page-modal{position:fixed;inset:0;z-index:120;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px;}
+      .sa-page-modal iframe{max-width:min(920px,96vw);max-height:92vh;width:90vw;height:92vh;border:0;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);}
+      .sa-page-modal button{position:fixed;top:14px;right:18px;border:0;background:rgba(255,255,255,.92);border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer;}
       @media(max-width:600px){.study-ai-panel{right:10px;left:10px;bottom:10px;width:auto;max-height:82vh}}
     `;
     document.head.appendChild(style);
     panel.querySelector(".sa-close").addEventListener("click", function () { panel.hidden = true; });
     panel.addEventListener("click", function (e) {
       var a = e.target.closest("[data-handbook]");
-      if (a) { window.open("shouce.html?page=" + encodeURIComponent(a.getAttribute("data-handbook")), "_blank"); }
-      var r = e.target.closest("[data-xi]");
-      if (r) { window.open("xiao1000.html?section=" + encodeURIComponent(r.getAttribute("data-section")) + "&q=" + encodeURIComponent(r.getAttribute("data-xi")), "_blank"); }
+      if (a) {
+        e.preventDefault();
+        var p = (window.HANDBOOK_INDEX || []).find(function (x) { return x.id === a.getAttribute("data-handbook"); });
+        if (p) showPageImage(p);
+      }
     });
+  }
+
+  function showPageImage(p) {
+    var old = document.querySelector(".sa-page-modal");
+    if (old) old.remove();
+    var box = document.createElement("div");
+    box.className = "sa-page-modal";
+    var src = (p.volKey === "up" ? "handbook-up.pdf" : "handbook-down.pdf") + "#page=" + p.pdfPage + "&toolbar=0";
+    box.innerHTML = '<button type="button" aria-label="关闭">×</button><iframe title="背诵手册页面" src="' + esc(src) + '" style="width:min(920px,96vw);height:92vh;border:0;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);"></iframe>';
+    document.body.appendChild(box);
+    box.querySelector("button").addEventListener("click", function () { box.remove(); });
+    box.addEventListener("click", function (e) { if (e.target === box) box.remove(); });
   }
 
   function answerText(q) {
@@ -120,12 +137,12 @@
     html += '<div class="sa-block"><h4>AI 解析</h4><div id="sa-ai" class="sa-ai"><span class="sa-loading">正在结合背诵手册和1000题分析…</span></div></div>';
     if (hand.length) {
       html += '<div class="sa-block"><h4>背诵手册定位</h4>' + hand.map(function (p) {
-        return '<a class="sa-item" href="shouce.html?page=' + encodeURIComponent(p.id) + '" target="_blank"><b>' + esc(p.volume) + " · PDF 第 " + p.pdfPage + " 页</b><span>" + esc(p.heading || "") + "</span><em>" + esc(snippet(p.text, q.stem.slice(0, 12))) + "</em></a>";
+        return '<a class="sa-item" href="shouce.html?page=' + encodeURIComponent(p.id) + '" data-handbook="' + esc(p.id) + '"><b>' + esc(p.volume) + " · PDF 第 " + p.pdfPage + " 页</b><span>" + esc(p.heading || "") + "</span><em>" + esc(snippet(p.text, q.stem.slice(0, 12))) + "</em></a>";
       }).join("") + "</div>";
     }
     if (rel.length) {
       html += '<div class="sa-block"><h4>肖1000相关练习</h4>' + rel.map(function (r) {
-        return '<a class="sa-item" href="xiao1000.html?section=' + encodeURIComponent(r.section) + "&q=" + encodeURIComponent(r.id) + '" target="_blank"><b>' + esc(r.sectionTitle) + " · 第 " + r.id.split("-").pop() + " 题</b><span>" + esc(r.stem.slice(0, 80)) + "…</span></a>";
+        return '<a class="sa-item" href="xiao1000.html?section=' + encodeURIComponent(r.section) + "&q=" + encodeURIComponent(r.id) + "&back=" + encodeURIComponent(location.href) + '"><b>' + esc(r.sectionTitle) + " · 第 " + r.id.split("-").pop() + " 题</b><span>" + esc(r.stem.slice(0, 80)) + "…</span></a>";
       }).join("") + "</div>";
     }
     html += '<div class="sa-foot">AI 回答仅供参考，页码为 PDF 页；知识点以原书为准。</div>';

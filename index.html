@@ -138,6 +138,7 @@
   .module.xiaoba::after { background: radial-gradient(circle, #e7e1f2, transparent 70%); }
   .module.zhenti::after { background: radial-gradient(circle, #e3ecec, transparent 70%); }
   .module.shouce::after { background: radial-gradient(circle, #f0e8d8, transparent 70%); }
+  .module.notes::after { background: radial-gradient(circle, #e8eef0, transparent 70%); }
 
   .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kind {
@@ -222,7 +223,7 @@
   <section class="hero">
     <p class="eyebrow">每天十题 · 稳步上岸</p>
     <h2>今天刷哪一块？</h2>
-    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，七个模块分开记进度，互不干扰。</p>
+    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，各模块独立保存进度，互不干扰。</p>
   </section>
 
   <main class="modules">
@@ -360,6 +361,25 @@
         <div class="progress-line"><span>做题时也可从 AI 解析跳转</span><b>检索 →</b></div>
         <div class="bar"><i style="width:100%"></i></div>
         <div class="cta"><span>进入检索</span><em>不用作答</em></div>
+      </div>
+    </a>
+    <a class="module notes" href="notes.html">
+      <div class="card-top">
+        <span class="kind">模块八 · 笔记</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </div>
+      <h3>学习笔记</h3>
+      <p class="desc">把 AI 解析、错因和记忆口诀保存下来；按题目回看，支持导出 / 导入 JSON。</p>
+      <div class="facts">
+        <span class="fact">AI 解析收藏</span>
+        <span class="fact">错因笔记</span>
+        <span class="fact">本地保存</span>
+        <span class="fact">导出备份</span>
+      </div>
+      <div class="progress-block">
+        <div class="progress-line"><span>做题时在 AI 解析里写笔记</span><b>打开 →</b></div>
+        <div class="bar"><i style="width:100%"></i></div>
+        <div class="cta"><span>查看全部笔记</span><em>自动保存</em></div>
       </div>
     </a>
   </main>

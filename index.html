@@ -136,6 +136,7 @@
   .module.matching::after { background: radial-gradient(circle, var(--jade-soft), transparent 70%); }
   .module.xiao1000::after { background: radial-gradient(circle, #f2e5cf, transparent 70%); }
   .module.xiaoba::after { background: radial-gradient(circle, #e7e1f2, transparent 70%); }
+  .module.zhenti::after { background: radial-gradient(circle, #e3ecec, transparent 70%); }
 
   .card-top { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
   .kind {
@@ -220,7 +221,7 @@
   <section class="hero">
     <p class="eyebrow">每天十题 · 稳步上岸</p>
     <h2>今天刷哪一块？</h2>
-    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，五个模块分开记进度，互不干扰。</p>
+    <p>时政套题、知识点辨析、会议人物著作、肖1000题、肖八，六个模块分开记进度，互不干扰。</p>
   </section>
 
   <main class="modules">
@@ -322,6 +323,25 @@
         <div class="cta"><span>进入练习</span><em>自动保存</em></div>
       </div>
     </a>
+    <a class="module zhenti" href="zhenti.html?v=20261119">
+      <div class="card-top">
+        <span class="kind">模块六 · 真题</span>
+        <span class="arrow" aria-hidden="true">↗</span>
+      </div>
+      <h3>近10年真题</h3>
+      <p class="desc">2017—2026 考研政治真题，只取选择题；按年份分节，单选点击即判，多选提交判分。</p>
+      <div class="facts">
+        <span class="fact">330 题</span>
+        <span class="fact">10 年</span>
+        <span class="fact">单选 + 多选</span>
+        <span class="fact">按年分节</span>
+      </div>
+      <div class="progress-block">
+        <div class="progress-line"><span id="zt-label">尚未开始</span><b id="zt-count">0 / 330</b></div>
+        <div class="bar"><i id="zt-bar"></i></div>
+        <div class="cta"><span>进入练习</span><em>自动保存</em></div>
+      </div>
+    </a>
   </main>
 
   <footer>题目与答案整理自《2027考研政治背诵手册》 · 仅作个人学习使用</footer>
@@ -333,9 +353,10 @@
     bianxi: "kaoyan-politics-bianxi-2027-v1",
     matching: "kaoyan-politics-matching-2027-v1",
     xiao1000: "kaoyan-politics-xiao1000-2027-v1",
-    xiaoba: "kaoyan-politics-xiaoba-2027-v1"
+    xiaoba: "kaoyan-politics-xiaoba-2027-v1",
+    zhenti: "kaoyan-politics-zhenti-2017-2026-v1"
   };
-  const TOTALS = { shizheng: 193, bianxi: 302, matching: 60, xiao1000: 1102, xiaoba: 264 };
+  const TOTALS = { shizheng: 193, bianxi: 302, matching: 60, xiao1000: 1102, xiaoba: 264, zhenti: 330 };
 
   function readCount(key) {
     try {
@@ -361,6 +382,7 @@
   paint("pp", KEYS.matching, TOTALS.matching);
   paint("xq", KEYS.xiao1000, TOTALS.xiao1000);
   paint("xb", KEYS.xiaoba, TOTALS.xiaoba);
+  paint("zt", KEYS.zhenti, TOTALS.zhenti);
 </script>
 </body>
 </html>

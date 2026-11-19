@@ -60,16 +60,16 @@
     var btn = document.createElement("button");
     btn.id = "gs-open";
     btn.type = "button";
-    btn.textContent = "🔍 搜索";
-    btn.title = "全局搜索（Ctrl+K）";
-    btn.style.cssText = "position:fixed;left:18px;bottom:18px;z-index:58;border:1px solid var(--line,#ded4c3);background:rgba(255,253,248,.96);color:var(--ink-soft,#465058);border-radius:999px;padding:8px 13px;font-size:11px;cursor:pointer;box-shadow:0 8px 20px -12px rgba(32,38,43,.4);font-family:var(--sans,sans-serif);";
+    btn.textContent = "🔍 全局搜索";
+    btn.title = "点击搜索知识点、1000题、真题";
+    btn.style.cssText = "position:fixed;left:18px;bottom:70px;z-index:58;border:1px solid var(--line,#ded4c3);background:rgba(255,253,248,.96);color:var(--ink-soft,#465058);border-radius:999px;padding:8px 13px;font-size:11px;cursor:pointer;box-shadow:0 8px 20px -12px rgba(32,38,43,.4);font-family:var(--sans,sans-serif);";
     btn.addEventListener("click", open);
     document.body.appendChild(btn);
 
     overlay = document.createElement("div");
     overlay.id = "gs-overlay";
     overlay.style.cssText = "position:fixed;inset:0;z-index:130;background:rgba(24,28,30,.45);display:none;align-items:flex-start;justify-content:center;padding:min(12vh,110px) 14px 20px;";
-    overlay.innerHTML = '<div style="width:min(760px,100%);background:var(--card,#fffdf8);border:1px solid var(--line,#ded4c3);border-radius:16px;box-shadow:0 30px 90px -30px rgba(0,0,0,.55);overflow:hidden;"><div style="display:flex;gap:8px;padding:12px;border-bottom:1px solid var(--line,#ded4c3);"><input id="gs-input" placeholder="搜知识点 / 1000题 / 真题…（Ctrl+K）" style="flex:1;border:0;outline:0;background:transparent;font-size:15px;color:var(--ink,#20262b);padding:6px 4px;"><button id="gs-close" type="button" style="border:0;background:transparent;color:var(--muted,#81796b);font-size:20px;cursor:pointer;">×</button></div><div id="gs-results" style="max-height:min(62vh,560px);overflow:auto;padding:10px 14px 16px;"></div><div style="padding:8px 14px;color:var(--muted,#81796b);font-size:10px;border-top:1px solid #eee6d9;">Enter 打开第一条 · Esc 关闭 · 点击结果当前页跳转</div></div>';
+    overlay.innerHTML = '<div style="width:min(760px,100%);background:var(--card,#fffdf8);border:1px solid var(--line,#ded4c3);border-radius:16px;box-shadow:0 30px 90px -30px rgba(0,0,0,.55);overflow:hidden;"><div style="display:flex;gap:8px;padding:12px;border-bottom:1px solid var(--line,#ded4c3);"><input id="gs-input" placeholder="搜知识点 / 1000题 / 真题…" style="flex:1;border:0;outline:0;background:transparent;font-size:15px;color:var(--ink,#20262b);padding:6px 4px;"><button id="gs-close" type="button" style="border:0;background:transparent;color:var(--muted,#81796b);font-size:20px;cursor:pointer;">×</button></div><div id="gs-results" style="max-height:min(62vh,560px);overflow:auto;padding:10px 14px 16px;"></div><div style="padding:8px 14px;color:var(--muted,#81796b);font-size:10px;border-top:1px solid #eee6d9;">点击结果当前页跳转 · Esc 关闭</div></div>';
     document.body.appendChild(overlay);
     input = overlay.querySelector("#gs-input");
     results = overlay.querySelector("#gs-results");
@@ -81,9 +81,6 @@
       if (e.key === "Enter") { var a = results.querySelector("a[data-result]"); if (a) { e.preventDefault(); a.click(); } }
     });
     results.addEventListener("click", onClick);
-    document.addEventListener("keydown", function (e) {
-      if ((e.ctrlKey || e.metaKey) && String(e.key).toLowerCase() === "k") { e.preventDefault(); if (overlay.style.display === "flex") close(); else open(); }
-    });
   }
 
   function open() {

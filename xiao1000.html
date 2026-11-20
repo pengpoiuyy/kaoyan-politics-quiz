@@ -349,8 +349,12 @@ function init() {
   const qParam = params.get("q");
   let flashId = null;
   if (qParam) {
-    const idx = allQuestions().findIndex(x => x.id === qParam);
-    if (idx >= 0) { state.page = Math.floor(idx / PAGE_SIZE) + 1; flashId = qParam; }
+    let idx = allQuestions().findIndex(x => x.id === qParam);
+    if (idx < 0) {
+      const n = Number(String(qParam).split("-").pop());
+      if (n) idx = allQuestions().findIndex(x => Number(x.num) === n);
+    }
+    if (idx >= 0) { state.page = Math.floor(idx / PAGE_SIZE) + 1; flashId = allQuestions()[idx].id; }
   }
   const sel = $("#section-select");
   sel.innerHTML = SECTIONS.map(s => `<option value="${s.id}">${esc(s.title)}（${s.questions.length}题）</option>`).join("");

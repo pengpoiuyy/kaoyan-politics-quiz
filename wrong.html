@@ -49,6 +49,7 @@
   .pdf-modal{position:fixed;inset:0;z-index:140;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px}
   .pdf-modal iframe{width:min(920px,96vw);height:92vh;border:0;border-radius:10px;background:#fff}
   .pdf-modal button{position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer}
+  .topic-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}.topic-link{font-size:9.5px;border:1px solid #b9d5c4;background:#f1f7f2;color:#2f6b56;border-radius:999px;padding:4px 8px;text-decoration:none}
 </style>
 </head>
 <body>
@@ -75,10 +76,12 @@
 const AI_ENDPOINT="https://detailed-grasshopper-d9a0e9b307d-1420335919.ap-shanghai.app.tcloudbase.com/grade";
 const AI_CODE="essay2026";
 const CACHE_KEY="kaoyan-batch-ai-v1";
+const STATE_KEY="kaoyan-wrong-state-v1";
 const $=s=>document.querySelector(s);
 let moduleType = new URLSearchParams(location.search).get("module")==="zhenti" ? "zhenti" : "xiaoba";
-let sections=[], selected=new Set(), cache={};
+let sections=[], selected=new Set(), cache={}, savedState=null;
 try{cache=JSON.parse(localStorage.getItem(CACHE_KEY)||"{}")||{};}catch(e){cache={};}
+try{savedState=JSON.parse(sessionStorage.getItem(STATE_KEY)||"null");}catch(e){savedState=null;}
 function esc(v){return String(v==null?"":v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));}
 function loadData(){
   const src=moduleType==="zhenti"?"zhenti-full-data.js":"xiaoba-full-data.js";
@@ -101,7 +104,7 @@ function renderPapers(){
 function renderGrid(){
   const sec=paper(); if(!sec)return;
   $("#grid").innerHTML=sec.questions.map(q=>`<button type="button" class="cell ${selected.has(q.num)?"sel":""} ${q.type==="multiple"?"multi":""}" data-n="${q.num}">${q.num}</button>`).join("");
-  $("#grid").querySelectorAll(".cell").forEach(b=>b.onclick=()=>{const n=Number(b.dataset.n);selected.has(n)?selected.delete(n):selected.add(n);renderGrid();update();});
+  $("#grid").querySelectorAll(".cell").forEach(b=>b.onclick=()=>{const n=Number(b.dataset.n);selected.has(n)?selected.delete(n):selected.add(n);renderGrid();update();persist();});
   $("#paper-hint").textContent=`${sec.questions.length} 题`;
   update();
 }
@@ -113,32 +116,53 @@ function nrm(v){return String(v||"").replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g,"");}
 function bg(v){v=nrm(v);if(v.length<2)return v?[v]:[];const a=[];for(let i=0;i<v.length-1;i++)a.push(v.slice(i,i+2));return [...new Set(a)];}
 function score(text,q,gs){const t=nrm(text);let n=0;if(t.includes(q))n+=q.length*8;for(const x of gs){let p=0,c=0;while((p=t.indexOf(x,p))>=0){c++;p+=x.length;}n+=Math.min(c,5)*x.length;}return n;}
 function topHB(q){const base=nrm(String(q.stem||"")+" "+Object.values(q.options||{}).join(" "));const gs=bg(base);const docs=(window.HANDBOOK_INDEX||[]).map(p=>nrm(p.text+" "+(p.heading||"")));const N=docs.length||1;const avg=docs.reduce((a,t)=>a+t.length,0)/N;const df={};for(const g of gs){let c=0;for(const t of docs)if(t.includes(g))c++;df[g]=c;}return (window.HANDBOOK_INDEX||[]).map((p,i)=>{const t=docs[i];let sc=0;for(const g of gs){if(!df[g])continue;const tf=t.split(g).length-1;const idf=Math.log(1+(N-df[g]+.5)/(df[g]+.5));sc+=idf*(tf*2.2)/(tf+1.2*(.25+.75*t.length/avg));}return [sc,p];}).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,2).map(x=>x[1]);}
-function topXQ(q){const base=nrm(String(q.stem||"").slice(0,90));const gs=bg(base);return (window.XIAO1000_INDEX||[]).map(p=>[score(p.stem+" "+(p.chapter||""),base,gs),p]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).slice(0,4).map(x=>x[1]);}
+function topXQ(q){const base=nrm(String(q.stem||"").slice(0,120));const gs=bg(base);const all=(window.XIAO1000_INDEX||[]).map(p=>[score(p.stem+" "+(p.chapter||""),base,gs),p]).filter(x=>x[0]>0).sort((a,b)=>b[0]-a[0]).map(x=>x[1]);const part=(all[0]&&all[0].section||"").slice(0,2);const pool=part?all.filter(p=>p.section.startsWith(part)):all;const src=pool.length>=4?pool:all;const out=[],cnt={};for(const p of src){if(out.length>=10)break;if((cnt[p.section]||0)>=3)continue;out.push(p);cnt[p.section]=(cnt[p.section]||0)+1;}return out;}
 function cut(v,n){v=String(v||"").replace(/\s+/g," ");return v.length>n?v.slice(0,n)+"…":v;}
 function hbHTML(list){if(!list.length)return '<div class="rel-title">背诵手册定位</div><div style="font-size:10px;color:#81796b">未找到明显对应页，以原书目录为准。</div>';return '<div class="rel-title">背诵手册定位</div>'+list.map(p=>`<a class="rel-link" href="#" data-hb="${esc(p.id)}"><b>${esc(p.volume)} · PDF 第 ${p.pdfPage} 页</b><span>${esc(cut(p.heading||"",50))}</span><em>${esc(cut(p.text,80))}</em></a>`).join("");}
-function xqHTML(list){if(!list.length)return '<div class="rel-title">肖1000相关专题</div><div style="font-size:10px;color:#81796b">暂无匹配，可在肖1000里搜同章节。</div>';return '<div class="rel-title">肖1000相关专题</div>'+list.map(p=>`<a class="rel-link" href="#" data-xq data-sec="${esc(p.section)}" data-q="${esc(p.id)}"><b>${esc(p.sectionTitle)} · 第 ${p.id.split("-").pop()} 题</b><span>${esc(cut(p.stem,75))}</span></a>`).join("");}
+function xqHTML(list){if(!list.length)return '<div class="rel-title">肖1000相关专题</div><div style="font-size:10px;color:#81796b">暂无匹配，可在肖1000里搜同章节。</div>';const secs=[];const seen={};for(const p of list){if(!seen[p.section]){seen[p.section]=1;secs.push(p);}}return '<div class="rel-title">肖1000相关专题 <span style="color:#81796b;font-weight:400">关键词初筛 · AI 参考前4题 · 点专题练整章</span></div><div class="topic-row">'+secs.map(p=>`<a class="topic-link" href="#" data-all data-sec="${esc(p.section)}">${esc(p.sectionTitle)} · 练整章</a>`).join("")+'</div>'+list.map(p=>`<a class="rel-link" href="#" data-xq data-sec="${esc(p.section)}" data-q="${esc(p.id)}"><b>${esc(p.sectionTitle)} · 第 ${p.id.split("-").pop()} 题</b><span>${esc(cut(p.stem,75))}</span></a>`).join("");}
 function promptFor(q,hand,rel){
   const opts=["A","B","C","D"].map(l=>l+". "+String(q.options[l]||"").slice(0,50)).join("；");
   const hb=hand.map(p=>`【${p.volume} PDF第${p.pdfPage}页】${String(p.text||"").slice(0,220)}`).join("\n");
-  const xq=rel.map(r=>`（${r.sectionTitle} 第${r.id.split("-").pop()}题）${String(r.stem||"").slice(0,80)}`).join("\n");
-  return ("请忽略作文批改场景，作为考研政治老师分析这道选择题。不要编造页码。题目："+String(q.stem||"").slice(0,500)+" 选项："+opts+" 正确答案："+(q.answer||"")+"。背诵手册片段："+(hb||"无")+"。肖1000相关题："+(xq||"无")+"。请输出：1.考点 2.为什么选 3.干扰项/易错点 4.对应手册：必须写出上面给出的PDF页码和关键词，说明怎么记 5.巩固建议。300字以内。").slice(0,1450);
+  const xq=rel.slice(0,4).map(r=>`（${r.sectionTitle} 第${r.id.split("-").pop()}题）${String(r.stem||"").slice(0,70)}`).join("\n");
+  return ("请忽略作文批改场景，作为考研政治老师分析这道选择题。不要编造页码。题目："+String(q.stem||"").slice(0,480)+" 选项："+opts+" 正确答案："+(q.answer||"")+"。背诵手册片段："+(hb||"无")+"。肖1000相关题："+(xq||"无")+"。请输出：1.考点 2.为什么选 3.干扰项/易错点 4.对应手册：必须写出上面给出的PDF页码和关键词，说明怎么记 5.巩固建议。300字以内。").slice(0,1450);
 }
 function ask(q,hand,rel){const key=q.id+"-hb2";if(cache[key]&&cache[key].text)return Promise.resolve(cache[key].text);return fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","x-access-code":AI_CODE},body:JSON.stringify({mode:"chat",question:promptFor(q,hand,rel),context:{type:"big",promptText:"考研政治错题解析",essayText:"",grade:{score:"",band:"",issues:[],deductions:[]}},history:[]})}).then(r=>r.json().catch(()=>({})).then(d=>{if(!r.ok)throw new Error(d.error||("HTTP "+r.status));return d;})).then(d=>{const t=String(d.answer||"").trim();if(!t)throw new Error("AI 没有返回内容");cache[key]={text:t,at:Date.now()};try{localStorage.setItem(CACHE_KEY,JSON.stringify(cache));}catch(e){}return t;});}
 function showPage(p){const old=document.querySelector(".pdf-modal");if(old)old.remove();const box=document.createElement("div");box.className="pdf-modal";const src=(p.volKey==="up"?"handbook-up.pdf":"handbook-down.pdf")+"#page="+p.pdfPage+"&toolbar=0";box.innerHTML='<button type="button" aria-label="关闭">×</button><iframe title="背诵手册页面" src="'+src+'"></iframe>';document.body.appendChild(box);box.querySelector("button").onclick=()=>box.remove();box.onclick=e=>{if(e.target===box)box.remove();};}
-$("#results").addEventListener("click",e=>{const h=e.target.closest("[data-hb]");if(h){e.preventDefault();const p=(window.HANDBOOK_INDEX||[]).find(x=>x.id===h.dataset.hb);if(p)showPage(p);return;}const x=e.target.closest("[data-xq]");if(x){e.preventDefault();location.href="xiao1000.html?section="+encodeURIComponent(x.dataset.sec)+"&q="+encodeURIComponent(x.dataset.q)+"&back="+encodeURIComponent(location.href);}});
+function itemHTML(d,aiText){const q=d.q;return `<article class="item" data-id="${esc(q.id)}"><div class="top"><span class="pill">第 ${q.num} 题</span><span>${q.type==="multiple"?"多选":"单选"}</span></div><p class="stem">${esc(cut(q.stem,120))}</p><div class="ans">正确答案：${esc(q.answer||"")}</div><div class="related">${hbHTML(d.hand)}${xqHTML(d.rel)}</div><div class="ai">${esc(aiText||"排队中…")}</div></article>`;}
+function persist(){
+  const results=[...document.querySelectorAll(".item")].map(it=>({id:it.dataset.id,ai:(it.querySelector(".ai")||{}).textContent||""}));
+  try{sessionStorage.setItem(STATE_KEY,JSON.stringify({module:moduleType,paper:$("#paper").value,selected:[...selected],results}));}catch(e){}
+}
+function restoreState(){
+  if(!savedState||savedState.module!==moduleType)return;
+  if(savedState.paper&&sections.some(x=>x.id===savedState.paper))$("#paper").value=savedState.paper;
+  selected=new Set(savedState.selected||[]);
+  renderGrid();
+  const data=(savedState.results||[]).map(r=>{const q=paper().questions.find(x=>x.id===r.id);return q?{q,hand:topHB(q),rel:topXQ(q),ai:r.ai}:null;}).filter(Boolean);
+  if(data.length){$("#results").innerHTML=data.map(d=>itemHTML(d,d.ai)).join("");$("#status").textContent=`已恢复上次解析 · ${data.length} 题`;}
+}
+$("#results").addEventListener("click",e=>{
+  const h=e.target.closest("[data-hb]");
+  if(h){e.preventDefault();const p=(window.HANDBOOK_INDEX||[]).find(x=>x.id===h.dataset.hb);if(p)showPage(p);return;}
+  const all=e.target.closest("[data-all]");
+  if(all){e.preventDefault();persist();const back=new URL(location.href);back.searchParams.set("restore","1");location.href="xiao1000.html?section="+encodeURIComponent(all.dataset.sec)+"&back="+encodeURIComponent(back.href);return;}
+  const x=e.target.closest("[data-xq]");
+  if(x){e.preventDefault();persist();const back=new URL(location.href);back.searchParams.set("restore","1");location.href="xiao1000.html?section="+encodeURIComponent(x.dataset.sec)+"&q="+encodeURIComponent(x.dataset.q)+"&back="+encodeURIComponent(back.href);}
+});
 async function run(){
   const sec=paper();if(!sec)return;
   const nums=[...selected].sort((a,b)=>a-b);const qs=nums.map(n=>qFor(sec,n)).filter(Boolean);
-  const data=qs.map(q=>({q,hand:topHB(q),rel:topXQ(q)}));
-  $("#results").innerHTML=data.map(d=>{const q=d.q;return `<article class="item" data-id="${esc(q.id)}"><div class="top"><span class="pill">第 ${q.num} 题</span><span>${q.type==="multiple"?"多选":"单选"}</span></div><p class="stem">${esc(cut(q.stem,120))}</p><div class="ans">正确答案：${esc(q.answer||"")}</div><div class="related">${hbHTML(d.hand)}${xqHTML(d.rel)}</div><div class="ai">排队中…</div></article>`;}).join("");
+  const data=qs.map(q=>({q,hand:topHB(q),rel:topXQ(q),ai:"排队中…"}));
+  $("#results").innerHTML=data.map(d=>itemHTML(d,d.ai)).join("");
+  persist();
   $("#status").textContent=`正在解析 0 / ${qs.length}`;
-  for(let i=0;i<data.length;i++){const d=data[i],el=$(`.item[data-id="${d.q.id}"] .ai`);if(el)el.textContent="解析中…";try{const t=await ask(d.q,d.hand,d.rel);if(el)el.textContent=t;}catch(e){if(el)el.textContent="AI 暂时不可用："+(e.message||"网络错误");}$("#status").textContent=`正在解析 ${i+1} / ${data.length}`;}
+  for(let i=0;i<data.length;i++){const d=data[i],el=$(`.item[data-id="${d.q.id}"] .ai`);if(el)el.textContent="解析中…";try{const t=await ask(d.q,d.hand,d.rel);d.ai=t;if(el)el.textContent=t;}catch(e){d.ai="AI 暂时不可用："+(e.message||"网络错误");if(el)el.textContent=d.ai;}$("#status").textContent=`正在解析 ${i+1} / ${data.length}`;persist();}
   $("#status").textContent=`解析完成 · 共 ${data.length} 题`;
 }
-$("#paper").addEventListener("change",()=>{selected.clear();renderGrid();$("#results").innerHTML="";});
-$("#clear").onclick=()=>{selected.clear();renderGrid();$("#results").innerHTML="";};
+$("#paper").addEventListener("change",()=>{selected.clear();renderGrid();$("#results").innerHTML="";try{sessionStorage.removeItem(STATE_KEY);}catch(e){};});
+$("#clear").onclick=()=>{selected.clear();renderGrid();$("#results").innerHTML="";try{sessionStorage.removeItem(STATE_KEY);}catch(e){};};
 $("#run").onclick=run;
-loadData().then(renderPapers);
+loadData().then(()=>{renderPapers();restoreState();});
 </script>
 </body>
 </html>

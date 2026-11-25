@@ -56,5 +56,6 @@ $("#import").onchange=e=>{const f=e.target.files[0];if(!f)return;const r=new Fil
 $("#clear").onclick=()=>{if(!confirm("清空全部笔记？建议先导出备份。"))return;notes={};save();render();};
 load();render();
 </script>
+<script src="handbook-page.js"></script>
 </body>
 </html>

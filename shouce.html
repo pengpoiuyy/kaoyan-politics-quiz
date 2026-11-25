@@ -43,6 +43,20 @@
   .page-nav input { width:64px; }
   .page-nav button { border:1px solid var(--line); border-radius:7px; background:#fff; padding:5px 8px; font-size:11px; color:var(--soft); cursor:pointer; }
   .page-nav .pos { margin-left:auto; }
+
+  .reader { position:fixed; inset:0; z-index:80; background:var(--paper); display:flex; flex-direction:column; }
+  .reader[hidden] { display:none; }
+  .reader-bar { position:sticky; top:0; z-index:5; display:flex; gap:7px; align-items:center; flex-wrap:wrap; padding:9px clamp(10px,3vw,22px); background:rgba(255,253,248,.97); border-bottom:1px solid var(--line); backdrop-filter:blur(10px); }
+  .reader-bar button { border:1px solid var(--line); border-radius:8px; background:#fffefb; color:var(--soft); padding:6px 9px; font-size:11px; cursor:pointer; }
+  .reader-bar button.on { background:var(--jade); color:#fff; border-color:var(--jade); }
+  .reader-bar input { width:62px; border:1px solid var(--line); border-radius:8px; padding:6px; font-size:11px; }
+  .reader-pos { margin-left:auto; font-size:11px; color:var(--muted); }
+  .reader-body { flex:1; overflow:auto; padding:12px 10px 70px; scroll-behavior:smooth; }
+  .page-wrap { max-width:900px; margin:0 auto 12px; position:relative; background:#fff; border:1px solid #e8e1d4; border-radius:5px; overflow:hidden; aspect-ratio:900 / 1274; }
+  .page-wrap img { display:block; width:100%; height:auto; min-height:100%; object-fit:contain; background:#fff; }
+  .page-wrap .pno { position:absolute; top:6px; left:6px; background:rgba(255,253,248,.9); border:1px solid #ddd3c1; color:#81796b; border-radius:999px; padding:1px 6px; font-size:9px; pointer-events:none; }
+  .page-wrap .ptext { padding:10px 14px; font-size:11px; line-height:1.8; color:#465058; white-space:pre-wrap; border-top:1px solid #eee6d8; background:#fffefb; }
+  .page-wrap.loading::after { content:"加载中…"; position:absolute; inset:0; display:grid; place-items:center; color:#b0a797; font-size:12px; }
   @media (max-width:600px){ .topbar{padding:10px 14px} .searchbox{position:sticky;top:64px;z-index:10;background:var(--paper);padding:6px 0} }
 </style>
 </head>
@@ -58,6 +72,18 @@
   <p class="hint">搜到后点卡片查看该页 OCR 原文。页码是 PDF 页，和电子书页码一致；OCR 可能有少量错字，以原书为准。</p>
   <div id="results" class="results"></div>
 </main>
+<section class="reader" id="reader" hidden>
+  <div class="reader-bar">
+    <button id="reader-back" type="button">← 返回检索</button>
+    <button id="rvol-up" type="button">上册</button>
+    <button id="rvol-down" type="button">下册</button>
+    <span id="reader-pos" class="reader-pos"></span>
+    <input id="reader-jump" type="number" min="1" placeholder="页码">
+    <button id="reader-jump-go" type="button">跳页</button>
+    <button id="reader-text-toggle" type="button">显示文字</button>
+  </div>
+  <div class="reader-body" id="reader-body"></div>
+</section>
 <dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><div><button class="tab" id="view-toggle" type="button">看文字</button> <button class="icon" data-close type="button">×</button></div></div><div class="page-nav">
     <select id="view-vol"><option value="up">上册</option><option value="down">下册</option></select>
     <button id="prev-page" type="button">← 上一页</button>
@@ -117,7 +143,64 @@ function search(){
 function esc(v){ return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 $('#go').addEventListener('click',search);
 $('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
-$('#direct-open').addEventListener('click',()=>{ if(currentPage) openPage(currentPage); else { const first=pagesOf('up')[0]; if(first) openPage(first); } });
+let readerVol = null, readerObserver = null, readerText = false;
+function readerPages(){ return pagesOf(readerVol || 'up'); }
+function mountReader(vol){
+  readerVol = vol;
+  $('#rvol-up').classList.toggle('on', vol==='up');
+  $('#rvol-down').classList.toggle('on', vol==='down');
+  const box = $('#reader-body');
+  box.innerHTML = '';
+  const pages = pagesOf(vol);
+  if(readerObserver) readerObserver.disconnect();
+  readerObserver = new IntersectionObserver(entries=>{
+    for(const en of entries){
+      if(!en.isIntersecting) continue;
+      const el = en.target;
+      if(!el.dataset.loaded) loadReaderPage(el);
+      $('#reader-pos').textContent = `${el.dataset.vol === 'up' ? '上册' : '下册'} · 第 ${el.dataset.page} / ${pages.length} 页`;
+    }
+  }, {root: box, rootMargin: '900px 0px'});
+  for(const p of pages){
+    const el = document.createElement('div');
+    el.className='page-wrap loading';
+    el.dataset.id=p.id; el.dataset.vol=p.volKey; el.dataset.page=p.pdfPage;
+    el.innerHTML = `<span class="pno">${p.volume} · 第 ${p.pdfPage} 页</span><img alt="背诵手册第${p.pdfPage}页" loading="lazy">`;
+    box.appendChild(el);
+    readerObserver.observe(el);
+  }
+  box.scrollTop = 0;
+}
+function loadReaderPage(el){
+  el.dataset.loaded='1';
+  const p = DATA.find(x=>x.id===el.dataset.id);
+  if(!p) return;
+  const img = el.querySelector('img');
+  loadHandbookPage(p).then(src=>{ img.src=src; el.classList.remove('loading'); }).catch(()=>{ el.classList.remove('loading'); img.alt='页面图片加载失败'; });
+}
+function openReader(p){
+  currentPage=p;
+  $('#reader').hidden = false;
+  document.body.style.overflow='hidden';
+  if(!readerVol || readerVol!==p.volKey) mountReader(p.volKey);
+  requestAnimationFrame(()=>{
+    const el = document.querySelector(`.page-wrap[data-id="${p.id}"]`);
+    if(el) el.scrollIntoView({block:'start'});
+    const pos = document.querySelector('#reader-pos');
+    if(pos) pos.textContent = `${p.volume} · 第 ${p.pdfPage} / ${pagesOf(p.volKey).length} 页`;
+  });
+}
+function closeReader(){
+  $('#reader').hidden = true;
+  document.body.style.overflow='';
+}
+$('#direct-open').addEventListener('click',()=>{ if(currentPage) openReader(currentPage); else { const first=pagesOf('up')[0]; if(first) openReader(first); } });
+$('#reader-back').addEventListener('click',closeReader);
+$('#rvol-up').addEventListener('click',()=>{mountReader('up');});
+$('#rvol-down').addEventListener('click',()=>{mountReader('down');});
+$('#reader-jump-go').addEventListener('click',()=>{const n=Number($('#reader-jump').value);if(!n)return;const p=pagesOf(readerVol||'up').find(x=>x.pdfPage===n);if(p)openReader(p);else alert('这一册没有第 '+n+' 页');});
+$('#reader-jump').addEventListener('keydown',e=>{if(e.key==='Enter')$('#reader-jump-go').click();});
+$('#reader-text-toggle').addEventListener('click',()=>{readerText=!readerText;$('#reader-text-toggle').textContent=readerText?'隐藏文字':'显示文字';document.querySelectorAll('.page-wrap').forEach(el=>{if(readerText&&!el.querySelector('.ptext')){const p=DATA.find(x=>x.id===el.dataset.id);if(p){const t=document.createElement('div');t.className='ptext';t.textContent=p.text;el.appendChild(t);}}else if(!readerText){const t=el.querySelector('.ptext');if(t)t.remove();}});});
 $('#prev-page').addEventListener('click',()=>stepPage(-1));
 $('#next-page').addEventListener('click',()=>stepPage(1));
 $('#view-vol').addEventListener('change',e=>{ const list=pagesOf(e.target.value); if(list.length) openPage(list[0]); });
@@ -125,14 +208,14 @@ $('#jump-go').addEventListener('click',()=>{ const n=Number($('#jump-page').valu
 $('#jump-page').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#jump-go').click(); });
 search();
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); b.classList.add('on'); vol=b.dataset.vol; search(); }));
-$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; openPage(p); });
+$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; openReader(p); });
 document.querySelector('[data-close]').addEventListener('click',()=>$('#page-dialog').close());
 $('#view-toggle').addEventListener('click',()=>{ const img=$('#page-img'), txt=$('#page-text'); const showText=!img.hidden; img.hidden=showText; txt.hidden=!showText; $('#view-toggle').textContent=showText?'看图片':'看文字'; });
 search();
 const pageParam = new URLSearchParams(location.search).get("page");
 if (pageParam) {
   const p = DATA.find(x => x.id === pageParam);
-  if (p) openPage(p);
+  if (p) openReader(p);
 }
 </script>
 <script src="global-search.js"></script>

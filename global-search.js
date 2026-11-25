@@ -120,13 +120,13 @@
     var box = document.createElement("div");
     box.className = "gs-pdf-modal";
     box.style.cssText = "position:fixed;inset:0;z-index:140;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px;";
-    var src = (p.volKey === "up" ? "handbook-up.pdf" : "handbook-down.pdf") + "#page=" + p.pdfPage + "&toolbar=0";
-    box.innerHTML = '<button type="button" style="position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer;">×</button><iframe src="' + src + '" title="背诵手册页面" style="width:min(920px,96vw);height:92vh;border:0;border-radius:10px;background:#fff;"></iframe>';
+    box.innerHTML = '<button type="button" style="position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer;">×</button><img alt="背诵手册页面" src="" style="max-width:min(920px,96vw);max-height:92vh;width:auto;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);">';
     document.body.appendChild(box);
+    var img = box.querySelector("img");
+    if (window.loadHandbookPage) window.loadHandbookPage(p).then(function (src) { img.src = src; }).catch(function () { img.alt = "页面图片加载失败"; });
     box.querySelector("button").addEventListener("click", function () { box.remove(); });
     box.addEventListener("click", function (e) { if (e.target === box) box.remove(); });
   }
-
   function onClick(e) {
     var a = e.target.closest("[data-result]");
     if (!a) return;

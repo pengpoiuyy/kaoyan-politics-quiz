@@ -134,5 +134,6 @@ if(old && !old.submitted && old.endsAt>Date.now()){state=old;startTimer();render
 $("#year").onchange=()=>{if(state&&!state.submitted&&!confirm("切换年份会重新开始，继续？")){$("#year").value=String(state.year);return;}newAttempt(Number($("#year").value));};
 $("#submit").onclick=()=>submit(false);
 </script>
+<script src="handbook-page.js"></script>
 </body>
 </html>

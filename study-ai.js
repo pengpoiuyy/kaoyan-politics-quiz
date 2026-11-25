@@ -102,7 +102,7 @@
       .sa-foot{color:var(--muted,#81796b);font-size:10px;text-align:center;margin-top:4px}
       .sa-retry{border:1px solid var(--line,#ded4c3);background:#fffefb;border-radius:8px;padding:6px 10px;font-size:11px;color:var(--jade,#2f6b56);cursor:pointer;margin-top:6px}
       .sa-page-modal{position:fixed;inset:0;z-index:120;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px;}
-      .sa-page-modal iframe{max-width:min(920px,96vw);max-height:92vh;width:90vw;height:92vh;border:0;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);}
+      .sa-page-modal img{max-width:min(920px,96vw);max-height:92vh;width:auto;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);}
       .sa-page-modal button{position:fixed;top:14px;right:18px;border:0;background:rgba(255,255,255,.92);border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer;}
       @media(max-width:600px){.study-ai-panel{right:10px;left:10px;bottom:10px;width:auto;max-height:82vh}}
     `;
@@ -123,9 +123,12 @@
     if (old) old.remove();
     var box = document.createElement("div");
     box.className = "sa-page-modal";
-    var src = (p.volKey === "up" ? "handbook-up.pdf" : "handbook-down.pdf") + "#page=" + p.pdfPage + "&toolbar=0";
-    box.innerHTML = '<button type="button" aria-label="关闭">×</button><iframe title="背诵手册页面" src="' + esc(src) + '" style="width:min(920px,96vw);height:92vh;border:0;border-radius:10px;background:#fff;box-shadow:0 24px 70px rgba(0,0,0,.5);"></iframe>';
+    box.innerHTML = '<button type="button" aria-label="关闭">×</button><img alt="背诵手册页面" src="">';
     document.body.appendChild(box);
+    var img = box.querySelector("img");
+    if (window.loadHandbookPage) {
+      window.loadHandbookPage(p).then(function (src) { img.src = src; }).catch(function () { img.alt = "页面图片加载失败"; });
+    }
     box.querySelector("button").addEventListener("click", function () { box.remove(); });
     box.addEventListener("click", function (e) { if (e.target === box) box.remove(); });
   }

@@ -35,9 +35,9 @@
   .sheet-head { position:sticky; top:0; display:flex; justify-content:space-between; gap:12px; align-items:center; padding:13px 16px; background:var(--card); border-bottom:1px solid var(--line); }
   .sheet-head h3 { margin:0; font-family:var(--serif); font-size:16px; font-weight:500; }
   .icon { border:0; background:transparent; font-size:22px; color:var(--muted); cursor:pointer; }
-  .page-frame { display:block; width:100%; height:min(82vh,900px); border:0; background:#eee; }
+  .page-img { display:block; width:100%; height:auto; max-height:82vh; object-fit:contain; background:#eee; }
   .page-text { padding:16px 20px 28px; white-space:pre-wrap; line-height:2; font-size:14px; color:var(--soft); }
-  .page-text[hidden], .page-frame[hidden] { display:none; }
+  .page-text[hidden], .page-img[hidden] { display:none; }
   @media (max-width:600px){ .topbar{padding:10px 14px} .searchbox{position:sticky;top:64px;z-index:10;background:var(--paper);padding:6px 0} }
 </style>
 </head>
@@ -52,10 +52,12 @@
   <p class="hint">搜到后点卡片查看该页 OCR 原文。页码是 PDF 页，和电子书页码一致；OCR 可能有少量错字，以原书为准。</p>
   <div id="results" class="results"></div>
 </main>
-<dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><div><button class="tab" id="view-toggle" type="button">看文字</button> <button class="icon" data-close type="button">×</button></div></div><iframe id="page-frame" class="page-frame" title="背诵手册 PDF 页面"></iframe><div id="page-text" class="page-text" hidden></div></dialog>
+<dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><div><button class="tab" id="view-toggle" type="button">看文字</button> <button class="icon" data-close type="button">×</button></div></div><img id="page-img" class="page-img" alt="背诵手册页面"><div id="page-text" class="page-text" hidden></div></dialog>
 <script src="handbook-data.js"></script>
+<script src="handbook-page.js"></script>
 <script>
 const DATA = window.HANDBOOK_INDEX || [];
+function showImg(p){const img=$('#page-img');img.alt='加载中…';loadHandbookPage(p).then(src=>{img.src=src;img.hidden=false;}).catch(e=>{img.alt='图片加载失败：'+e.message;});}
 const $ = s => document.querySelector(s);
 let vol = 'all';
 function norm(s){ return String(s||'').replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g,''); }
@@ -75,17 +77,16 @@ function esc(v){ return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;'
 $('#go').addEventListener('click',search);
 $('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); b.classList.add('on'); vol=b.dataset.vol; search(); }));
-$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; $('#page-title').textContent=`${p.volume} · PDF 第 ${p.pdfPage} 页 · ${p.heading||''}`; $('#page-frame').src=(p.volKey==='up'?'handbook-up.pdf':'handbook-down.pdf')+'#page='+p.pdfPage+'&toolbar=0'; $('#page-frame').hidden=false; $('#page-text').hidden=true; $('#view-toggle').textContent='看文字'; $('#page-dialog').showModal(); });
+$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; $('#page-title').textContent=`${p.volume} · PDF 第 ${p.pdfPage} 页 · ${p.heading||''}`; showImg(p); $('#page-text').hidden=true; $('#view-toggle').textContent='看文字'; $('#page-dialog').showModal(); });
 document.querySelector('[data-close]').addEventListener('click',()=>$('#page-dialog').close());
-$('#view-toggle').addEventListener('click',()=>{ const img=$('#page-frame'), txt=$('#page-text'); const showText=!img.hidden; img.hidden=showText; txt.hidden=!showText; $('#view-toggle').textContent=showText?'看图片':'看文字'; });
+$('#view-toggle').addEventListener('click',()=>{ const img=$('#page-img'), txt=$('#page-text'); const showText=!img.hidden; img.hidden=showText; txt.hidden=!showText; $('#view-toggle').textContent=showText?'看图片':'看文字'; });
 search();
 const pageParam = new URLSearchParams(location.search).get("page");
 if (pageParam) {
   const p = DATA.find(x => x.id === pageParam);
   if (p) {
     document.querySelector("#page-title").textContent = p.volume + " · PDF 第 " + p.pdfPage + " 页 · " + (p.heading || "");
-    document.querySelector("#page-frame").src = (p.volKey === "up" ? "handbook-up.pdf" : "handbook-down.pdf") + "#page=" + p.pdfPage + "&toolbar=0";
-    document.querySelector("#page-frame").hidden = false;
+    showImg(p);
     document.querySelector("#page-text").textContent = p.text;
     document.querySelector("#page-text").hidden = true;
     document.querySelector("#page-dialog").showModal();

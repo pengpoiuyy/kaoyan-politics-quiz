@@ -38,13 +38,19 @@
   .page-img { display:block; width:100%; height:auto; max-height:82vh; object-fit:contain; background:#eee; }
   .page-text { padding:16px 20px 28px; white-space:pre-wrap; line-height:2; font-size:14px; color:var(--soft); }
   .page-text[hidden], .page-img[hidden] { display:none; }
+  .page-nav { display:flex; gap:6px; align-items:center; flex-wrap:wrap; padding:8px 12px; border-bottom:1px solid var(--line); background:#fffefb; font-size:11px; color:var(--muted); }
+  .page-nav select, .page-nav input { border:1px solid var(--line); border-radius:7px; background:#fff; padding:5px 7px; font-size:11px; color:var(--ink); }
+  .page-nav input { width:64px; }
+  .page-nav button { border:1px solid var(--line); border-radius:7px; background:#fff; padding:5px 8px; font-size:11px; color:var(--soft); cursor:pointer; }
+  .page-nav .pos { margin-left:auto; }
   @media (max-width:600px){ .topbar{padding:10px 14px} .searchbox{position:sticky;top:64px;z-index:10;background:var(--paper);padding:6px 0} }
 </style>
 </head>
 <body>
 <header class="topbar">
   <a class="seal" href="index.html" aria-label="返回">背</a>
-  <div><h1>背诵手册 · 知识点检索</h1><p class="sub">27肖秀荣 上册 + 下册 · 输入关键词找页码</p></div>
+  <div><h1>背诵手册 · 知识点检索</h1><p class="sub">27肖秀荣 上册 + 下册 · 搜知识点或直接翻页</p></div>
+  <button class="tab" id="direct-open" type="button" style="margin-left:auto">📖 直接查看</button>
 </header>
 <main class="wrap">
   <div class="searchbox"><input id="q" placeholder="输入知识点，如：社会基本矛盾、全过程人民民主" autocomplete="off"><button id="go">搜索</button></div>
@@ -52,12 +58,47 @@
   <p class="hint">搜到后点卡片查看该页 OCR 原文。页码是 PDF 页，和电子书页码一致；OCR 可能有少量错字，以原书为准。</p>
   <div id="results" class="results"></div>
 </main>
-<dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><div><button class="tab" id="view-toggle" type="button">看文字</button> <button class="icon" data-close type="button">×</button></div></div><img id="page-img" class="page-img" alt="背诵手册页面"><div id="page-text" class="page-text" hidden></div></dialog>
+<dialog id="page-dialog"><div class="sheet-head"><h3 id="page-title"></h3><div><button class="tab" id="view-toggle" type="button">看文字</button> <button class="icon" data-close type="button">×</button></div></div><div class="page-nav">
+    <select id="view-vol"><option value="up">上册</option><option value="down">下册</option></select>
+    <button id="prev-page" type="button">← 上一页</button>
+    <button id="next-page" type="button">下一页 →</button>
+    <input id="jump-page" type="number" min="1" placeholder="页码">
+    <button id="jump-go" type="button">跳页</button>
+    <span class="pos" id="page-pos"></span>
+  </div>
+  <img id="page-img" class="page-img" alt="背诵手册页面"><div id="page-text" class="page-text" hidden></div></dialog>
 <script src="handbook-data.js"></script>
 <script src="handbook-page.js"></script>
 <script>
 const DATA = window.HANDBOOK_INDEX || [];
+let currentPage = null;
 function showImg(p){const img=$('#page-img');img.alt='加载中…';loadHandbookPage(p).then(src=>{img.src=src;img.hidden=false;}).catch(e=>{img.alt='图片加载失败：'+e.message;});}
+function pagesOf(volKey){ return DATA.filter(p=>p.volKey===volKey).sort((a,b)=>a.pdfPage-b.pdfPage); }
+function renderNav(p){
+  const list=pagesOf(p.volKey);
+  $('#view-vol').value=p.volKey;
+  $('#page-pos').textContent=`${p.volume} · 第 ${p.pdfPage} / ${list.length ? list[list.length-1].pdfPage : '?'} 页`;
+  $('#jump-page').value=p.pdfPage;
+}
+function openPage(p){
+  currentPage=p;
+  $('#page-title').textContent=`${p.volume} · PDF 第 ${p.pdfPage} 页 · ${p.heading||''}`;
+  showImg(p);
+  $('#page-text').textContent=p.text;
+  $('#page-text').hidden=true;
+  $('#view-toggle').textContent='看文字';
+  renderNav(p);
+  if(!$('#page-dialog').open) $('#page-dialog').showModal();
+}
+function stepPage(delta){
+  if(!currentPage) return;
+  const list=pagesOf(currentPage.volKey);
+  const i=list.findIndex(p=>p.id===currentPage.id);
+  const j=i+delta;
+  if(j<0||j>=list.length) return;
+  openPage(list[j]);
+}
+
 const $ = s => document.querySelector(s);
 let vol = 'all';
 function norm(s){ return String(s||'').replace(/[^\u4e00-\u9fa5A-Za-z0-9]/g,''); }
@@ -76,21 +117,22 @@ function search(){
 function esc(v){ return String(v).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
 $('#go').addEventListener('click',search);
 $('#q').addEventListener('keydown',e=>{ if(e.key==='Enter') search(); });
+$('#direct-open').addEventListener('click',()=>{ if(currentPage) openPage(currentPage); else { const first=pagesOf('up')[0]; if(first) openPage(first); } });
+$('#prev-page').addEventListener('click',()=>stepPage(-1));
+$('#next-page').addEventListener('click',()=>stepPage(1));
+$('#view-vol').addEventListener('change',e=>{ const list=pagesOf(e.target.value); if(list.length) openPage(list[0]); });
+$('#jump-go').addEventListener('click',()=>{ const n=Number($('#jump-page').value); if(!currentPage||!n) return; const p=pagesOf(currentPage.volKey).find(x=>x.pdfPage===n); if(p) openPage(p); else alert('这一册没有第 '+n+' 页'); });
+$('#jump-page').addEventListener('keydown',e=>{ if(e.key==='Enter') $('#jump-go').click(); });
+search();
 document.querySelectorAll('.tab').forEach(b=>b.addEventListener('click',()=>{ document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on')); b.classList.add('on'); vol=b.dataset.vol; search(); }));
-$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; $('#page-title').textContent=`${p.volume} · PDF 第 ${p.pdfPage} 页 · ${p.heading||''}`; showImg(p); $('#page-text').hidden=true; $('#view-toggle').textContent='看文字'; $('#page-dialog').showModal(); });
+$('#results').addEventListener('click',e=>{ const card=e.target.closest('[data-id]'); if(!card) return; const p=DATA.find(x=>x.id===card.dataset.id); if(!p) return; openPage(p); });
 document.querySelector('[data-close]').addEventListener('click',()=>$('#page-dialog').close());
 $('#view-toggle').addEventListener('click',()=>{ const img=$('#page-img'), txt=$('#page-text'); const showText=!img.hidden; img.hidden=showText; txt.hidden=!showText; $('#view-toggle').textContent=showText?'看图片':'看文字'; });
 search();
 const pageParam = new URLSearchParams(location.search).get("page");
 if (pageParam) {
   const p = DATA.find(x => x.id === pageParam);
-  if (p) {
-    document.querySelector("#page-title").textContent = p.volume + " · PDF 第 " + p.pdfPage + " 页 · " + (p.heading || "");
-    showImg(p);
-    document.querySelector("#page-text").textContent = p.text;
-    document.querySelector("#page-text").hidden = true;
-    document.querySelector("#page-dialog").showModal();
-  }
+  if (p) openPage(p);
 }
 </script>
 <script src="global-search.js"></script>

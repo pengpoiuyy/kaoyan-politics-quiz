@@ -47,7 +47,7 @@
   .rel-link span{display:block;font-size:10px;color:#465058;line-height:1.55;margin-top:1px}
   .rel-link em{display:block;font-size:9.5px;color:#81796b;font-style:normal;line-height:1.5;margin-top:2px}
   .pdf-modal{position:fixed;inset:0;z-index:140;background:rgba(20,24,26,.72);display:flex;align-items:center;justify-content:center;padding:18px}
-  .pdf-modal iframe{width:min(920px,96vw);height:92vh;border:0;border-radius:10px;background:#fff}
+  .pdf-modal img{max-width:min(920px,96vw);max-height:92vh;width:auto;border-radius:10px;background:#fff}
   .pdf-modal button{position:fixed;top:14px;right:18px;border:0;background:#fff;border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer}
   .topic-row{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:5px}.topic-link{font-size:9.5px;border:1px solid #b9d5c4;background:#f1f7f2;color:#2f6b56;border-radius:999px;padding:4px 8px;text-decoration:none}
 </style>
@@ -127,7 +127,7 @@ function promptFor(q,hand,rel){
   return ("请忽略作文批改场景，作为考研政治老师分析这道选择题。不要编造页码。题目："+String(q.stem||"").slice(0,480)+" 选项："+opts+" 正确答案："+(q.answer||"")+"。背诵手册片段："+(hb||"无")+"。肖1000相关题："+(xq||"无")+"。请输出：1.考点 2.为什么选 3.干扰项/易错点 4.对应手册：必须写出上面给出的PDF页码和关键词，说明怎么记 5.巩固建议。300字以内。").slice(0,1450);
 }
 function ask(q,hand,rel){const key=q.id+"-hb2";if(cache[key]&&cache[key].text)return Promise.resolve(cache[key].text);return fetch(AI_ENDPOINT,{method:"POST",headers:{"Content-Type":"application/json","x-access-code":AI_CODE},body:JSON.stringify({mode:"chat",question:promptFor(q,hand,rel),context:{type:"big",promptText:"考研政治错题解析",essayText:"",grade:{score:"",band:"",issues:[],deductions:[]}},history:[]})}).then(r=>r.json().catch(()=>({})).then(d=>{if(!r.ok)throw new Error(d.error||("HTTP "+r.status));return d;})).then(d=>{const t=String(d.answer||"").trim();if(!t)throw new Error("AI 没有返回内容");cache[key]={text:t,at:Date.now()};try{localStorage.setItem(CACHE_KEY,JSON.stringify(cache));}catch(e){}return t;});}
-function showPage(p){const old=document.querySelector(".pdf-modal");if(old)old.remove();const box=document.createElement("div");box.className="pdf-modal";const src=(p.volKey==="up"?"handbook-up.pdf":"handbook-down.pdf")+"#page="+p.pdfPage+"&toolbar=0";box.innerHTML='<button type="button" aria-label="关闭">×</button><iframe title="背诵手册页面" src="'+src+'"></iframe>';document.body.appendChild(box);box.querySelector("button").onclick=()=>box.remove();box.onclick=e=>{if(e.target===box)box.remove();};}
+function showPage(p){const old=document.querySelector(".pdf-modal");if(old)old.remove();const box=document.createElement("div");box.className="pdf-modal";box.innerHTML='<button type="button" aria-label="关闭">×</button><img alt="背诵手册页面" src="">';document.body.appendChild(box);const img=box.querySelector("img");if(window.loadHandbookPage)window.loadHandbookPage(p).then(src=>{img.src=src;}).catch(()=>{img.alt="页面图片加载失败";});box.querySelector("button").onclick=()=>box.remove();box.onclick=e=>{if(e.target===box)box.remove();};}
 function itemHTML(d,aiText){const q=d.q;return `<article class="item" data-id="${esc(q.id)}"><div class="top"><span class="pill">第 ${q.num} 题</span><span>${q.type==="multiple"?"多选":"单选"}</span></div><p class="stem">${esc(cut(q.stem,120))}</p><div class="ans">正确答案：${esc(q.answer||"")}</div><div class="related">${hbHTML(d.hand)}${xqHTML(d.rel)}</div><div class="ai">${esc(aiText||"排队中…")}</div></article>`;}
 function persist(){
   const results=[...document.querySelectorAll(".item")].map(it=>({id:it.dataset.id,ai:(it.querySelector(".ai")||{}).textContent||""}));
@@ -164,5 +164,6 @@ $("#clear").onclick=()=>{selected.clear();renderGrid();$("#results").innerHTML="
 $("#run").onclick=run;
 loadData().then(()=>{renderPapers();restoreState();});
 </script>
+<script src="handbook-page.js"></script>
 </body>
 </html>
